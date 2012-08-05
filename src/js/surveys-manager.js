@@ -14,7 +14,6 @@ if (!window.SurveysManager) {
 			
 			$(".survey-manager-button").jqxButton({ 
 				width: '150', 
-				height: '30', 
 				theme: SurveysManager.theme 
 			});
 		
@@ -44,7 +43,7 @@ if (!window.SurveysManager) {
 			var dataAdapter = new $.jqx.dataAdapter(source);
 			
             $("#surveys-grid").jqxGrid({
-            	width: 500,
+            	width: 800,
                 height: 250,
                 source: dataAdapter,
                 columnsresize: true,
