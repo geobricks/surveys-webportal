@@ -11,3 +11,12 @@ CREATE TABLE question (
 	questionNumber int,
 	questionType varchar
 );
+
+CREATE TABLE label (
+	id SERIAL primary key,
+	question_id int references question(id),
+	lang varchar,
+	label bytea
+);
+
+SELECT * FROM survey;
