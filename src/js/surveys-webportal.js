@@ -2,13 +2,12 @@ if (!window.SurveysWebPortal) {
 	
 	window.SurveysWebPortal = {
 		
-		theme : "energyblue",
+		theme : "ui-start",
 		
 		showSurveysManager : function() {
 			
 			$("#menu").jqxMenu({
-				width: '800', 
-				height: '48px', 
+				width: '780', 
 				showTopLevelArrows: true,
 				autoOpen: true,
 				enableHover: true,

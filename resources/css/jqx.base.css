@@ -207,7 +207,7 @@
     border-style: solid;
     border-width: 0px 0px 0px 1px;
     border-color: transparent;
-    background-image: url('../images/menubutton.png');
+    background-image: url('/resources/images/menubutton.png');
     background-repeat: no-repeat;
     background-position: center;
     cursor: pointer;
@@ -215,7 +215,7 @@
  /*applied to the column's sort button when the sort order is ascending.*/
  .jqx-grid-column-sortascbutton {
     border: none;
-    background-image: url('../images/sortascbutton.png');
+    background-image: url('/resources/images/sortascbutton.png');
     background-repeat: no-repeat;
     background-position: center;
     cursor: pointer;
@@ -223,7 +223,7 @@
  /*applied to the column's sort button when the sort order is descending.*/
   .jqx-grid-column-sortdescbutton {
     border: none;
-    background-image: url('../images/sortdescbutton.png');
+    background-image: url('/resources/images/sortdescbutton.png');
     background-repeat: no-repeat;
     background-position: center;
     cursor: pointer;
@@ -232,7 +232,7 @@
   .jqx-grid-column-filterbutton
  {
     border: none;
-    background-image: url('../images/filter_dark.png');
+    background-image: url('/resources/images/filter_dark.png');
     background-repeat: no-repeat;
     background-position: center;
  }
@@ -249,13 +249,13 @@
  }
   .jqx-grid-validation-arrow-up
  {
-    background-image: url('../images/red_arrow_up.png');
+    background-image: url('/resources/images/red_arrow_up.png');
     background-repeat: no-repeat;
     background-position: center center;
  }
   .jqx-grid-validation-arrow-down
  {
-    background-image: url('../images/red_arrow_down.png');
+    background-image: url('/resources/images/red_arrow_down.png');
     background-repeat: no-repeat;
     background-position: center center;
  }
@@ -266,7 +266,7 @@
   /*applied to the sort ascending menu item in the Grid's Context Menu*/
  .jqx-grid-sortasc-icon
  {
-    background-image: url('../images/sortasc.png');
+    background-image: url('/resources/images/sortasc.png');
     background-repeat: no-repeat;
     background-position: left center;
     width: 16px;
@@ -278,7 +278,7 @@
   /*applied to the sort ascending menu item in the Grid's Context Menu*/
  .jqx-grid-sortdesc-icon
  {
-    background-image: url('../images/sortdesc.png');
+    background-image: url('/resources/images/sortdesc.png');
     background-repeat: no-repeat;
     background-position: left center;
     width: 16px;
@@ -290,7 +290,7 @@
   /*applied to the grid menu's sort remove item/*/
  .jqx-grid-sortremove-icon
  {
-    background-image: url('../images/sortremove.png');
+    background-image: url('/resources/images/sortremove.png');
     background-repeat: no-repeat;
     background-position: left center;
     width: 16px;
@@ -302,7 +302,7 @@
    /*applied to the grouping column's drag and drop item when the drop operation is allowed.*/
  .jqx-grid-drag-icon
  {
-    background-image: url('../images/drag.png');
+    background-image: url('/resources/images/drag.png');
     background-repeat: no-repeat;
     background-position: left center;
     width: 16px;
@@ -311,7 +311,7 @@
    /*applied to the grouping column's drag and drop item when the drop operation is not allowed.*/
  .jqx-grid-dragcancel-icon
  {
-    background-image: url('../images/dragcancel.png');
+    background-image: url('/resources/images/dragcancel.png');
     background-repeat: no-repeat;
     background-position: left center;
     width: 16px;

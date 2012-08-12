@@ -2,7 +2,7 @@ if (!window.SurveysManager) {
 	
 	window.SurveysManager = {
 		
-		theme : "energyblue",
+		theme : "ui-start",
 		
 		source : [
 		          "Affogato",
@@ -43,7 +43,7 @@ if (!window.SurveysManager) {
 			var dataAdapter = new $.jqx.dataAdapter(source);
 			
             $("#surveys-grid").jqxGrid({
-            	width: 800,
+            	width: 780,
                 height: 250,
                 source: dataAdapter,
                 columnsresize: true,
@@ -57,6 +57,8 @@ if (!window.SurveysManager) {
                 ],
                 theme: SurveysManager.theme
             });
+            
+            $("#surveys-grid").css("style", "margin: 0px auto;");
 		
 		}
 	
