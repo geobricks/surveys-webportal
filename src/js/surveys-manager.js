@@ -67,6 +67,13 @@ if (!window.SurveysManager) {
 					alert("Survey '" + surveyName + "' has been deleted.");
             	}
 			});
+            
+            $("#buttonCreateNewSurvey").bind('click', function () {
+            	document.getElementById('container').innerHTML = '';
+				$("#container").load("surveys-survey-wizard.html", function() {
+					SurveysSurveyWizard.initUI();
+				});
+            });
 		
 		}
 	
