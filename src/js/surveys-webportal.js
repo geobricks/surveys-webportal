@@ -17,10 +17,27 @@ if (!window.SurveysWebPortal) {
 				theme: SurveysWebPortal.theme 
 			});
 			
-			$('#menu').bind('itemclick', function () {
-				$("#container").load("surveys-manager.html", function() {
-					SurveysManager.initUI();
-				});
+			$('#menu').bind('itemclick', function (event) {
+				var item = event.target.hash
+				switch (item) {
+					case "#home":
+						document.getElementById('container').innerHTML = '';
+					break;	
+					case "#android":
+						document.getElementById('container').innerHTML = '';
+					break;
+					case "#surveysManager":
+						$("#container").load("surveys-manager.html", function() {
+							SurveysManager.initUI();
+						});
+					break;
+					case "#statisticalEngine":
+						document.getElementById('container').innerHTML = '';
+					break;
+					case "#login":
+						document.getElementById('container').innerHTML = '';
+					break;
+				};
 			}); 
 			
 		},

@@ -2,21 +2,13 @@ if (!window.SurveysManager) {
 	
 	window.SurveysManager = {
 		
-		theme : "ui-start",
-		
-		source : [
-		          "Affogato",
-	              "Americano",
-	              "Bicerin"
-			     ],
-	
 		initUI : function() {
 			
 			$(".survey-manager-button").jqxButton({ 
 				width: '150', 
-				theme: SurveysManager.theme 
+				theme: SurveysWebPortal.theme 
 			});
-		
+			
 			var data = new Array();
 			
 			var row = {};
@@ -27,11 +19,18 @@ if (!window.SurveysManager) {
 			data[0] = row;
 			
 			row = {};
-			row["code"] = "001";
-			row["label"] = "Market Prices in California";
-			row["questions"] = 15;
-			row["dateLastUpdate"] = "2012-05-24";
+			row["code"] = "002";
+			row["label"] = "Public Health in the Philippines";
+			row["questions"] = 25;
+			row["dateLastUpdate"] = "2011-02-25";
 			data[1] = row;
+			
+			row = {};
+			row["code"] = "003";
+			row["label"] = "Gender Issues in Southern Sudan";
+			row["questions"] = 48;
+			row["dateLastUpdate"] = "2012-06-01";
+			data[2] = row;
 			
 			var source = {
 				localdata: data,
@@ -55,10 +54,19 @@ if (!window.SurveysManager) {
                    {text: 'Questions', datafield: 'questions'},
                    {text: 'Date Last Update', datafield: 'dateLastUpdate', cellsformat: 'Y-m-d'}
                 ],
-                theme: SurveysManager.theme
+                theme: SurveysWebPortal.theme
             });
             
-            $("#surveys-grid").css("style", "margin: 0px auto;");
+            $("#buttonDeleteSelectedSurvey").bind('click', function () {
+            	var rowindex = $('#surveys-grid').jqxGrid('getselectedrowindex');
+            	var rows = $('#surveys-grid').jqxGrid('getrows');
+            	var surveyName = rows[rowindex].label;
+            	var c = confirm("Are you sure you want to delete survey '" + surveyName + "'?")
+            	if (c == true) {
+					var value = $('#surveys-grid').jqxGrid('deleterow', rowindex);
+					alert("Survey '" + surveyName + "' has been deleted.");
+            	}
+			});
 		
 		}
 	
