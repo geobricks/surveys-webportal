@@ -2,52 +2,44 @@
 var express = require('express');
 var app = express();
 
-// MongoDB connector
-var dao = require("./mongodb-dao");
+// inti DB
+var databaseUrl = "geobricks";
+var collections = ["models"];
+var db = require("mongojs").connect(databaseUrl, collections);
 
 // Insert New Survey
-app.get("/insert/survey/:title/:description", function(req, res, next) {
-	try {
-		dao.addSurvey(req.params.title, req.params.description);
-		res.send("Survey Saved!");
-	} catch (err) {
-		res.send("Error Saving the Survey: " + err);
-	}
+app.get("/insert/model/:title/:description", function(req, res, next) {
+	db.models.save({title : req.params.title, description : req.params.description}, function(err, model) {
+		if (err || !model) {
+			res.send("Error Saving new Model: " + err);
+		} else {
+			res.format({
+				'application/json': function() {
+					res.send(JSON.stringify(model));
+				}
+			});
+		}
+	});
 });
 
 // Find all Surveys
-app.get("/select/survey/:title", function(req, res, next) {
-	try {
-		//dao.selectSurvey(req.params.title);
-		//res.send("Survey(s) Found!");
-		
-		var databaseUrl = "geobricks";
-		var collections = ["surveys"];
-		var db = require("mongojs").connect(databaseUrl, collections);
-		var query = "";
-		
-		// select all, or by title
-		if (req.params.title == "*") {
-			query = {};
-		} else {
-			query = {title : req.params.title};
-		}
-		
-		db.surveys.find(query, function(err, surveys) {
-			if (err || !surveys) {
-				console.log("Error Saving the Survey: " + err);
-			} else {
-				res.format({
-					'application/json': function() {
-						res.send(JSON.stringify(surveys));
-					}
-				});
-			}
-		});
-		
-	} catch (err) {
-		res.send("Error Saving the Survey: " + err);
+app.get("/select/model/:title", function(req, res, next) {
+	if (req.params.title == "*") {
+		query = {};
+	} else {
+		query = {title : req.params.title};
 	}
+	db.models.find(query, function(err, models) {
+		if (err || !models) {
+			console.log("Error Fetching the Model: " + err);
+		} else {
+			res.format({
+				'application/json': function() {
+					res.send(JSON.stringify(models));
+				}
+			});
+		}
+	});
 });
 
 // Listen
