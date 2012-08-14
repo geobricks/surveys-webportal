@@ -1,23 +1,20 @@
 // ExpressJS
 var express = require('express');
 var app = express();
+app.enable("jsonp callback");
 
-// inti DB
+// init DB
 var databaseUrl = "geobricks";
 var collections = ["models"];
 var db = require("mongojs").connect(databaseUrl, collections);
 
 // Insert New Survey
 app.get("/insert/model/:title/:description", function(req, res, next) {
-	db.models.save({title : req.params.title, description : req.params.description}, function(err, model) {
+	db.models.save({title : req.params.title, description : req.params.description, date: new Date()}, function(err, model) {
 		if (err || !model) {
 			res.send("Error Saving new Model: " + err);
 		} else {
-			res.format({
-				'application/json': function() {
-					res.send(JSON.stringify(model));
-				}
-			});
+			res.json(model);
 		}
 	});
 });
@@ -31,13 +28,9 @@ app.get("/select/model/:title", function(req, res, next) {
 	}
 	db.models.find(query, function(err, models) {
 		if (err || !models) {
-			console.log("Error Fetching the Model: " + err);
+			res.send("Error Fetching the Model: " + err);
 		} else {
-			res.format({
-				'application/json': function() {
-					res.send(JSON.stringify(models));
-				}
-			});
+			res.send(req.query.callback + "(" + JSON.stringify(models) + ");"); 
 		}
 	});
 });

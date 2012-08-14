@@ -9,53 +9,50 @@ if (!window.SurveysManager) {
 				theme: SurveysWebPortal.theme 
 			});
 			
-			var data = new Array();
-			
-			var row = {};
-			row["code"] = "001";
-			row["label"] = "Market Prices in California";
-			row["questions"] = 15;
-			row["dateLastUpdate"] = "2012-12-24";
-			data[0] = row;
-			
-			row = {};
-			row["code"] = "002";
-			row["label"] = "Public Health in the Philippines";
-			row["questions"] = 25;
-			row["dateLastUpdate"] = "2011-02-25";
-			data[1] = row;
-			
-			row = {};
-			row["code"] = "003";
-			row["label"] = "Gender Issues in Southern Sudan";
-			row["questions"] = 48;
-			row["dateLastUpdate"] = "2012-06-01";
-			data[2] = row;
-			
-			var source = {
-				localdata: data,
-                datatype: "array",
-                sortcolumn: 'Label',
-                sortdirection: 'asc'
-            };
-			
-			var dataAdapter = new $.jqx.dataAdapter(source);
-			
-            $("#surveys-grid").jqxGrid({
-            	width: 780,
-                height: 250,
-                source: dataAdapter,
-                columnsresize: true,
-                showheader: true,
-                sortable: true,
-                enablehover: true,
-                columns: [
-                   {text: 'Survey Name', datafield: 'label', width: 250},
-                   {text: 'Questions', datafield: 'questions'},
-                   {text: 'Date Last Update', datafield: 'dateLastUpdate', cellsformat: 'Y-m-d'}
-                ],
-                theme: SurveysWebPortal.theme
-            });
+			$.ajax({
+				
+				type: 'GET',
+				url: 'http://localhost:3000/select/model/*?callback=?',
+				dataType: 'jsonp',
+				jsonp: 'callback',
+				
+				success : function(response) {
+					var data = new Array();
+					for (var i = 0 ; i < response.length ; i++) {
+						var row = {};
+						row["id"] = response[i]._id;
+						row["title"] = response[i].title;
+						row["date"] = response[i].date.substring(0, 10);
+						row["description"] = response[i].description;
+						data[i] = row;
+					}
+					var source = {
+						localdata: data,
+		                datatype: "array"
+		            };
+					var dataAdapter = new $.jqx.dataAdapter(source);
+					$("#surveys-grid").jqxGrid({
+		            	width: 780,
+		                height: 250,
+		                source: dataAdapter,
+		                columnsresize: true,
+		                showheader: true,
+		                sortable: true,
+		                enablehover: true,
+		                columns: [
+		                   {text: 'Survey Name', datafield: 'title'},
+		                   {text: 'Description', datafield: 'description', width: 400},
+		                   {text: 'Date Last Update', datafield: 'date', cellsformat: 'Y-m-d'}
+		                ],
+		                theme: SurveysWebPortal.theme
+		            });
+				},
+				
+				error : function(err, b, c) {
+					alert(err.status + ", " + b + ", " + c);
+				}
+				
+			});
             
             $("#buttonDeleteSelectedSurvey").bind('click', function () {
             	var rowindex = $('#surveys-grid').jqxGrid('getselectedrowindex');
