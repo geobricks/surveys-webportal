@@ -8,19 +8,18 @@ var databaseUrl = "geobricks";
 var collections = ["models"];
 var db = require("mongojs").connect(databaseUrl, collections);
 
-// Insert New Survey
+// Insert New Model
 app.post("/insert/model/:title/:description", function(req, res, next) {
 	db.models.save({title : req.params.title, description : req.params.description, date: new Date()}, function(err, model) {
 		if (err || !model) {
 			res.send("Error Saving new Model: " + err);
 		} else {
-			console.log(model);
 			res.send(req.query.callback + "(" + JSON.stringify(model._id) + ");"); 
 		}
 	});
 });
 
-// Find all Surveys
+// Find all Model
 app.get("/select/model/:title", function(req, res, next) {
 	if (req.params.title == "*") {
 		query = {};
@@ -32,6 +31,17 @@ app.get("/select/model/:title", function(req, res, next) {
 			res.send("Error Fetching the Model: " + err);
 		} else {
 			res.send(req.query.callback + "(" + JSON.stringify(models) + ");"); 
+		}
+	});
+});
+
+// Delete Model By Id
+app.get("/delete/model/:id", function(req, res, next) {
+	db.models.remove({_id: db.ObjectId(req.params.id)}, function(err, model) {
+		if (err || !model) {
+			res.send("Error Deleting the Model: " + err);
+		} else {
+			res.send(req.query.callback + "(" + JSON.stringify(req.params.id) + ");"); 
 		}
 	});
 });

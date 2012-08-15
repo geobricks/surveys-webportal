@@ -9,6 +9,51 @@ if (!window.SurveysManager) {
 				theme: SurveysWebPortal.theme 
 			});
 			
+			SurveysManager.findAllModels();
+            
+            $("#buttonDeleteSelectedSurvey").bind('click', function () {
+            	
+            	var rowindex = $('#surveys-grid').jqxGrid('getselectedrowindex');
+            	var rows = $('#surveys-grid').jqxGrid('getrows');
+            	var surveyName = rows[rowindex].title;
+            	var surveyID = rows[rowindex].id;
+            	var c = confirm("Are you sure you want to delete survey '" + surveyName + "'?")
+            	
+            	if (c == true) {
+	            	
+            		$.ajax({
+					
+						type: 'GET',
+						url: 'http://localhost:3000/delete/model/' + surveyID + '?callback=?',
+						dataType: 'jsonp',
+						jsonp: 'callback',
+						
+						success : function(response) {
+							alert("Model '" + surveyName + "' has been deleted from the DB.");
+							SurveysManager.findAllModels();
+						},
+						
+						error : function(err, b, c) {
+							alert(err.status + ", " + b + ", " + c);
+						}
+					
+	            	});
+            		
+            	}
+            	
+			});
+            
+            $("#buttonCreateNewSurvey").bind('click', function () {
+            	document.getElementById('container').innerHTML = '';
+				$("#container").load("surveys-survey-wizard.html", function() {
+					SurveysSurveyWizard.initUI();
+				});
+            });
+		
+		},
+		
+		findAllModels : function() {
+			
 			$.ajax({
 				
 				type: 'GET',
@@ -22,7 +67,7 @@ if (!window.SurveysManager) {
 						var row = {};
 						row["id"] = response[i]._id;
 						row["title"] = response[i].title;
-						row["date"] = response[i].date.substring(0, 10);
+						row["date"] = response[i].date.substring(0, 10) + " (" + response[i].date.substring(11, 19) + ")";
 						row["description"] = response[i].description;
 						data[i] = row;
 					}
@@ -53,25 +98,7 @@ if (!window.SurveysManager) {
 				}
 				
 			});
-            
-            $("#buttonDeleteSelectedSurvey").bind('click', function () {
-            	var rowindex = $('#surveys-grid').jqxGrid('getselectedrowindex');
-            	var rows = $('#surveys-grid').jqxGrid('getrows');
-            	var surveyName = rows[rowindex].label;
-            	var c = confirm("Are you sure you want to delete survey '" + surveyName + "'?")
-            	if (c == true) {
-					var value = $('#surveys-grid').jqxGrid('deleterow', rowindex);
-					alert("Survey '" + surveyName + "' has been deleted.");
-            	}
-			});
-            
-            $("#buttonCreateNewSurvey").bind('click', function () {
-            	document.getElementById('container').innerHTML = '';
-				$("#container").load("surveys-survey-wizard.html", function() {
-					SurveysSurveyWizard.initUI();
-				});
-            });
-		
+
 		}
 	
 	}
