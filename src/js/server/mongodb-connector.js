@@ -9,12 +9,13 @@ var collections = ["models"];
 var db = require("mongojs").connect(databaseUrl, collections);
 
 // Insert New Survey
-app.get("/insert/model/:title/:description", function(req, res, next) {
+app.post("/insert/model/:title/:description", function(req, res, next) {
 	db.models.save({title : req.params.title, description : req.params.description, date: new Date()}, function(err, model) {
 		if (err || !model) {
 			res.send("Error Saving new Model: " + err);
 		} else {
-			res.json(model);
+			console.log(model);
+			res.send(req.query.callback + "(" + JSON.stringify(model._id) + ");"); 
 		}
 	});
 });
