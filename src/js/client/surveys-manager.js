@@ -67,7 +67,9 @@ if (!window.SurveysManager) {
 						var row = {};
 						row["id"] = response[i]._id;
 						row["title"] = response[i].title;
-						row["date"] = response[i].date.substring(0, 10) + " (" + response[i].date.substring(11, 19) + ")";
+						row["defaultLanguage"] = response[i].defaultLanguage;
+						row["dateLastUpdate"] = response[i].dateLastUpdate.substring(0, 10) + " (" + response[i].dateLastUpdate.substring(11, 19) + ")";
+						row["creationDate"] = response[i].creationDate.substring(0, 10) + " (" + response[i].creationDate.substring(11, 19) + ")";
 						row["description"] = response[i].description;
 						data[i] = row;
 					}
@@ -86,8 +88,10 @@ if (!window.SurveysManager) {
 		                enablehover: true,
 		                columns: [
 		                   {text: 'Survey Name', datafield: 'title'},
-		                   {text: 'Description', datafield: 'description', width: 400},
-		                   {text: 'Date Last Update', datafield: 'date', cellsformat: 'Y-m-d'}
+		                   {text: 'Description', datafield: 'description', width: 300},
+		                   {text: 'Language', datafield: 'defaultLanguage'},
+		                   {text: 'Date Last Update', datafield: 'dateLastUpdate', cellsformat: 'Y-m-d'},
+		                   {text: 'Creation Date', datafield: 'creationDate', cellsformat: 'Y-m-d'}
 		                ],
 		                theme: SurveysWebPortal.theme
 		            });

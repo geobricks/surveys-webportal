@@ -9,8 +9,12 @@ var collections = ["models"];
 var db = require("mongojs").connect(databaseUrl, collections);
 
 // Insert New Model
-app.post("/insert/model/:title/:description", function(req, res, next) {
-	db.models.save({title : req.params.title, description : req.params.description, date: new Date()}, function(err, model) {
+app.get("/insert/model/:title/:description/:defaultLanguage", function(req, res, next) {
+	db.models.save({title : req.params.title, 
+					description : req.params.description, 
+					creationDate: new Date(), 
+					dateLastUpdate: new Date(),
+					defaultLanguage: req.params.defaultLanguage}, function(err, model) {
 		if (err || !model) {
 			res.send("Error Saving new Model: " + err);
 		} else {
@@ -49,3 +53,8 @@ app.get("/delete/model/:id", function(req, res, next) {
 // Listen
 app.listen(3000);
 console.log('Listening on port 3000 for MongoDB');
+
+
+/**
+db.models.update({"_id" : ObjectId("502b830d46c5439117000008")}, {$addToSet:{questions:{number: 1, en: "Hello"}}})
+*/
