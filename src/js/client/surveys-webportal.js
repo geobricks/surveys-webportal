@@ -27,10 +27,7 @@ if (!window.SurveysWebPortal) {
 						document.getElementById('container').innerHTML = '';
 					break;
 					case "#surveysManager":
-						document.getElementById('container').innerHTML = '';
-						$("#container").load("surveys-manager.html", function() {
-							SurveysManager.initUI();
-						});
+						SurveysWebPortal.showSurveyModelsGrid();
 					break;
 					case "#statisticalEngine":
 						document.getElementById('container').innerHTML = '';
@@ -42,6 +39,13 @@ if (!window.SurveysWebPortal) {
 			}); 
 			
 		},
+		
+		showSurveyModelsGrid : function() {
+			document.getElementById('container').innerHTML = '';
+			$("#container").load("surveys-manager.html", function() {
+				SurveysManager.initUI();
+			});
+		}
 			
 	}
 	
