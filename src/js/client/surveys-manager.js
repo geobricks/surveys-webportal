@@ -49,6 +49,34 @@ if (!window.SurveysManager) {
 					SurveysSurveyWizard.initUI();
 				});
             });
+            
+            $("#buttonEditSelectedSurvey").bind('click', function () {
+            	
+            	var rowindex = $('#surveys-grid').jqxGrid('getselectedrowindex');
+            	var rows = $('#surveys-grid').jqxGrid('getrows');
+            	var surveyID = rows[rowindex].id;
+            	
+            	$.ajax({
+    				
+    				type: 'GET',
+    				url: 'http://localhost:3000/select/model/' + surveyID + '?callback=?',
+    				dataType: 'jsonp',
+    				jsonp: 'callback',
+    				
+    				success : function(model) {
+    					document.getElementById('container').innerHTML = '';
+    					$("#container").load("surveys-question-wizard.html", function() {
+							SurveysQuestionWizard.initUI(model);
+						});
+    				},
+    				
+    				error : function(err, b, c) {
+    					alert(err.status + ", " + b + ", " + c);
+    				}
+    				
+            	});
+            	
+            });
 		
 		},
 		

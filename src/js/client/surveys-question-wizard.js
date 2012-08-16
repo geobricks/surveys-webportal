@@ -13,6 +13,8 @@ if (!window.SurveysQuestionWizard) {
 	                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='/resources/images/es.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>Español</span></div>", title: 'Español', value: 'es' },
 	                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='/resources/images/it.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>Italiano</span></div>", title: 'Italiano', value: 'it' }
 	                ],
+	                
+	    questionHTML : '<tr><td colspan="3" style="font-family: sans-serif; font-size: 12px; color: #46A3CA; font-weight: bold; width: 60%;">Question</td></tr><tr id="questionRow"><td colspan="3"><textarea rows="5" cols="107" id="question"></textarea></td></tr>',
 		
 		initUI : function(model) {
 			
@@ -40,6 +42,10 @@ if (!window.SurveysQuestionWizard) {
 				width: '150', 
 				height: '25px', 
 				theme: SurveysWebPortal.theme
+			});
+			
+			$("#listTranslateQuestion").bind('change', function(e) {
+				$("#questionRow").after(SurveysQuestionWizard.questionHTML);
 			});
 		
 		}
