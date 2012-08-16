@@ -49,9 +49,16 @@ if (!window.SurveysSurveyWizard) {
 						dataType: 'jsonp',
 						jsonp: 'callback',
 						
-						success : function(response) {
-							alert("New survey model has been saved: " + response);
-							SurveysWebPortal.showSurveyModelsGrid();
+						success : function(model) {
+							var c2 = confirm("New survey model has been successfully saved! Do you want to start adding questions?");
+							if (c2 == true) {
+								document.getElementById('container').innerHTML = '';
+								$("#container").load("surveys-question-wizard.html", function() {
+									SurveysQuestionWizard.initUI(model);
+								});
+							} else {
+								SurveysWebPortal.showSurveyModelsGrid();
+							}
 						},
 						
 						error : function(err, b, c) {

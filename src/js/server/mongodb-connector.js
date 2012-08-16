@@ -18,7 +18,7 @@ app.get("/insert/model/:title/:description/:defaultLanguage", function(req, res,
 		if (err || !model) {
 			res.send("Error Saving new Model: " + err);
 		} else {
-			res.send(req.query.callback + "(" + JSON.stringify(model._id) + ");"); 
+			res.send(req.query.callback + "(" + JSON.stringify(model) + ");"); 
 		}
 	});
 });
