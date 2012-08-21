@@ -29,7 +29,7 @@ if (!window.SurveysManager) {
 						jsonp: 'callback',
 						
 						success : function(response) {
-							alert("Model '" + surveyName + "' has been deleted from the DB.");
+							SurveysWebPortal.openWindow("Info", "Model '" + surveyName + "' has been deleted from the DB.");
 							SurveysManager.findAllModels();
 						},
 						

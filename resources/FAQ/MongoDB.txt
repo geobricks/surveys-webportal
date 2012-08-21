@@ -1,0 +1,5 @@
+PROBLEM:	couldn't connect to server 127.0.0.1 shell/mongo.js
+
+SOLUTION:	Manually remove the lockfile: sudo rm /var/lib/mongodb/mongod.lock
+			Run the repair script: sudo -u mongodb mongod -f /etc/mongodb.conf --repair
+			sudo service mongodb start

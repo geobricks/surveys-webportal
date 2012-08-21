@@ -15,6 +15,7 @@
 		
 		<!-- 3rd Party -->
 		<script type="text/javascript" src="/resources/lib/jquery-1.7.2.min.js"></script>
+		<script type="text/javascript" src="/resources/lib/jquery-ui-1.8.22.custom.min.js"></script>
 		<script type="text/javascript" src="/resources/lib/jqxcore.js"></script>
 		<script type="text/javascript" src="/resources/lib/jqxbuttons.js"></script>
 		<script type="text/javascript" src="/resources/lib/jqxscrollbar.js"></script>
@@ -27,6 +28,7 @@
 		<script type="text/javascript" src="/resources/lib/jqxmenu.js"></script>
 		<script type="text/javascript" src="/resources/lib/jqxcheckbox.js"></script>
 		<script type="text/javascript" src="/resources/lib/jqxlistbox.js"></script>
+		<script type="text/javascript" src="/resources/lib/jqxwindow.js"></script>
 		
 		<!-- GeoBricks -->
 		<link type="text/css" href="/src/css/surveys-webportal.css" rel="Stylesheet" />
@@ -37,14 +39,15 @@
 		<!-- 3rd Party -->
 		<link type="text/css" href="/resources/css/jqx.base.css" rel="Stylesheet" />
 		<link type="text/css" href="/resources/css/jqx.ui-start.css" rel="Stylesheet" />
+		<link type="text/css" href="/resources/css/jquery-ui-1.8.23.custom.css" rel="Stylesheet" />
 		
 	</head>
 	
-	<body onload="SurveysWebPortal.showSurveysManager()"  bgcolor="#46A3CA">
+	<body onload="SurveysWebPortal.init()"  bgcolor="#46A3CA">
 	
 		<div style='background-color: #FFFFFF; border-left: 3px solid #000000; border-right: 3px solid #000000; width: 800px; margin:0px auto;'>
 			
-			<div style="height: 5px;"></div>
+			<div id="window" style="height: 5px;"></div>
 			
 			<table id="header" width="780px" style="font-family: sans-serig; font-size: 24px; font-weight: bold; color: #46A3CA; margin: 10px;">
 				<tr>
@@ -74,16 +77,18 @@
 		
 		<br/>
 		
-		<div id="footer" style='background-color: #FFFFFF; border-left: 3px solid #000000; border-right: 3px solid #000000; width: 800px; margin:0px auto;'>
-			<table width="780px" style="font-family: sans-serig; font-size: 12px; font-weight: bold; color: #46A3CA; margin: 10px;">
-				<tr>
-					<td align="right" width="95%" valign="middle">Follow Us&nbsp;</td>
-					<td align="right"><img src="/resources/images/blogger.png" alt="Blogger" href="http://geobricks.blogspot.com/" target="_blank"/></td>
-					<td align="right"><img src="/resources/images/facebook.png" alt="Facebook" href="http://www.facebook.com/GeoBricks" target="_blank"/></td>
-					<td align="right"><img src="/resources/images/google+.png" alt="Google+" href="http://geobricks.blogspot.com/" target="_blank"/></td>
-					<td align="right"><img src="/resources/images/twitter.png" alt="Twitter" href="https://twitter.com/GeoBricks" target="_blank"/></td>
-				</tr>
-			</table>
+		<div style="position: absolute; bottom: 0px; width: 100%; margin: 0px auto;">
+			<div id="footer" style='position: relative; background-color: #46A3CA; width: 800px; margin:0px auto;'>
+				<table width="780px" style="font-family: sans-serif; font-size: 12px; font-weight: bold; color: #FFFFFF; margin: 10px;">
+					<tr>
+						<td align="right" width="95%" valign="middle">Follow Us&nbsp;</td>
+						<td align="right"><a href="http://geobricks.blogspot.com/" target="_blank"><img src="/resources/images/blogger.png" alt="Blogger"/></a></td>
+						<td align="right"><a href="http://www.facebook.com/GeoBricks" target="_blank"><img src="/resources/images/facebook.png" alt="Facebook"/></a></td>
+						<td align="right"><a href="http://geobricks.blogspot.com/" target="_blank"><img src="/resources/images/google+.png" alt="Google+"/></a></td>
+						<td align="right"><a href="https://twitter.com/GeoBricks" target="_blank"><img src="/resources/images/twitter.png" alt="Twitter"/></a></td>
+					</tr>
+				</table>
+			</div>
 		</div>
 		
 	</body>

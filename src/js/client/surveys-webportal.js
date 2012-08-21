@@ -4,6 +4,39 @@ if (!window.SurveysWebPortal) {
 		
 		theme : "ui-start",
 		
+		test : function() {
+			alert("ho passato la funzione come argomento");
+		},
+		
+		init : function() {
+			
+			$("#window").dialog({
+				resizable: true,
+				height:150,
+				width: 300,
+				modal: true,
+				autoOpen: false,
+				title: "Info",
+				buttons: {
+					OK: function() {
+						$( this ).dialog( "close" );
+					},
+					Cancel: function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+			
+			SurveysWebPortal.showSurveysManager();
+			
+			test = function() {
+				$("#window").dialog( "close" );
+				alert("deleted");
+			};
+			SurveysWebPortal.openWindow("Hello World!", "Welcome to the Micro Data Tools!", test);
+			
+		},
+		
 		showSurveysManager : function() {
 			
 			$("#menu").jqxMenu({
@@ -45,6 +78,22 @@ if (!window.SurveysWebPortal) {
 			$("#container").load("surveys-manager.html", function() {
 				SurveysManager.initUI();
 			});
+		},
+		
+		openWindow : function(title, message, ok_function) {
+			
+			// show the window with the given title and text
+			document.getElementById('window').innerHTML = message;
+			$("#window").dialog("option" , "title", title);
+			$("#window").dialog("open");
+			
+			// override the function on the 'Ok' button
+			if (ok_function != null) {
+				var buttons = $("#window").dialog("option" , "buttons"); 
+				buttons["OK"] = ok_function;
+				$("#window").dialog("option" , "buttons", buttons);
+			}
+			
 		}
 			
 	}
