@@ -18,25 +18,29 @@
 		<td style="font-family: sans-serif; font-size: 12px; color: #46A3CA; font-weight: bold; width: 60%;">
 			Question
 		</td>
-		<td align="right" style="font-family: sans-serif; font-size: 12px; color: #46A3CA; font-weight: bold;"">
-			Translate Question:
-		</td>
-		<td align="right">
-			<div id="listTranslateQuestion"></div>
-		</td>
 	</tr>
-	<tr id="questionRow">
-		<td colspan="3">
-			<textarea rows="5" cols="107" id="question"></textarea>
+	<tr>
+		<td><textarea rows="1" cols="84" id="question" style="height: 23px;"></textarea></td>
+		<td><div id="listTranslateQuestion"></div></td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<table width="100%">
+				<tr>
+					<td width="95%;">&nbsp;</td> 
+					<td align="right"><input class="survey-manager-button-i18n" type="button" value="Delete This Translation" id='buttonPrevQuestion' /></td>
+					<td align="right"><input class="survey-manager-button-i18n" type="button" value="Add Translation" id='buttonPrevQuestion' /></td>
+				</tr>
+			</table>
 		</td>
 	</tr>
 	<tr>
-		<td colspan="3" style="font-family: sans-serif; font-size: 12px; color: #46A3CA; font-weight: bold;">
+		<td colspan="2" style="font-family: sans-serif; font-size: 12px; color: #46A3CA; font-weight: bold;">
 			Answer Type
 		</td>
 	</tr>
 	<tr>
-		<td colspan="3">
+		<td colspan="2">
 			<div id="listAnswerTypes"></div>
 		</td>
 	</tr>
@@ -44,15 +48,28 @@
 
 <br/>
 
+<!-- <table style="width: 500px; margin: 10px;" id="buttonsTable"> -->
+<!-- 	<tr> -->
+<!-- 		<td><input class="survey-manager-button" type="button" value="Previous Question" id='buttonPrevQuestion' /></td> -->
+<!-- 		<td><input class="survey-manager-button" type="button" value="Exit" id='buttonExitQuestion' /></td> -->
+<!-- 		<td><input class="survey-manager-button" type="button" value="Summary" id='buttonSummaryQuestion' /></td> -->
+<!-- 		<td><input class="survey-manager-button" type="button" value="Next Question" id='buttonNextQuestion' /></td> -->
+<!-- 	</tr> -->
+<!-- </table> -->
+
+<!-- <br/> -->
+
 <div style="width: 780px">
 
 	<div id="survey-manager-buttons" style="white-space: nowrap; float: right; margin: 5px;">
 	
 		<input class="survey-manager-button" type="button" value="Previous Question" id='buttonPrevQuestion' />
 		
-		<input class="survey-manager-button" type="button" value="Save Question" id='buttonSaveQuestion' />
+		<input class="survey-manager-button" type="button" value="Exit" id='buttonExitQuestion' />
 		
-		<input class="survey-manager-button" type="button" value="Add Another Question" id='buttonNextQuestion' />
+		<input class="survey-manager-button" type="button" value="Summary" id='buttonSummaryQuestion' />
+		
+		<input class="survey-manager-button" type="button" value="Next Question" id='buttonNextQuestion' />
 		
 	</div>
 

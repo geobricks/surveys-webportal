@@ -24,11 +24,11 @@ app.get("/insert/model/:title/:description/:defaultLanguage", function(req, res,
 });
 
 // Find all Model
-app.get("/select/model/:title", function(req, res, next) {
-	if (req.params.title == "*") {
+app.get("/select/model/:id", function(req, res, next) {
+	if (req.params.id == "*") {
 		query = {};
 	} else {
-		query = {title : req.params.title};
+		query = {_id: db.ObjectId(req.params.id)};
 	}
 	db.models.find(query, function(err, models) {
 		if (err || !models) {
