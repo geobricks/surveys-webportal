@@ -25,17 +25,14 @@ if (!window.SurveysSurveyWizard) {
 			});
 			
 			$("#buttonCancelNewModel").bind('click', function () {
-				var c = confirm("Are you sure you want to quit?");
-				if (c == true) {
+				SurveysWebPortal.openWindow("Info", "Are you sure you want to quit?", function() {
 					SurveysWebPortal.showSurveyModelsGrid();
-				}
+				});
 			});
 			
 			$("#buttonSaveNewModel").bind('click', function () {
 				
-				var c = confirm("Are you sure you want to create a new survey model?");
-				
-				if (c == true) {
+				SurveysWebPortal.openWindow("Info", "Are you sure you want to create a new survey model?", function() {
 					
 					var title = $("#modelTitle").val();
 					var description = $("#modelDescription").val();
@@ -50,15 +47,17 @@ if (!window.SurveysSurveyWizard) {
 						jsonp: 'callback',
 						
 						success : function(model) {
-							var c2 = confirm("New survey model has been successfully saved! Do you want to start adding questions?");
-							if (c2 == true) {
+							$("#window").dialog("close");
+							SurveysWebPortal.openWindow("Info", "New survey model has been successfully saved! Do you want to start adding questions?", function() {
+								$("#window").dialog("close");
 								document.getElementById('container').innerHTML = '';
 								$("#container").load("surveys-question-wizard.html", function() {
 									SurveysQuestionWizard.initUI(model);
 								});
-							} else {
+							}, function() {
+								$("#window").dialog("close");
 								SurveysWebPortal.showSurveyModelsGrid();
-							}
+							});
 						},
 						
 						error : function(err, b, c) {
@@ -66,7 +65,8 @@ if (!window.SurveysSurveyWizard) {
 						}
 						
 					});
-				}
+					
+				});
 				
             });
 		

@@ -17,19 +17,21 @@ if (!window.SurveysManager) {
             	var rows = $('#surveys-grid').jqxGrid('getrows');
             	var surveyName = rows[rowindex].title;
             	var surveyID = rows[rowindex].id;
-            	var c = confirm("Are you sure you want to delete survey '" + surveyName + "'?")
-            	
-            	if (c == true) {
-	            	
+            	            	
+            	SurveysWebPortal.openWindow("Info", "Are you sure you want to delete survey '" + surveyName + "'?", function() {
+            		
             		$.ajax({
-					
+    					
 						type: 'GET',
 						url: 'http://localhost:3000/delete/model/' + surveyID + '?callback=?',
 						dataType: 'jsonp',
 						jsonp: 'callback',
 						
 						success : function(response) {
-							SurveysWebPortal.openWindow("Info", "Model '" + surveyName + "' has been deleted from the DB.");
+							$("#window").dialog("close");
+							SurveysWebPortal.openWindow("Info", "Model '" + surveyName + "' has been deleted from the DB.", function() {
+								$("#window").dialog("close");
+							});
 							SurveysManager.findAllModels();
 						},
 						
@@ -39,7 +41,7 @@ if (!window.SurveysManager) {
 					
 	            	});
             		
-            	}
+            	});
             	
 			});
             

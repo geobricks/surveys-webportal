@@ -4,10 +4,6 @@ if (!window.SurveysWebPortal) {
 		
 		theme : "ui-start",
 		
-		test : function() {
-			alert("ho passato la funzione come argomento");
-		},
-		
 		init : function() {
 			
 			$("#window").dialog({
@@ -29,11 +25,13 @@ if (!window.SurveysWebPortal) {
 			
 			SurveysWebPortal.showSurveysManager();
 			
+			/*
 			test = function() {
 				$("#window").dialog( "close" );
 				alert("deleted");
 			};
 			SurveysWebPortal.openWindow("Hello World!", "Welcome to the Micro Data Tools!", test);
+			*/
 			
 		},
 		
@@ -80,17 +78,24 @@ if (!window.SurveysWebPortal) {
 			});
 		},
 		
-		openWindow : function(title, message, ok_function) {
+		openWindow : function(title, message, ok_function, cancel_function) {
 			
 			// show the window with the given title and text
 			document.getElementById('window').innerHTML = message;
 			$("#window").dialog("option" , "title", title);
 			$("#window").dialog("open");
 			
-			// override the function on the 'Ok' button
+			// override the function on the 'OK' button
 			if (ok_function != null) {
 				var buttons = $("#window").dialog("option" , "buttons"); 
 				buttons["OK"] = ok_function;
+				$("#window").dialog("option" , "buttons", buttons);
+			}
+			
+			// override the function on the 'Cancel' button
+			if (cancel_function != null) {
+				var buttons = $("#window").dialog("option" , "buttons"); 
+				buttons["Cancel"] = cancel_function;
 				$("#window").dialog("option" , "buttons", buttons);
 			}
 			
