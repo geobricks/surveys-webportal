@@ -58,13 +58,15 @@ if (!window.SurveysManager) {
             	var rows = $('#surveys-grid').jqxGrid('getrows');
             	var surveyID = rows[rowindex].id;
             	
-            	console.log('http://localhost:3000/select/model/' + surveyID + '?callback=?');
+            	$("#container").load("questions-manager.html", function() {
+					QuestionsManager.init(surveyID);
+				});
             	
+            	/*
             	$.ajax({
     				
     				type: 'GET',
     				url: 'http://localhost:3000/select/model/' + surveyID + '?callback=?',
-//    				url: 'http://localhost:3000/select/model/' + rows[rowindex].title + '?callback=?',
     				dataType: 'jsonp',
     				jsonp: 'callback',
     				
@@ -81,6 +83,7 @@ if (!window.SurveysManager) {
     				}
     				
             	});
+            	*/
             	
             });
 		
