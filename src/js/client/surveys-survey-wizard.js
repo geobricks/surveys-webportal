@@ -67,17 +67,7 @@ if (!window.SurveysSurveyWizard) {
 						},
 						
 						error : function(err, b, c) {
-							$("#window").dialog("close");
-							SurveysWebPortal.openWindow("Info", "New survey model has been successfully saved! Do you want to start adding questions?", function() {
-								$("#window").dialog("close");
-								document.getElementById('container').innerHTML = '';
-								$("#container").load("surveys-question-wizard.html", function() {
-									SurveysQuestionWizard.initUI(model);
-								});
-							}, function() {
-								$("#window").dialog("close");
-								SurveysWebPortal.showSurveyModelsGrid();
-							});
+							alert(err + ': ' + b + ' - ' + c);
 	    				}
 						
 					});

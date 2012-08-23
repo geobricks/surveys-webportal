@@ -104,9 +104,10 @@ if (!window.SurveysQuestionWizard) {
 				
 				$.ajax({
     				
-    				type: 'POST',
-    				url: 'http://localhost:5000/addQuestion/model',
-    				dataType: 'json',
+    				type: 'GET',
+    				url: 'http://localhost:5000/addQuestion/model?callback=?',
+    				dataType: 'jsonp',
+    				jsonp: 'callback',
     				data: payload,
     				
     				success : function(response) {

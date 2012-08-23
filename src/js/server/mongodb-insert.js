@@ -1,4 +1,5 @@
 // ExpressJS
+var $ = require('jquery');
 var express = require('express');
 var app = express();
 app.enable("jsonp callback");
@@ -11,11 +12,11 @@ var db = require("mongojs").connect(databaseUrl, collections);
 
 //Insert New Model
 app.get("/insert/model", function(req, res, next) {
-	db.models.save({title : req.body.title, 
-					description : req.body.description, 
+	db.models.save({title : req.query.title, 
+					description : req.query.description, 
 					creationDate: new Date(), 
 					dateLastUpdate: new Date(),
-					defaultLanguage: req.body.defaultLanguage}, function(err, model) {
+					defaultLanguage: req.query.defaultLanguage}, function(err, model) {
 		if (err || !model) {
 			res.send("Error Saving new Model: " + err);
 		} else {
@@ -25,15 +26,12 @@ app.get("/insert/model", function(req, res, next) {
 });
 
 // add question
-app.post("/addQuestion/model", function(req, res, next) {
-	console.log(req.body);
-	console.log(req.body.model_id);
-	console.log(req.body.question);
-	db.models.update({_id: db.ObjectId(req.body.model_id)}, {$addToSet: {questions: req.body}}, function(err, model) {
+app.get("/addQuestion/model", function(req, res, next) {
+	db.models.update({_id: db.ObjectId(req.query.model_id)}, {$addToSet: {questions: req.query}}, function(err, model) {
 		if (err || !model) {
 			res.send("Error Adding Question: " + err);
 		} else {
-			res.send(req.query.callback + "(" + JSON.stringify(req.params.id) + ");");
+			res.send(req.query.callback + "(" + JSON.stringify(req.query) + ");");
 		}
 	});
 });
