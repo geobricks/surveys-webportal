@@ -59,31 +59,8 @@ if (!window.SurveysManager) {
             	var surveyID = rows[rowindex].id;
             	
             	$("#container").load("questions-manager.html", function() {
-					QuestionsManager.init(surveyID);
+					QuestionsManager.init(surveyID, (1 + rowindex));
 				});
-            	
-            	/*
-            	$.ajax({
-    				
-    				type: 'GET',
-    				url: 'http://localhost:3000/select/model/' + surveyID + '?callback=?',
-    				dataType: 'jsonp',
-    				jsonp: 'callback',
-    				
-    				success : function(models) {
-    					console.log(models);
-    					document.getElementById('container').innerHTML = '';
-    					$("#container").load("surveys-question-wizard.html", function() {
-							SurveysQuestionWizard.initUI(models);
-						});
-    				},
-    				
-    				error : function(err, b, c) {
-    					alert(err.status + ", " + b + ", " + c);
-    				}
-    				
-            	});
-            	*/
             	
             });
 		

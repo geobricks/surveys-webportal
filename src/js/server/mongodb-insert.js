@@ -27,6 +27,7 @@ app.get("/insert/model", function(req, res, next) {
 
 // add question
 app.get("/addQuestion/model", function(req, res, next) {
+	console.log(req.query);
 	db.models.update({_id: db.ObjectId(req.query.model_id)}, {$addToSet: {questions: req.query}}, function(err, model) {
 		if (err || !model) {
 			res.send("Error Adding Question: " + err);

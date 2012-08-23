@@ -18,9 +18,12 @@ if (!window.SurveysQuestionWizard) {
 	                
 	    questionHTML : '<tr><td colspan="3" style="font-family: sans-serif; font-size: 12px; color: #46A3CA; font-weight: bold; width: 60%;">Question</td></tr><tr id="questionRow"><td colspan="3"><textarea rows="5" cols="107" id="question"></textarea></td></tr>',
 		
-	    initUI : function(model) {
+	    initUI : function(model, questionNumber) {
+	    	
+	    	console.log('questionNumber? ' + questionNumber);
 	    	
 	    	SurveysQuestionWizard.model = model;
+	    	SurveysQuestionWizard.questionNumber = questionNumber;
 	    	
 	    	$('#questionArea').load('single-question.html', function() {
 	    		SurveysQuestionWizard.initElements();
@@ -101,6 +104,10 @@ if (!window.SurveysQuestionWizard) {
 				payload.questionText = questionText;
 				payload.questionLanguage = questionLanguage;
 				payload.answerType = answerType;
+				payload.questionNumber = SurveysQuestionWizard.questionNumber;
+				
+				console.log(payload);
+				console.log(JSON.stringify(payload));
 				
 				$.ajax({
     				
@@ -111,7 +118,9 @@ if (!window.SurveysQuestionWizard) {
     				data: payload,
     				
     				success : function(response) {
-    					console.log(response);
+    					$("#container").load("questions-manager.html", function() {
+    						QuestionsManager.init(payload.model_id, (1 + payload.questionNumber));
+    					});
     				}
     				
 				});

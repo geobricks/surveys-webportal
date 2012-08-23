@@ -4,9 +4,12 @@ if (!window.QuestionsManager) {
 			
 		modelID : null,
 		
-		init : function(modelID) {
+		questionNumber: null,
+		
+		init : function(modelID, questionNumber) {
 			
 			QuestionsManager.modelID = modelID;
+			QuestionsManager.questionNumber = questionNumber;
 			
 			$(".survey-manager-button").jqxButton({ 
 				width: '150', 
@@ -23,10 +26,9 @@ if (!window.QuestionsManager) {
     				jsonp: 'callback',
     				
     				success : function(models) {
-    					console.log(models);
     					document.getElementById('container').innerHTML = '';
     					$("#container").load("surveys-question-wizard.html", function() {
-							SurveysQuestionWizard.initUI(models);
+							SurveysQuestionWizard.initUI(models, QuestionsManager.questionNumber);
 						});
     				},
     				
@@ -46,18 +48,22 @@ if (!window.QuestionsManager) {
 				jsonp: 'callback',
 				
 				success : function(response) {
-					console.log(response[0].questions);
 					
 					var questions = response[0].questions;
 					var data = new Array();
-					for (var i = 0 ; i < questions.length ; i++) {
-						var row = {};
-						row["model_id"] = questions[i].model_id;
-						row["questionText"] = questions[i].questionText;
-						row["questionLanguage"] = questions[i].questionLanguage;
-						row["answerType"] = questions[i].answerType;
-						data[i] = row;
+					
+					if (questions != null) {
+						for (var i = 0 ; i < questions.length ; i++) {
+							var row = {};
+							row["questionNumber"] = questions[i].questionNumber;
+							row["model_id"] = questions[i].model_id;
+							row["questionText"] = questions[i].questionText;
+							row["questionLanguage"] = questions[i].questionLanguage;
+							row["answerType"] = questions[i].answerType;
+							data[i] = row;
+						}
 					}
+					
 					var source = {
 						localdata: data,
 		                datatype: "array"
@@ -72,6 +78,7 @@ if (!window.QuestionsManager) {
 		                sortable: true,
 		                enablehover: true,
 		                columns: [
+		                   {text: '#', datafield: 'questionNumber'},
 		                   {text: 'Question', datafield: 'questionText'},
 		                   {text: 'Language', datafield: 'questionLanguage'},
 		                   {text: 'Answer Type', datafield: 'answerType'}
