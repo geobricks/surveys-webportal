@@ -2,6 +2,7 @@
 var express = require('express');
 var app = express();
 app.enable("jsonp callback");
+app.use(express.bodyParser());
 
 // init DB
 var databaseUrl = "geobricks";
@@ -50,11 +51,30 @@ app.get("/delete/model/:id", function(req, res, next) {
 	});
 });
 
+// add question
+app.post("/addQuestion/model", function(req, res, next) {
+	console.log(req.body);
+	console.log(req.body.model_id);
+	console.log(req.body.question);
+	db.models.update({_id: db.ObjectId(req.body.model_id)}, {$addToSet: {questions: req.body}}, function(err, model) {
+		if (err || !model) {
+			res.send("Error Adding Question: " + err);
+		} else {
+			res.send(req.query.callback + "(" + JSON.stringify(req.params.id) + ");");
+		}
+	});
+});
+
 // Listen
 app.listen(3000);
 console.log('Listening on port 3000 for MongoDB');
 
 
+
 /**
-db.models.update({"_id" : ObjectId("502b830d46c5439117000008")}, {$addToSet:{questions:{number: 1, en: "Hello"}}})
-*/
+ * query inner object: 
+ * db.models.find({"questions.number": 1})
+ * 
+ * count all questions with number >= 1
+ * db.models.find({"questions.number" : {$gte : 1}}).count()
+ */
