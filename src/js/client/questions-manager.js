@@ -12,9 +12,13 @@ if (!window.QuestionsManager) {
 			QuestionsManager.questionNumber = questionNumber;
 			
 			$(".survey-manager-button").jqxButton({ 
-				width: '150', 
+				width: '200', 
 				theme: SurveysWebPortal.theme 
 			});
+			
+			$("#buttonCreateNewQuestion").attr('value', $.i18n.prop("buttonCreateNewQuestion"));
+			$("#buttonEditSelectedQuestion").attr('value', $.i18n.prop("buttonEditSelectedQuestion"));
+			$("#buttonDeleteSelectedQuestion").attr('value', $.i18n.prop("buttonDeleteSelectedQuestion"));
 			
 			$("#buttonCreateNewQuestion").bind('click', function () {
 				
@@ -70,7 +74,7 @@ if (!window.QuestionsManager) {
 		            };
 					var dataAdapter = new $.jqx.dataAdapter(source);
 					$("#questions-grid").jqxGrid({
-		            	width: 780,
+		            	width: 768,
 		                height: 250,
 		                source: dataAdapter,
 		                columnsresize: true,

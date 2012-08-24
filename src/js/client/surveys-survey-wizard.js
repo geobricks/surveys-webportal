@@ -4,6 +4,10 @@ if (!window.SurveysSurveyWizard) {
 		
 		initUI : function() {
 			
+			document.getElementById('survey_name').innerHTML = $.i18n.prop('survey_name');
+			document.getElementById('abstract').innerHTML = $.i18n.prop('abstract');
+			document.getElementById('default_language').innerHTML = $.i18n.prop('default_language');
+			
 			var source = [
 		                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='/resources/images/gb.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>English</span></div>", title: 'English', value: 'en' },
 		                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='/resources/images/fr.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>François</span></div>", title: 'François', value: 'fr' },
@@ -15,7 +19,7 @@ if (!window.SurveysSurveyWizard) {
 			$("#listLanguages").jqxDropDownList({ 
 				source: source, 
 				selectedIndex: 0, 
-				width: '770', 
+				width: '768', 
 				height: '25px', 
 				theme: SurveysWebPortal.theme
 			});
@@ -24,6 +28,9 @@ if (!window.SurveysSurveyWizard) {
 				width: '150', 
 				theme: SurveysWebPortal.theme 
 			});
+			
+			$("#buttonSaveNewModel").attr('value', $.i18n.prop("buttonSaveNewModel"));
+			$("#buttonCancelNewModel").attr('value', $.i18n.prop("buttonCancelNewModel"));
 			
 			$("#buttonCancelNewModel").bind('click', function () {
 				SurveysWebPortal.openWindow("Info", "Are you sure you want to quit?", function() {

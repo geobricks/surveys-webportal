@@ -23,22 +23,35 @@ if (!window.SurveysWebPortal) {
 				}
 			});
 			
+			// initiate the menu
 			SurveysWebPortal.showSurveysManager();
 			
-			/*
-			test = function() {
-				$("#window").dialog( "close" );
-				alert("deleted");
-			};
-			SurveysWebPortal.openWindow("Hello World!", "Welcome to the Micro Data Tools!", test);
-			*/
+			// based on the current URL, add links to the different languages pages
+			SurveysWebPortal.linkLanguageIcons();
 			
+			// translate contents
+			BabelFish.init();
+						
+		},
+		
+		linkLanguageIcons : function() {
+			var url = document.URL;
+			var idx = url.indexOf('?');
+			var languages = ['es', 'en', 'fr', 'it', 'pt'];
+			if (idx > -1) 
+				url = url.substring(0, idx);
+			for (var i = 0 ; i < languages.length ; i++) 
+				$('#icon_' + languages[i]).attr('href', url + '?lang=' + languages[i]);
 		},
 		
 		showSurveysManager : function() {
 			
+			$("#container").load("home.html", function() {
+				
+			});
+			
 			$("#menu").jqxMenu({
-				width: '780', 
+				width: '768', 
 				showTopLevelArrows: true,
 				autoOpen: true,
 				enableHover: true,
@@ -53,6 +66,9 @@ if (!window.SurveysWebPortal) {
 				switch (item) {
 					case "#home":
 						document.getElementById('container').innerHTML = '';
+						$("#container").load("home.html", function() {
+							
+						});
 					break;	
 					case "#android":
 						document.getElementById('container').innerHTML = '';

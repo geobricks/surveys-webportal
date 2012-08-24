@@ -5,11 +5,15 @@ if (!window.SurveysManager) {
 		initUI : function() {
 			
 			$(".survey-manager-button").jqxButton({ 
-				width: '150', 
+				width: '200', 
 				theme: SurveysWebPortal.theme 
 			});
 			
 			SurveysManager.findAllModels();
+			
+			$("#buttonCreateNewSurvey").attr('value', $.i18n.prop("buttonCreateNewSurvey"));
+			$("#buttonEditSelectedSurvey").attr('value', $.i18n.prop("buttonEditSelectedSurvey"));
+			$("#buttonDeleteSelectedSurvey").attr('value', $.i18n.prop("buttonDeleteSelectedSurvey"));
             
             $("#buttonDeleteSelectedSurvey").bind('click', function () {
             	
@@ -93,7 +97,7 @@ if (!window.SurveysManager) {
 		            };
 					var dataAdapter = new $.jqx.dataAdapter(source);
 					$("#surveys-grid").jqxGrid({
-		            	width: 780,
+		            	width: 768,
 		                height: 250,
 		                source: dataAdapter,
 		                columnsresize: true,

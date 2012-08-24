@@ -1,1 +1,17 @@
 @CHARSET "UTF-8";
+
+.home {
+	font-family: sans-serif;
+	color: #46A3CA;	
+	margin: 10px;
+	text-align: left;
+}
+
+.home.title {
+	font-weight: bold;
+	font-size: 18px;
+}
+
+.home.body {
+	font-size: 14px;
+}

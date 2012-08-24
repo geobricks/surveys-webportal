@@ -6,8 +6,6 @@ if (!window.SurveysQuestionWizard) {
 		
 		questionNumber : 1,
 		
-		answerTypes : ['Please Select...', 'Text', 'Numeric Value', 'Date', 'Multiple Choice'],
-		
 		languages : [
 	                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='/resources/images/gb.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>English</span></div>", title: 'English', value: 'en' },
 	                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='/resources/images/fr.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>François</span></div>", title: 'François', value: 'fr' },
@@ -51,10 +49,16 @@ if (!window.SurveysQuestionWizard) {
 				theme: SurveysWebPortal.theme 
 			});
 			
+			var answerTypes = [$.i18n.prop("type_please_select"), 
+			                   $.i18n.prop("type_text"),
+			                   $.i18n.prop("type_numeric_value"),
+			                   $.i18n.prop("type_date"), 
+			                   $.i18n.prop("type_multiple_choice")];
+			
 			$("#listAnswerTypes").jqxDropDownList({ 
-				source: SurveysQuestionWizard.answerTypes, 
+				source: answerTypes, 
 				selectedIndex: 0, 
-				width: '770', 
+				width: '768', 
 				height: '25px', 
 				theme: SurveysWebPortal.theme
 			});
@@ -126,6 +130,13 @@ if (!window.SurveysQuestionWizard) {
 				});
 				
 			});
+			
+			$("#buttonDeleteTranslation").attr('value', $.i18n.prop("buttonDeleteTranslation"));
+			$("#buttonAddTranslation").attr('value', $.i18n.prop("buttonAddTranslation"));
+			document.getElementById("current_model").innerHTML = $.i18n.prop("current_model");
+			document.getElementById("model_description").innerHTML = $.i18n.prop("model_description");
+			document.getElementById("question").innerHTML = $.i18n.prop("question");
+			document.getElementById("answer_type").innerHTML = $.i18n.prop("answer_type");
 		
 		},
 		
