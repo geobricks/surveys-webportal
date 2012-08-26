@@ -49,7 +49,7 @@ if (!window.QuestionsManager) {
 				
 				success : function(response) {
 					
-					var questions = response[0].model_questions;
+					var questions = response.model_questions;
 					var data = new Array();
 					
 					console.log('questions? ' + questions);

@@ -41,9 +41,29 @@ if (!window.ModelsModelWizard) {
 					var payload = {};
 					
 					switch(defaultLanguage) {
-						case 'en' :
+						default :
 							payload.en_name = title;
 							payload.en_abstract = description;
+							payload.model_default_language = defaultLanguage;
+						break;
+						case 'es' :
+							payload.es_name = title;
+							payload.es_abstract = description;
+							payload.model_default_language = defaultLanguage;
+						break;
+						case 'fr' :
+							payload.fr_name = title;
+							payload.fr_abstract = description;
+							payload.model_default_language = defaultLanguage;
+						break;
+						case 'it' :
+							payload.it_name = title;
+							payload.it_abstract = description;
+							payload.model_default_language = defaultLanguage;
+						break;
+						case 'pt' :
+							payload.pt_name = title;
+							payload.pt_abstract = description;
 							payload.model_default_language = defaultLanguage;
 						break;
 					}

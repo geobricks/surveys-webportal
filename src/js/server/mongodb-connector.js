@@ -32,20 +32,31 @@ app.get("/insert/model/:title/:description/:defaultLanguage", function(req, res,
 app.get("/select/model/:id", function(req, res, next) {
 	if (req.params.id == "*") {
 		query = {};
+		db.models.find(query, function(err, models) {
+			if (err || !models) {
+				res.send("Error Fetching the Model: " + err);
+			} else {
+				if (req.query.callback == null || req.query.callback == "") {
+					res.send(JSON.stringify(models));
+				} else {
+					res.send(req.query.callback + "(" + JSON.stringify(models) + ");");
+				}
+			}
+		});
 	} else {
 		query = {_id: db.ObjectId(req.params.id)};
-	}
-	db.models.find(query, function(err, models) {
-		if (err || !models) {
-			res.send("Error Fetching the Model: " + err);
-		} else {
-			if (req.query.callback == null || req.query.callback == "") {
-				res.send(JSON.stringify(models));
+		db.models.findOne(query, function(err, models) {
+			if (err || !models) {
+				res.send("Error Fetching the Model: " + err);
 			} else {
-				res.send(req.query.callback + "(" + JSON.stringify(models) + ");");
+				if (req.query.callback == null || req.query.callback == "") {
+					res.send(JSON.stringify(models));
+				} else {
+					res.send(req.query.callback + "(" + JSON.stringify(models) + ");");
+				}
 			}
-		}
-	});
+		});
+	}
 });
 
 // Delete Model By Id

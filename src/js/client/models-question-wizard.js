@@ -72,31 +72,7 @@ if (!window.ModelsQuestionWizard) {
 	    
 	    initElements : function(questionNumber) {
 			
-	    	try {
-				switch (ModelsWebPortal.lang) {
-					default:
-						document.getElementById('currentModelName').innerHTML = (ModelsQuestionWizard.model[0]).en_name;
-						document.getElementById('currentModelDescription').innerHTML = (ModelsQuestionWizard.model[0]).en_abstract;
-					break;
-					case 'fr' :
-						document.getElementById('currentModelName').innerHTML = (ModelsQuestionWizard.model[0]).fr_name;
-						document.getElementById('currentModelDescription').innerHTML = (ModelsQuestionWizard.model[0]).fr_abstract;
-					break;
-					case 'pt' :
-						document.getElementById('currentModelName').innerHTML = (ModelsQuestionWizard.model[0]).pt_name;
-						document.getElementById('currentModelDescription').innerHTML = (ModelsQuestionWizard.model[0]).pt_abstract;
-					break;
-					case 'es' :
-						document.getElementById('currentModelName').innerHTML = (ModelsQuestionWizard.model[0]).es_name;
-						document.getElementById('currentModelDescription').innerHTML = (ModelsQuestionWizard.model[0]).es_abstract;
-					break;
-					case 'it' :
-						document.getElementById('currentModelName').innerHTML = (ModelsQuestionWizard.model[0]).it_name;
-						document.getElementById('currentModelDescription').innerHTML = (ModelsQuestionWizard.model[0]).it_abstract;
-					break;
-				};
-			} catch(err) {
-				switch (ModelsWebPortal.lang) {
+	    	switch (ModelsWebPortal.lang) {
 					default :
 						document.getElementById('currentModelName').innerHTML = ModelsQuestionWizard.model.en_name;
 						document.getElementById('currentModelDescription').innerHTML = ModelsQuestionWizard.model.en_abstract;
@@ -118,7 +94,6 @@ if (!window.ModelsQuestionWizard) {
 						document.getElementById('currentModelDescription').innerHTML = ModelsQuestionWizard.model.it_abstract;
 					break;
 				};
-			}
 			
 			$(".model-manager-button").jqxButton({ 
 				width: '150', 
@@ -139,8 +114,6 @@ if (!window.ModelsQuestionWizard) {
 			
 			$("#buttonSummaryQuestion").bind('click', function() {
 	    		var id = ModelsQuestionWizard.model._id;
-	    		if (id == null) 
-	    			id = ModelsQuestionWizard.model[0]._id;
 	    		$("#container").load("questions-manager.html", function() {
 					QuestionsManager.init(id);
 				});
@@ -202,11 +175,7 @@ if (!window.ModelsQuestionWizard) {
 			
 			// set language on the drop-down
 			var defaultLanguage = '';
-			try {
-				defaultLanguage = (ModelsQuestionWizard.model[0]).model_default_language;
-			} catch (err) {
-				defaultLanguage = ModelsQuestionWizard.model.model_default_language;
-			}
+			defaultLanguage = ModelsQuestionWizard.model.model_default_language;
 			switch(defaultLanguage) {
 				case 'en': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 0 ); break;
 				case 'fr': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 1 ); break;
@@ -227,13 +196,7 @@ if (!window.ModelsQuestionWizard) {
 					var questionInfo = $('#info_' + counter).val();
 					var questionLanguage = $("#listTranslateQuestion_" + counter).jqxDropDownList('getSelectedItem').value;
 					var answerType = $("#listAnswerTypes").jqxDropDownList('getSelectedItem').value;
-					var id = null;
-					
-					try {
-						id = (ModelsQuestionWizard.model[0])._id;
-					} catch (err) {
-						id = ModelsQuestionWizard.model._id;
-					}
+					var id = ModelsQuestionWizard.model._id; 
 					
 					payload.model_id = id;
 					payload.answer_type = answerType;
