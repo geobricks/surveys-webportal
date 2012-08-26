@@ -11,7 +11,7 @@ if (!window.BabelFish) {
 			$.i18n.properties({
 			
 				name: 'i18n', 
-				path: 'src/i18n/', 
+				path: '../src/i18n/', 
 				mode: 'both',
 				language: lang, 
 				
