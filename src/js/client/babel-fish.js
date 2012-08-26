@@ -40,8 +40,16 @@ if (!window.BabelFish) {
 			document.getElementById(id).innerHTML = $.i18n.prop(id);
 		},
 		
+		translateHTMLWithLabel : function (id, label) {
+			document.getElementById(id).innerHTML = $.i18n.prop(label);
+		},
+		
 		translateButton : function (id) {
 			$('#' + id).attr('value', $.i18n.prop(id));
+		},
+		
+		translateButtonWithLabel : function (id, label) {
+			$('#' + id).attr('value', $.i18n.prop(label));
 		}
 		
 	}

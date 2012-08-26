@@ -28,13 +28,16 @@ if (!window.ModelsQuestionWizard) {
 	    },
 	    
 	    initI18N : function() {
-			BabelFish.translateButton('buttonDeleteTranslation');
-			BabelFish.translateButton('buttonAddTranslation');
-			BabelFish.translateHTML('current_model');
+			
+	    	BabelFish.translateHTML('current_model');
 			BabelFish.translateHTML('model_description');
-			BabelFish.translateHTML('question_label');
-			BabelFish.translateHTML('answer_type');
-			BabelFish.translateHTML('question_description');
+			
+	    	BabelFish.translateButtonWithLabel('buttonDeleteTranslation_0', 'buttonDeleteTranslation');
+			BabelFish.translateButtonWithLabel('buttonAddTranslation_0', 'buttonAddTranslation');
+			BabelFish.translateHTMLWithLabel('question_label_0', 'question_label');
+			BabelFish.translateHTMLWithLabel('answer_type_0', 'answer_type');
+			BabelFish.translateHTMLWithLabel('question_description_0', 'question_description');
+			
 		},
 	    
 	    initElements : function(questionNumber) {
@@ -148,7 +151,7 @@ if (!window.ModelsQuestionWizard) {
 				theme: ModelsWebPortal.theme
 			});
 			
-			$("#listTranslateQuestion").jqxDropDownList({ 
+			$(".listTranslateQuestion").jqxDropDownList({ 
 				source: ModelsQuestionWizard.languages, 
 				selectedIndex: 1, 
 				width: '150px', 
@@ -156,7 +159,7 @@ if (!window.ModelsQuestionWizard) {
 				theme: ModelsWebPortal.theme
 			});
 			
-			$("#listTranslateQuestion").bind('change', function(e) {
+			$(".listTranslateQuestion").bind('change', function(e) {
 				$("#questionRow").after(ModelsQuestionWizard.questionHTML);
 			});
 			
@@ -168,61 +171,81 @@ if (!window.ModelsQuestionWizard) {
 				defaultLanguage = ModelsQuestionWizard.model.model_default_language;
 			}
 			switch(defaultLanguage) {
-				case 'en': $("#listTranslateQuestion").jqxDropDownList('selectIndex', 0 ); break;
-				case 'fr': $("#listTranslateQuestion").jqxDropDownList('selectIndex', 1 ); break;
-				case 'es': $("#listTranslateQuestion").jqxDropDownList('selectIndex', 2 ); break;
-				case 'it': $("#listTranslateQuestion").jqxDropDownList('selectIndex', 3 ); break;
-				case 'pt': $("#listTranslateQuestion").jqxDropDownList('selectIndex', 4 ); break;
+				case 'en': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 0 ); break;
+				case 'fr': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 1 ); break;
+				case 'es': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 2 ); break;
+				case 'it': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 3 ); break;
+				case 'pt': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 4 ); break;
 			};
 			
 			$("#buttonNextQuestion").bind('click', function() {
 				
-				var questionText = $('#question').val();
-				var questionInfo = $('#info').val();
-				var questionLanguage = $("#listTranslateQuestion").jqxDropDownList('getSelectedItem').value;
-				var answerType = $("#listAnswerTypes").jqxDropDownList('getSelectedItem').value;
-				var id = null;
+				var counter = 0;
 				
-				try {
-					id = (ModelsQuestionWizard.model[0])._id;
-				} catch (err) {
-					id = ModelsQuestionWizard.model._id;
+				// iterate to get all the (possible) translations of the questions
+				while ($('#question_' + counter).val() != null) {
+					
+					var questionText = $('#question_' + counter).val();
+					var questionInfo = $('#info_' + counter).val();
+					var questionLanguage = $("#listTranslateQuestion_" + counter).jqxDropDownList('getSelectedItem').value;
+					var answerType = $("#listAnswerTypes").jqxDropDownList('getSelectedItem').value;
+					var id = null;
+					
+					try {
+						id = (ModelsQuestionWizard.model[0])._id;
+					} catch (err) {
+						id = ModelsQuestionWizard.model._id;
+					}
+					
+					var payload = {};
+					payload.model_id = id;
+					payload.answer_type = answerType;
+					payload.question_number = ModelsQuestionWizard.questionNumber;
+					
+					// multilanguage
+					switch (questionLanguage) {
+						default: 
+							payload.en_text = questionText; 
+							payload.en_info = questionInfo;
+						break;
+						case 'es': 
+							payload.es_text = questionText;
+							payload.es_info = questionInfo;
+						break;
+						case 'fr': 
+							payload.fr_text = questionText;
+							payload.fr_info = questionInfo;
+						break;
+						case 'it': 
+							payload.it_text = questionText;
+							payload.it_info = questionInfo;
+						break;
+						case 'pt': 
+							payload.pt_text = questionText;
+							payload.pt_info = questionInfo;
+						break;
+					}
+					
+					$.ajax({
+	    				
+	    				type: 'GET',
+	    				url: 'http://localhost:5000/addQuestion/model?callback=?',
+	    				dataType: 'jsonp',
+	    				jsonp: 'callback',
+	    				data: payload,
+	    				
+	    				success : function(response) {
+	    					ModelsQuestionWizard.questionNumber = 1 + ModelsQuestionWizard.questionNumber;
+	    			    	$('#questionArea').load('single-question.html', function() {
+	    			    		ModelsQuestionWizard.initElements();
+	    			    	});
+	    				}
+	    				
+					});
+					
+					counter++;
+				
 				}
-				
-				var payload = {};
-				payload.model_id = id;
-				payload.answer_type = answerType;
-				payload.question_number = ModelsQuestionWizard.questionNumber;
-				console.log('question_number for the DB? ' + payload.question_number);
-				
-				// multilanguage
-				switch (questionLanguage) {
-					case 'en': 
-						payload.en_text = questionText; 
-						payload.en_info = questionInfo;
-					break;
-					case 'es': payload.es_text = questionText; break;
-					case 'fr': payload.fr_text = questionText; break;
-					case 'it': payload.it_text = questionText; break;
-					case 'pt': payload.pt_text = questionText; break;
-				}
-				
-				$.ajax({
-    				
-    				type: 'GET',
-    				url: 'http://localhost:5000/addQuestion/model?callback=?',
-    				dataType: 'jsonp',
-    				jsonp: 'callback',
-    				data: payload,
-    				
-    				success : function(response) {
-    					ModelsQuestionWizard.questionNumber = 1 + ModelsQuestionWizard.questionNumber;
-    			    	$('#questionArea').load('single-question.html', function() {
-    			    		ModelsQuestionWizard.initElements();
-    			    	});
-    				}
-    				
-				});
 				
 			});
 			
