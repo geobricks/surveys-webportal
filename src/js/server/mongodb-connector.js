@@ -19,7 +19,11 @@ app.get("/insert/model/:title/:description/:defaultLanguage", function(req, res,
 		if (err || !model) {
 			res.send("Error Saving new Model: " + err);
 		} else {
-			res.send(req.query.callback + "(" + JSON.stringify(model) + ");"); 
+			if (req.query.callback == null || req.query.callback == "") {
+				res.send(JSON.stringify(model));
+			} else {
+				res.send(req.query.callback + "(" + JSON.stringify(model) + ");");
+			}
 		}
 	});
 });
@@ -35,7 +39,11 @@ app.get("/select/model/:id", function(req, res, next) {
 		if (err || !models) {
 			res.send("Error Fetching the Model: " + err);
 		} else {
-			res.send(req.query.callback + "(" + JSON.stringify(models) + ");"); 
+			if (req.query.callback == null || req.query.callback == "") {
+				res.send(JSON.stringify(models));
+			} else {
+				res.send(req.query.callback + "(" + JSON.stringify(models) + ");");
+			}
 		}
 	});
 });
@@ -46,7 +54,11 @@ app.get("/delete/model/:id", function(req, res, next) {
 		if (err || !model) {
 			res.send("Error Deleting the Model: " + err);
 		} else {
-			res.send(req.query.callback + "(" + JSON.stringify(req.params.id) + ");"); 
+			if (req.query.callback == null || req.query.callback == "") {
+				res.send(JSON.stringify(req.params.id));
+			} else {
+				res.send(req.query.callback + "(" + JSON.stringify(req.params.id) + ");");
+			}
 		}
 	});
 });
@@ -60,7 +72,11 @@ app.post("/addQuestion/model", function(req, res, next) {
 		if (err || !model) {
 			res.send("Error Adding Question: " + err);
 		} else {
-			res.send(req.query.callback + "(" + JSON.stringify(req.params.id) + ");");
+			if (req.query.callback == null || req.query.callback == "") {
+				res.send(JSON.stringify(req.params.id));
+			} else{
+				res.send(req.query.callback + "(" + JSON.stringify(req.params.id) + ");");
+			}
 		}
 	});
 });

@@ -20,7 +20,11 @@ app.get("/insert/model", function(req, res, next) {
 		if (err || !model) {
 			res.send("Error Saving new Model: " + err);
 		} else {
-			res.send(req.query.callback + "(" + JSON.stringify(model) + ");"); 
+			if (req.query.callback == null || req.query.callback == "") {
+				res.send(JSON.stringify(model));
+			} else {
+				res.send(req.query.callback + "(" + JSON.stringify(model) + ");");
+			}
 		}
 	});
 });
@@ -32,7 +36,11 @@ app.get("/addQuestion/model", function(req, res, next) {
 		if (err || !model) {
 			res.send("Error Adding Question: " + err);
 		} else {
-			res.send(req.query.callback + "(" + JSON.stringify(req.query) + ");");
+			if (req.query.callback == null || req.query.callback == "") {
+				res.send(JSON.stringify(req.query));
+			} else {
+				res.send(req.query.callback + "(" + JSON.stringify(req.query) + ");");
+			}
 		}
 	});
 });
