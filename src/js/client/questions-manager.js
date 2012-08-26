@@ -11,9 +11,9 @@ if (!window.QuestionsManager) {
 			QuestionsManager.modelID = modelID;
 			QuestionsManager.questionNumber = questionNumber;
 			
-			$(".survey-manager-button").jqxButton({ 
+			$(".model-manager-button").jqxButton({ 
 				width: '200', 
-				theme: SurveysWebPortal.theme 
+				theme: ModelsWebPortal.theme 
 			});
 			
 			$("#buttonCreateNewQuestion").attr('value', $.i18n.prop("buttonCreateNewQuestion"));
@@ -31,8 +31,8 @@ if (!window.QuestionsManager) {
     				
     				success : function(models) {
     					document.getElementById('container').innerHTML = '';
-    					$("#container").load("surveys-question-wizard.html", function() {
-							SurveysQuestionWizard.initUI(models, QuestionsManager.questionNumber);
+    					$("#container").load("models-question-wizard.html", function() {
+							ModelsQuestionWizard.initUI(models, QuestionsManager.questionNumber);
 						});
     				},
     				
@@ -87,7 +87,7 @@ if (!window.QuestionsManager) {
 		                   {text: 'Language', datafield: 'questionLanguage'},
 		                   {text: 'Answer Type', datafield: 'answerType'}
 		                ],
-		                theme: SurveysWebPortal.theme
+		                theme: ModelsWebPortal.theme
 		            });
 					
 				},

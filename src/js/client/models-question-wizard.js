@@ -1,6 +1,6 @@
-if (!window.SurveysQuestionWizard) {
+if (!window.ModelsQuestionWizard) {
 	
-	window.SurveysQuestionWizard = {
+	window.ModelsQuestionWizard = {
 			
 		model : null,
 		
@@ -20,11 +20,11 @@ if (!window.SurveysQuestionWizard) {
 	    	
 	    	console.log('questionNumber? ' + questionNumber);
 	    	
-	    	SurveysQuestionWizard.model = model;
-	    	SurveysQuestionWizard.questionNumber = questionNumber;
+	    	ModelsQuestionWizard.model = model;
+	    	ModelsQuestionWizard.questionNumber = questionNumber;
 	    	
 	    	$('#questionArea').load('single-question.html', function() {
-	    		SurveysQuestionWizard.initElements();
+	    		ModelsQuestionWizard.initElements();
 	    	});
 	    	
 	    },
@@ -32,21 +32,21 @@ if (!window.SurveysQuestionWizard) {
 	    initElements : function() {
 			
 			try {
-				document.getElementById('currentModelName').innerHTML = (SurveysQuestionWizard.model[0]).title;
-				document.getElementById('currentModelDescription').innerHTML = (SurveysQuestionWizard.model[0]).description;
+				document.getElementById('currentModelName').innerHTML = (ModelsQuestionWizard.model[0]).title;
+				document.getElementById('currentModelDescription').innerHTML = (ModelsQuestionWizard.model[0]).description;
 			} catch(err) {
-				document.getElementById('currentModelName').innerHTML = SurveysQuestionWizard.model.title;
-				document.getElementById('currentModelDescription').innerHTML = SurveysQuestionWizard.model.description;
+				document.getElementById('currentModelName').innerHTML = ModelsQuestionWizard.model.title;
+				document.getElementById('currentModelDescription').innerHTML = ModelsQuestionWizard.model.description;
 			}
 			
-			$(".survey-manager-button").jqxButton({ 
+			$(".model-manager-button").jqxButton({ 
 				width: '150', 
-				theme: SurveysWebPortal.theme 
+				theme: ModelsWebPortal.theme 
 			});
 			
-			$(".survey-manager-button-i18n").jqxButton({ 
+			$(".model-manager-button-i18n").jqxButton({ 
 				width: '200', 
-				theme: SurveysWebPortal.theme 
+				theme: ModelsWebPortal.theme 
 			});
 			
 			var answerTypes = [$.i18n.prop("type_please_select"), 
@@ -60,27 +60,27 @@ if (!window.SurveysQuestionWizard) {
 				selectedIndex: 0, 
 				width: '768', 
 				height: '25px', 
-				theme: SurveysWebPortal.theme
+				theme: ModelsWebPortal.theme
 			});
 			
 			$("#listTranslateQuestion").jqxDropDownList({ 
-				source: SurveysQuestionWizard.languages, 
+				source: ModelsQuestionWizard.languages, 
 				selectedIndex: 1, 
 				width: '150px', 
 				height: '25px', 
-				theme: SurveysWebPortal.theme
+				theme: ModelsWebPortal.theme
 			});
 			
 			$("#listTranslateQuestion").bind('change', function(e) {
-				$("#questionRow").after(SurveysQuestionWizard.questionHTML);
+				$("#questionRow").after(ModelsQuestionWizard.questionHTML);
 			});
 			
 			// set language on the drop-down
 			var defaultLanguage = '';
 			try {
-				defaultLanguage = (SurveysQuestionWizard.model[0]).defaultLanguage;
+				defaultLanguage = (ModelsQuestionWizard.model[0]).defaultLanguage;
 			} catch (err) {
-				defaultLanguage = SurveysQuestionWizard.model.defaultLanguage;
+				defaultLanguage = ModelsQuestionWizard.model.defaultLanguage;
 			}
 			switch(defaultLanguage) {
 				case 'en': $("#listTranslateQuestion").jqxDropDownList('selectIndex', 0 ); break;
@@ -93,14 +93,15 @@ if (!window.SurveysQuestionWizard) {
 			$("#buttonNextQuestion").bind('click', function() {
 				
 				var questionText = $('#question').val();
+				console.log('questionText ' + questionText);
 				var questionLanguage = $("#listTranslateQuestion").jqxDropDownList('getSelectedItem').value;
 				var answerType = $("#listAnswerTypes").jqxDropDownList('getSelectedItem').value;
 				var id = null;
 				
 				try {
-					id = (SurveysQuestionWizard.model[0])._id;
+					id = (ModelsQuestionWizard.model[0])._id;
 				} catch (err) {
-					id = SurveysQuestionWizard.model._id;
+					id = ModelsQuestionWizard.model._id;
 				}
 				
 				var payload = {};
@@ -108,7 +109,7 @@ if (!window.SurveysQuestionWizard) {
 				payload.questionText = questionText;
 				payload.questionLanguage = questionLanguage;
 				payload.answerType = answerType;
-				payload.questionNumber = SurveysQuestionWizard.questionNumber;
+				payload.questionNumber = ModelsQuestionWizard.questionNumber;
 				
 				console.log(payload);
 				console.log(JSON.stringify(payload));
@@ -135,7 +136,7 @@ if (!window.SurveysQuestionWizard) {
 			$("#buttonAddTranslation").attr('value', $.i18n.prop("buttonAddTranslation"));
 			document.getElementById("current_model").innerHTML = $.i18n.prop("current_model");
 			document.getElementById("model_description").innerHTML = $.i18n.prop("model_description");
-			document.getElementById("question").innerHTML = $.i18n.prop("question");
+			document.getElementById("question_label").innerHTML = $.i18n.prop("question_label");
 			document.getElementById("answer_type").innerHTML = $.i18n.prop("answer_type");
 		
 		},

@@ -1,42 +1,42 @@
-if (!window.SurveysManager) {
+if (!window.ModelsManager) {
 	
-	window.SurveysManager = {
+	window.ModelsManager = {
 		
 		initUI : function() {
 			
-			$(".survey-manager-button").jqxButton({ 
+			$(".model-manager-button").jqxButton({ 
 				width: '200', 
-				theme: SurveysWebPortal.theme 
+				theme: ModelsWebPortal.theme 
 			});
 			
-			SurveysManager.findAllModels();
+			ModelsManager.findAllModels();
 			
-			$("#buttonCreateNewSurvey").attr('value', $.i18n.prop("buttonCreateNewSurvey"));
-			$("#buttonEditSelectedSurvey").attr('value', $.i18n.prop("buttonEditSelectedSurvey"));
-			$("#buttonDeleteSelectedSurvey").attr('value', $.i18n.prop("buttonDeleteSelectedSurvey"));
+			$("#buttonCreateNewModel").attr('value', $.i18n.prop("buttonCreateNewModel"));
+			$("#buttonEditSelectedModel").attr('value', $.i18n.prop("buttonEditSelectedModel"));
+			$("#buttonDeleteSelectedModel").attr('value', $.i18n.prop("buttonDeleteSelectedModel"));
             
-            $("#buttonDeleteSelectedSurvey").bind('click', function () {
+            $("#buttonDeleteSelectedModel").bind('click', function () {
             	
-            	var rowindex = $('#surveys-grid').jqxGrid('getselectedrowindex');
-            	var rows = $('#surveys-grid').jqxGrid('getrows');
-            	var surveyName = rows[rowindex].title;
-            	var surveyID = rows[rowindex].id;
+            	var rowindex = $('#models-grid').jqxGrid('getselectedrowindex');
+            	var rows = $('#models-grid').jqxGrid('getrows');
+            	var modelName = rows[rowindex].title;
+            	var modelID = rows[rowindex].id;
             	            	
-            	SurveysWebPortal.openWindow("Info", "Are you sure you want to delete survey '" + surveyName + "'?", function() {
+            	ModelsWebPortal.openWindow("Info", "Are you sure you want to delete model '" + modelName + "'?", function() {
             		
             		$.ajax({
     					
 						type: 'GET',
-						url: 'http://localhost:3000/delete/model/' + surveyID + '?callback=?',
+						url: 'http://localhost:3000/delete/model/' + modelID + '?callback=?',
 						dataType: 'jsonp',
 						jsonp: 'callback',
 						
 						success : function(response) {
 							$("#window").dialog("close");
-							SurveysWebPortal.openWindow("Info", "Model '" + surveyName + "' has been deleted from the DB.", function() {
+							ModelsWebPortal.openWindow("Info", "Model '" + modelName + "' has been deleted from the DB.", function() {
 								$("#window").dialog("close");
 							});
-							SurveysManager.findAllModels();
+							ModelsManager.findAllModels();
 						},
 						
 						error : function(err, b, c) {
@@ -49,21 +49,21 @@ if (!window.SurveysManager) {
             	
 			});
             
-            $("#buttonCreateNewSurvey").bind('click', function () {
+            $("#buttonCreateNewModel").bind('click', function () {
             	document.getElementById('container').innerHTML = '';
-				$("#container").load("surveys-survey-wizard.html", function() {
-					SurveysSurveyWizard.initUI();
+				$("#container").load("models-model-wizard.html", function() {
+					ModelsModelWizard.initUI();
 				});
             });
             
-            $("#buttonEditSelectedSurvey").bind('click', function () {
+            $("#buttonEditSelectedModel").bind('click', function () {
             	
-            	var rowindex = $('#surveys-grid').jqxGrid('getselectedrowindex');
-            	var rows = $('#surveys-grid').jqxGrid('getrows');
-            	var surveyID = rows[rowindex].id;
+            	var rowindex = $('#models-grid').jqxGrid('getselectedrowindex');
+            	var rows = $('#models-grid').jqxGrid('getrows');
+            	var modelID = rows[rowindex].id;
             	
             	$("#container").load("questions-manager.html", function() {
-					QuestionsManager.init(surveyID, (1 + rowindex));
+					QuestionsManager.init(modelID, (1 + rowindex));
 				});
             	
             });
@@ -96,7 +96,7 @@ if (!window.SurveysManager) {
 		                datatype: "array"
 		            };
 					var dataAdapter = new $.jqx.dataAdapter(source);
-					$("#surveys-grid").jqxGrid({
+					$("#models-grid").jqxGrid({
 		            	width: 768,
 		                height: 250,
 		                source: dataAdapter,
@@ -105,13 +105,13 @@ if (!window.SurveysManager) {
 		                sortable: true,
 		                enablehover: true,
 		                columns: [
-		                   {text: 'Survey Name', datafield: 'title'},
+		                   {text: 'Model Name', datafield: 'title'},
 		                   {text: 'Description', datafield: 'description', width: 300},
 		                   {text: 'Language', datafield: 'defaultLanguage'},
 		                   {text: 'Date Last Update', datafield: 'dateLastUpdate', cellsformat: 'Y-m-d'},
 		                   {text: 'Creation Date', datafield: 'creationDate', cellsformat: 'Y-m-d'}
 		                ],
-		                theme: SurveysWebPortal.theme
+		                theme: ModelsWebPortal.theme
 		            });
 				},
 				

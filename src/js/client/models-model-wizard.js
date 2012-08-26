@@ -1,10 +1,10 @@
-if (!window.SurveysSurveyWizard) {
+if (!window.ModelsModelWizard) {
 	
-	window.SurveysSurveyWizard = {
+	window.ModelsModelWizard = {
 		
 		initUI : function() {
 			
-			document.getElementById('survey_name').innerHTML = $.i18n.prop('survey_name');
+			document.getElementById('model_name').innerHTML = $.i18n.prop('model_name');
 			document.getElementById('abstract').innerHTML = $.i18n.prop('abstract');
 			document.getElementById('default_language').innerHTML = $.i18n.prop('default_language');
 			
@@ -21,26 +21,26 @@ if (!window.SurveysSurveyWizard) {
 				selectedIndex: 0, 
 				width: '768', 
 				height: '25px', 
-				theme: SurveysWebPortal.theme
+				theme: ModelsWebPortal.theme
 			});
 			
-			$(".survey-manager-button").jqxButton({ 
+			$(".model-manager-button").jqxButton({ 
 				width: '150', 
-				theme: SurveysWebPortal.theme 
+				theme: ModelsWebPortal.theme 
 			});
 			
 			$("#buttonSaveNewModel").attr('value', $.i18n.prop("buttonSaveNewModel"));
 			$("#buttonCancelNewModel").attr('value', $.i18n.prop("buttonCancelNewModel"));
 			
 			$("#buttonCancelNewModel").bind('click', function () {
-				SurveysWebPortal.openWindow("Info", "Are you sure you want to quit?", function() {
-					SurveysWebPortal.showSurveyModelsGrid();
+				ModelsWebPortal.openWindow("Info", "Are you sure you want to quit?", function() {
+					ModelsWebPortal.showModelModelsGrid();
 				});
 			});
 			
 			$("#buttonSaveNewModel").bind('click', function () {
 				
-				SurveysWebPortal.openWindow("Info", "Are you sure you want to create a new survey model?", function() {
+				ModelsWebPortal.openWindow("Info", "Are you sure you want to create a new model?", function() {
 					
 					var title = $("#modelTitle").val();
 					var description = $("#modelDescription").val();
@@ -61,15 +61,15 @@ if (!window.SurveysSurveyWizard) {
 						
 						success : function(model) {
 							$("#window").dialog("close");
-							SurveysWebPortal.openWindow("Info", "New survey model has been successfully saved! Do you want to start adding questions?", function() {
+							ModelsWebPortal.openWindow("Info", "New model has been successfully saved! Do you want to start adding questions?", function() {
 								$("#window").dialog("close");
 								document.getElementById('container').innerHTML = '';
-								$("#container").load("surveys-question-wizard.html", function() {
-									SurveysQuestionWizard.initUI(model);
+								$("#container").load("models-question-wizard.html", function() {
+									ModelsQuestionWizard.initUI(model);
 								});
 							}, function() {
 								$("#window").dialog("close");
-								SurveysWebPortal.showSurveyModelsGrid();
+								ModelsWebPortal.showModelModelsGrid();
 							});
 						},
 						

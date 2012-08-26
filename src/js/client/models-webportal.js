@@ -1,6 +1,6 @@
-if (!window.SurveysWebPortal) {
+if (!window.ModelsWebPortal) {
 	
-	window.SurveysWebPortal = {
+	window.ModelsWebPortal = {
 		
 		theme : "ui-start",
 		
@@ -24,10 +24,10 @@ if (!window.SurveysWebPortal) {
 			});
 			
 			// initiate the menu
-			SurveysWebPortal.showSurveysManager();
+			ModelsWebPortal.showModelsManager();
 			
 			// based on the current URL, add links to the different languages pages
-			SurveysWebPortal.linkLanguageIcons();
+			ModelsWebPortal.linkLanguageIcons();
 			
 			// translate contents
 			BabelFish.init();
@@ -44,7 +44,7 @@ if (!window.SurveysWebPortal) {
 				$('#icon_' + languages[i]).attr('href', url + '?lang=' + languages[i]);
 		},
 		
-		showSurveysManager : function() {
+		showModelsManager : function() {
 			
 			$("#container").load("home.html", function() {
 				
@@ -58,7 +58,7 @@ if (!window.SurveysWebPortal) {
 				animationShowDuration: 300, 
 				animationHideDuration: 200, 
 				animationShowDelay: 200,
-				theme: SurveysWebPortal.theme 
+				theme: ModelsWebPortal.theme 
 			});
 			
 			$('#menu').bind('itemclick', function (event) {
@@ -73,8 +73,8 @@ if (!window.SurveysWebPortal) {
 					case "#android":
 						document.getElementById('container').innerHTML = '';
 					break;
-					case "#surveysManager":
-						SurveysWebPortal.showSurveyModelsGrid();
+					case "#modelsManager":
+						ModelsWebPortal.showModelModelsGrid();
 					break;
 					case "#statisticalEngine":
 						document.getElementById('container').innerHTML = '';
@@ -87,10 +87,10 @@ if (!window.SurveysWebPortal) {
 			
 		},
 		
-		showSurveyModelsGrid : function() {
+		showModelModelsGrid : function() {
 			document.getElementById('container').innerHTML = '';
-			$("#container").load("surveys-manager.html", function() {
-				SurveysManager.initUI();
+			$("#container").load("models-manager.html", function() {
+				ModelsManager.initUI();
 			});
 		},
 		
