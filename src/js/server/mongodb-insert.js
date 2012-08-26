@@ -31,8 +31,8 @@ app.get("/insert/model", function(req, res, next) {
 
 // add question
 app.get("/addQuestion/model", function(req, res, next) {
-	console.log(req.query);
-	db.models.update({_id: db.ObjectId(req.query.model_id)}, {$addToSet: {questions: req.query}}, function(err, model) {
+	var cleanPayload = cleanJSONP(req.query);
+	db.models.update({_id: db.ObjectId(req.query.model_id)}, {$addToSet: {questions: cleanPayload}}, function(err, model) {
 		if (err || !model) {
 			res.send("Error Adding Question: " + err);
 		} else {
@@ -44,6 +44,24 @@ app.get("/addQuestion/model", function(req, res, next) {
 		}
 	});
 });
+
+/**
+ * @param query payload from HTTP request
+ * @returns {JSON} clean payload
+ * 
+ * This function removes JSONP parameters 'callback' and '_' from the request not to save them in the DB
+ */
+function cleanJSONP(query) {
+	var payload = {};
+	$.each(query, function(k, v) {
+		if (k == 'callback' || k == '_') {
+			
+		} else {
+			payload[k] = v;
+		}
+	});
+	return payload;
+}
 
 // Listen
 app.listen(5000);
