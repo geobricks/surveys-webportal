@@ -59,7 +59,7 @@ if (!window.ModelsManager) {
             	var modelID = rows[rowindex].id;
             	
             	$("#container").load("questions-manager.html", function() {
-					QuestionsManager.init(modelID, (1 + rowindex));
+					QuestionsManager.init(modelID);
 				});
             	
             });

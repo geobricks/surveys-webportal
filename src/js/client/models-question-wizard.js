@@ -18,10 +18,10 @@ if (!window.ModelsQuestionWizard) {
 		
 	    initUI : function(model, questionNumber) {
 	    	
-	    	console.log('questionNumber? ' + questionNumber);
-	    	
 	    	ModelsQuestionWizard.model = model;
 	    	ModelsQuestionWizard.questionNumber = questionNumber;
+	    	
+	    	console.log('now question number is: ' + ModelsQuestionWizard.questionNumber);
 	    	
 	    	$('#questionArea').load('single-question.html', function() {
 	    		ModelsQuestionWizard.initElements();
@@ -29,14 +29,66 @@ if (!window.ModelsQuestionWizard) {
 	    	
 	    },
 	    
-	    initElements : function() {
+	    initI18N : function() {
+			BabelFish.translateButton('buttonDeleteTranslation');
+			BabelFish.translateButton('buttonAddTranslation');
+			BabelFish.translateHTML('current_model');
+			BabelFish.translateHTML('model_description');
+			BabelFish.translateHTML('question_label');
+			BabelFish.translateHTML('answer_type');
+			BabelFish.translateHTML('question_description');
+		},
+	    
+	    initElements : function(questionNumber) {
 			
+	    	console.log(ModelsQuestionWizard.model);
+	    	
 			try {
-				document.getElementById('currentModelName').innerHTML = (ModelsQuestionWizard.model[0]).title;
-				document.getElementById('currentModelDescription').innerHTML = (ModelsQuestionWizard.model[0]).description;
+				switch (ModelsWebPortal.lang) {
+					default:
+						document.getElementById('currentModelName').innerHTML = (ModelsQuestionWizard.model[0]).en_name;
+						document.getElementById('currentModelDescription').innerHTML = (ModelsQuestionWizard.model[0]).en_abstract;
+					break;
+					case 'fr' :
+						document.getElementById('currentModelName').innerHTML = (ModelsQuestionWizard.model[0]).fr_name;
+						document.getElementById('currentModelDescription').innerHTML = (ModelsQuestionWizard.model[0]).fr_abstract;
+					break;
+					case 'pt' :
+						document.getElementById('currentModelName').innerHTML = (ModelsQuestionWizard.model[0]).pt_name;
+						document.getElementById('currentModelDescription').innerHTML = (ModelsQuestionWizard.model[0]).pt_abstract;
+					break;
+					case 'es' :
+						document.getElementById('currentModelName').innerHTML = (ModelsQuestionWizard.model[0]).es_name;
+						document.getElementById('currentModelDescription').innerHTML = (ModelsQuestionWizard.model[0]).es_abstract;
+					break;
+					case 'it' :
+						document.getElementById('currentModelName').innerHTML = (ModelsQuestionWizard.model[0]).it_name;
+						document.getElementById('currentModelDescription').innerHTML = (ModelsQuestionWizard.model[0]).it_abstract;
+					break;
+				};
 			} catch(err) {
-				document.getElementById('currentModelName').innerHTML = ModelsQuestionWizard.model.title;
-				document.getElementById('currentModelDescription').innerHTML = ModelsQuestionWizard.model.description;
+				switch (ModelsWebPortal.lang) {
+					default :
+						document.getElementById('currentModelName').innerHTML = ModelsQuestionWizard.model.en_name;
+						document.getElementById('currentModelDescription').innerHTML = ModelsQuestionWizard.model.en_abstract;
+					break;
+					case 'es' :
+						document.getElementById('currentModelName').innerHTML = ModelsQuestionWizard.model.es_name;
+						document.getElementById('currentModelDescription').innerHTML = ModelsQuestionWizard.model.es_abstract;
+					break;
+					case 'fr' :
+						document.getElementById('currentModelName').innerHTML = ModelsQuestionWizard.model.fr_name;
+						document.getElementById('currentModelDescription').innerHTML = ModelsQuestionWizard.model.fr_abstract;
+					break;
+					case 'pt' :
+						document.getElementById('currentModelName').innerHTML = ModelsQuestionWizard.model.pt_name;
+						document.getElementById('currentModelDescription').innerHTML = ModelsQuestionWizard.model.pt_abstract;
+					break;
+					case 'it' :
+						document.getElementById('currentModelName').innerHTML = ModelsQuestionWizard.model.it_name;
+						document.getElementById('currentModelDescription').innerHTML = ModelsQuestionWizard.model.it_abstract;
+					break;
+				};
 			}
 			
 			$(".model-manager-button").jqxButton({ 
@@ -49,14 +101,42 @@ if (!window.ModelsQuestionWizard) {
 				theme: ModelsWebPortal.theme 
 			});
 			
-			var answerTypes = [$.i18n.prop("type_please_select"), 
-			                   $.i18n.prop("type_text"),
-			                   $.i18n.prop("type_numeric_value"),
-			                   $.i18n.prop("type_date"), 
-			                   $.i18n.prop("type_multiple_choice")];
+			// answer types
+			var answer_type_data = new Array();
+			var row = {};
+			row['code'] = null;
+			row['label'] = $.i18n.prop("type_please_select");
+			answer_type_data[0] = row;
+			row = {};
+			row['code'] = 'single_value_text';
+			row['label'] = $.i18n.prop("type_text");
+			answer_type_data[1] = row;
+			row = {};
+			row['code'] = 'single_value_date';
+			row['label'] = $.i18n.prop("type_date");
+			answer_type_data[2] = row;
+			row = {};
+			row['code'] = 'single_value_number';
+			row['label'] = $.i18n.prop("type_numeric_value");
+			answer_type_data[3] = row;
+			row = {};
+			row['code'] = 'multiple_choice';
+			row['label'] = $.i18n.prop("type_multiple_choice");
+			answer_type_data[4] = row;
+			
+			var answer_type_source = {
+				localdata: answer_type_data,
+				datatype: "json",
+			    datafields: [{name: 'code'}, {name: 'label'}],
+			    id: 'code'
+			};
+			
+			var answer_type_data_adapter = new $.jqx.dataAdapter(answer_type_source);
 			
 			$("#listAnswerTypes").jqxDropDownList({ 
-				source: answerTypes, 
+				source: answer_type_data_adapter, 
+				displayMember: "label", 
+				valueMember: "code",
 				selectedIndex: 0, 
 				width: '768', 
 				height: '25px', 
@@ -67,7 +147,7 @@ if (!window.ModelsQuestionWizard) {
 				source: ModelsQuestionWizard.languages, 
 				selectedIndex: 1, 
 				width: '150px', 
-				height: '25px', 
+				height: '60px', 
 				theme: ModelsWebPortal.theme
 			});
 			
@@ -78,9 +158,9 @@ if (!window.ModelsQuestionWizard) {
 			// set language on the drop-down
 			var defaultLanguage = '';
 			try {
-				defaultLanguage = (ModelsQuestionWizard.model[0]).defaultLanguage;
+				defaultLanguage = (ModelsQuestionWizard.model[0]).model_default_language;
 			} catch (err) {
-				defaultLanguage = ModelsQuestionWizard.model.defaultLanguage;
+				defaultLanguage = ModelsQuestionWizard.model.model_default_language;
 			}
 			switch(defaultLanguage) {
 				case 'en': $("#listTranslateQuestion").jqxDropDownList('selectIndex', 0 ); break;
@@ -93,7 +173,7 @@ if (!window.ModelsQuestionWizard) {
 			$("#buttonNextQuestion").bind('click', function() {
 				
 				var questionText = $('#question').val();
-				console.log('questionText ' + questionText);
+				var questionInfo = $('#info').val();
 				var questionLanguage = $("#listTranslateQuestion").jqxDropDownList('getSelectedItem').value;
 				var answerType = $("#listAnswerTypes").jqxDropDownList('getSelectedItem').value;
 				var id = null;
@@ -108,18 +188,19 @@ if (!window.ModelsQuestionWizard) {
 				payload.model_id = id;
 				payload.answer_type = answerType;
 				payload.question_number = ModelsQuestionWizard.questionNumber;
+				console.log('question_number for the DB? ' + payload.question_number);
 				
 				// multilanguage
 				switch (questionLanguage) {
-					case 'en': payload.en_text = questionText; break;
+					case 'en': 
+						payload.en_text = questionText; 
+						payload.en_info = questionInfo;
+					break;
 					case 'es': payload.es_text = questionText; break;
 					case 'fr': payload.fr_text = questionText; break;
 					case 'it': payload.it_text = questionText; break;
 					case 'pt': payload.pt_text = questionText; break;
 				}
-				
-				console.log(payload);
-				console.log(JSON.stringify(payload));
 				
 				$.ajax({
     				
@@ -130,25 +211,19 @@ if (!window.ModelsQuestionWizard) {
     				data: payload,
     				
     				success : function(response) {
-    					$("#container").load("questions-manager.html", function() {
-    						QuestionsManager.init(payload.model_id, (1 + payload.questionNumber));
-    					});
+    					ModelsQuestionWizard.questionNumber = 1 + ModelsQuestionWizard.questionNumber;
+    			    	$('#questionArea').load('single-question.html', function() {
+    			    		ModelsQuestionWizard.initElements();
+    			    	});
     				}
     				
 				});
 				
 			});
 			
-			$("#buttonDeleteTranslation").attr('value', $.i18n.prop("buttonDeleteTranslation"));
-			$("#buttonAddTranslation").attr('value', $.i18n.prop("buttonAddTranslation"));
-			document.getElementById("current_model").innerHTML = $.i18n.prop("current_model");
-			document.getElementById("model_description").innerHTML = $.i18n.prop("model_description");
-			document.getElementById("question_label").innerHTML = $.i18n.prop("question_label");
-			document.getElementById("answer_type").innerHTML = $.i18n.prop("answer_type");
+			ModelsQuestionWizard.initI18N();
 		
-		},
-		
-		payload : null
+		}
 	
 	}
 	

@@ -4,21 +4,14 @@ if (!window.QuestionsManager) {
 			
 		modelID : null,
 		
-		questionNumber: null,
-		
-		init : function(modelID, questionNumber) {
+		init : function(modelID) {
 			
 			QuestionsManager.modelID = modelID;
-			QuestionsManager.questionNumber = questionNumber;
 			
 			$(".model-manager-button").jqxButton({ 
 				width: '200', 
 				theme: ModelsWebPortal.theme 
 			});
-			
-			$("#buttonCreateNewQuestion").attr('value', $.i18n.prop("buttonCreateNewQuestion"));
-			$("#buttonEditSelectedQuestion").attr('value', $.i18n.prop("buttonEditSelectedQuestion"));
-			$("#buttonDeleteSelectedQuestion").attr('value', $.i18n.prop("buttonDeleteSelectedQuestion"));
 			
 			$("#buttonCreateNewQuestion").bind('click', function () {
 				
@@ -30,9 +23,12 @@ if (!window.QuestionsManager) {
     				jsonp: 'callback',
     				
     				success : function(models) {
+    					var questions = 1 + ($('#questions-grid').jqxGrid('getrows')).length;
+    					if (questions == null)
+    						questions = 1;
     					document.getElementById('container').innerHTML = '';
     					$("#container").load("models-question-wizard.html", function() {
-							ModelsQuestionWizard.initUI(models, QuestionsManager.questionNumber);
+							ModelsQuestionWizard.initUI(models, questions);
 						});
     				},
     				
@@ -63,18 +59,39 @@ if (!window.QuestionsManager) {
 							var row = {};
 							row["questionNumber"] = questions[i].question_number;
 							row["model_id"] = questions[i].model_id;
-							row["answerType"] = questions[i].answer_type;
+							switch (questions[i].answer_type) {
+								case 'single_value_text': row["answerType"] = $.i18n.prop("type_text"); break;
+								case 'single_value_date': row["answerType"] = $.i18n.prop("type_date"); break;
+								case 'single_value_number': row["answerType"] = $.i18n.prop("type_numeric_value"); break;
+								case 'multiple_choice': row["answerType"] = $.i18n.prop("type_multiple_choice"); break;
+							};
 							switch (ModelsWebPortal.lang) {
-								case 'en' :
+								default :
 									row["questionText"] = questions[i].en_text;
-									row["questionDescription"] = questions[i].en_description;
+									row["questionDescription"] = questions[i].en_info;
+								break;
+								case 'es' :
+									row["questionText"] = questions[i].es_text;
+									row["questionDescription"] = questions[i].es_info;
+								break;
+								case 'fr' :
+									row["questionText"] = questions[i].fr_text;
+									row["questionDescription"] = questions[i].fr_info;
+								break;
+								case 'it' :
+									row["questionText"] = questions[i].it_text;
+									row["questionDescription"] = questions[i].it_info;
+								break;
+								case 'pt' :
+									row["questionText"] = questions[i].pt_text;
+									row["questionDescription"] = questions[i].pt_info;
 								break;
 							};
 							if (row["questionText"] == null) {
 								row["questionText"] = questions[i].en_text;
 							}
 							if (row["questionDescription"] == null) {
-								row["questionDescription"] = questions[i].en_text;
+								row["questionDescription"] = questions[i].en_info;
 							}
 							data[i] = row;
 						}
@@ -109,7 +126,15 @@ if (!window.QuestionsManager) {
 				}
 				
 			});
+			
+			QuestionsManager.initI18N();
 		
+		},
+		
+		initI18N : function() {
+			BabelFish.translateButton('buttonCreateNewQuestion');
+			BabelFish.translateButton('buttonEditSelectedQuestion');
+			BabelFish.translateButton('buttonDeleteSelectedQuestion');
 		}
 	
 	}

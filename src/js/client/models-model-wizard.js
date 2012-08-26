@@ -62,7 +62,7 @@ if (!window.ModelsModelWizard) {
 								$("#window").dialog("close");
 								document.getElementById('container').innerHTML = '';
 								$("#container").load("models-question-wizard.html", function() {
-									ModelsQuestionWizard.initUI(model);
+									ModelsQuestionWizard.initUI(model, 1);
 								});
 							}, function() {
 								$("#window").dialog("close");
