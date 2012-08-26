@@ -31,7 +31,27 @@ if (!window.ModelsWebPortal) {
 			
 			// translate contents
 			BabelFish.init();
+			ModelsWebPortal.initI18N();
 						
+		},
+		
+		initI18N : function() {
+			BabelFish.translateHTML('main_title');
+			BabelFish.translateHTML('menu_home');
+			BabelFish.translateHTML('menu_android');
+			BabelFish.translateHTML('menu_models_manager');
+			BabelFish.translateHTML('menu_statistical_engine');
+			BabelFish.translateHTML('menu_contribute');
+			BabelFish.translateHTML('menu_login');
+			BabelFish.translateHTML('footer_desktop');
+			BabelFish.translateHTML('footer_mobile');
+			BabelFish.translateHTML('footer_follow_us');
+			BabelFish.translateHTML('home_body_home');
+			BabelFish.translateHTML('home_body_android');
+			BabelFish.translateHTML('home_body_model_manager');
+			BabelFish.translateHTML('home_body_statistical_engine');
+			BabelFish.translateHTML('home_body_contribute');
+			BabelFish.translateHTML('home_body_login');
 		},
 		
 		linkLanguageIcons : function() {

@@ -4,10 +4,6 @@ if (!window.ModelsModelWizard) {
 		
 		initUI : function() {
 			
-			document.getElementById('model_name').innerHTML = $.i18n.prop('model_name');
-			document.getElementById('abstract').innerHTML = $.i18n.prop('abstract');
-			document.getElementById('default_language').innerHTML = $.i18n.prop('default_language');
-			
 			var source = [
 		                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='/resources/images/gb.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>English</span></div>", title: 'English', value: 'en' },
 		                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='/resources/images/fr.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>François</span></div>", title: 'François', value: 'fr' },
@@ -28,9 +24,6 @@ if (!window.ModelsModelWizard) {
 				width: '150', 
 				theme: ModelsWebPortal.theme 
 			});
-			
-			$("#buttonSaveNewModel").attr('value', $.i18n.prop("buttonSaveNewModel"));
-			$("#buttonCancelNewModel").attr('value', $.i18n.prop("buttonCancelNewModel"));
 			
 			$("#buttonCancelNewModel").bind('click', function () {
 				ModelsWebPortal.openWindow("Info", "Are you sure you want to quit?", function() {
@@ -82,7 +75,17 @@ if (!window.ModelsModelWizard) {
 				});
 				
             });
+			
+			ModelsModelWizard.initI18N();
 		
+		},
+		
+		initI18N : function() {
+			BabelFish.translateHTML('model_name');
+			BabelFish.translateHTML('abstract');
+			BabelFish.translateHTML('default_language');
+			BabelFish.translateButton('buttonSaveNewModel');
+			BabelFish.translateButton('buttonCancelNewModel');
 		}
 	
 	}

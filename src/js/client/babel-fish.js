@@ -20,26 +20,28 @@ if (!window.BabelFish) {
 					// translate the <head> title
 					document.title = $.i18n.prop('html_title');
 					
-					// translate static contents
-					$.each($.i18n.map, function(k, v) {
-						
-						try {
-							
-							// buttons will be translated by the appropriate 'init' method
-							if (!k.match("^button")) {
-								document.getElementById(k).innerHTML = $.i18n.prop(k);
-							}
-							
-						} catch (err) {
-							// console.log(k + ' >>> ' + err)
-						}
-						
-					});
+//					$.each($.i18n.map, function(k, v) {
+//						try {
+//							if (!k.match("^button")) {
+//								document.getElementById(k).innerHTML = $.i18n.prop(k);
+//							}
+//						} catch (err) {
+//						}
+//						
+//					});
 					
 				}
 			
 			});
 		
+		},
+		
+		translateHTML : function (id) {
+			document.getElementById(id).innerHTML = $.i18n.prop(id);
+		},
+		
+		translateButton : function (id) {
+			$('#' + id).attr('value', $.i18n.prop(id));
 		}
 		
 	}

@@ -11,11 +11,7 @@ if (!window.ModelsManager) {
 			
 			ModelsManager.findAllModels();
 			
-			$("#buttonCreateNewModel").attr('value', $.i18n.prop("buttonCreateNewModel"));
-			$("#buttonEditSelectedModel").attr('value', $.i18n.prop("buttonEditSelectedModel"));
-			$("#buttonDeleteSelectedModel").attr('value', $.i18n.prop("buttonDeleteSelectedModel"));
-            
-            $("#buttonDeleteSelectedModel").bind('click', function () {
+			$("#buttonDeleteSelectedModel").bind('click', function () {
             	
             	var rowindex = $('#models-grid').jqxGrid('getselectedrowindex');
             	var rows = $('#models-grid').jqxGrid('getrows');
@@ -67,7 +63,15 @@ if (!window.ModelsManager) {
 				});
             	
             });
+            
+            ModelsManager.initI18N();
 		
+		},
+		
+		initI18N : function() {
+			BabelFish.translateButton('buttonCreateNewModel');
+			BabelFish.translateButton('buttonEditSelectedModel');
+			BabelFish.translateButton('buttonDeleteSelectedModel');
 		},
 		
 		findAllModels : function() {
