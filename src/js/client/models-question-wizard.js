@@ -21,8 +21,6 @@ if (!window.ModelsQuestionWizard) {
 	    	ModelsQuestionWizard.model = model;
 	    	ModelsQuestionWizard.questionNumber = questionNumber;
 	    	
-	    	console.log('now question number is: ' + ModelsQuestionWizard.questionNumber);
-	    	
 	    	$('#questionArea').load('single-question.html', function() {
 	    		ModelsQuestionWizard.initElements();
 	    	});
@@ -41,9 +39,7 @@ if (!window.ModelsQuestionWizard) {
 	    
 	    initElements : function(questionNumber) {
 			
-	    	console.log(ModelsQuestionWizard.model);
-	    	
-			try {
+	    	try {
 				switch (ModelsWebPortal.lang) {
 					default:
 						document.getElementById('currentModelName').innerHTML = (ModelsQuestionWizard.model[0]).en_name;
@@ -100,6 +96,15 @@ if (!window.ModelsQuestionWizard) {
 				width: '200', 
 				theme: ModelsWebPortal.theme 
 			});
+			
+			$("#buttonSummaryQuestion").bind('click', function() {
+	    		var id = ModelsQuestionWizard.model._id;
+	    		if (id == null) 
+	    			id = ModelsQuestionWizard.model[0]._id;
+	    		$("#container").load("questions-manager.html", function() {
+					QuestionsManager.init(id);
+				});
+	    	});
 			
 			// answer types
 			var answer_type_data = new Array();
