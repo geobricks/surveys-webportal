@@ -82,8 +82,8 @@ app.post("/addQuestion/model", function(req, res, next) {
 });
 
 // Listen
-app.listen(3000);
-console.log('Listening on port 3000 for MongoDB');
+app.listen(27000, 192.168.1.5);
+console.log('Listening on port 27000 for MongoDB');
 
 
 
