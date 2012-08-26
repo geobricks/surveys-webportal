@@ -12,11 +12,10 @@ var db = require("mongojs").connect(databaseUrl, collections);
 
 //Insert New Model
 app.get("/insert/model", function(req, res, next) {
-	db.models.save({title : req.query.title, 
-					description : req.query.description, 
-					creationDate: new Date(), 
-					dateLastUpdate: new Date(),
-					defaultLanguage: req.query.defaultLanguage}, function(err, model) {
+	var cleanPayload = cleanJSONP(req.query);
+	cleanPayload.model_date_last_update = new Date();
+	cleanPayload.model_creation_date = new Date();
+	db.models.save(cleanPayload, function(err, model) {
 		if (err || !model) {
 			res.send("Error Saving new Model: " + err);
 		} else {
@@ -54,7 +53,7 @@ app.get("/addQuestion/model", function(req, res, next) {
 function cleanJSONP(query) {
 	var payload = {};
 	$.each(query, function(k, v) {
-		if (k == 'callback' || k == '_') {
+		if (k == 'callback' || k == '_' || k == 'model_id') {
 			
 		} else {
 			payload[k] = v;

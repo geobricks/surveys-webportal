@@ -4,6 +4,7 @@
 	"en_abstract" : "Chicken chicken chicken",
 	"it_name" : "Sanità Pubblica nelle Filippine",
 	"it_abstract" : "Pollo pollo pollo",
+	"model_default_language" : 'en',
 	"model_questions" : [
 		{
 			"question_number" : "1",

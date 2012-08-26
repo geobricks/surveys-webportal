@@ -28,6 +28,7 @@ if (!window.ModelsWebPortal) {
 			
 			// based on the current URL, add links to the different languages pages
 			ModelsWebPortal.linkLanguageIcons();
+			ModelsWebPortal.linkDesktopMobileLinks();
 			
 			// translate contents
 			BabelFish.init();
@@ -52,6 +53,8 @@ if (!window.ModelsWebPortal) {
 			BabelFish.translateHTML('home_body_statistical_engine');
 			BabelFish.translateHTML('home_body_contribute');
 			BabelFish.translateHTML('home_body_login');
+			BabelFish.translateHTML('home_title');
+			BabelFish.translateHTML('home_body');
 		},
 		
 		linkLanguageIcons : function() {
@@ -62,6 +65,15 @@ if (!window.ModelsWebPortal) {
 				url = url.substring(0, idx);
 			for (var i = 0 ; i < languages.length ; i++) 
 				$('#icon_' + languages[i]).attr('href', url + '?lang=' + languages[i]);
+		},
+		
+		linkDesktopMobileLinks : function() {
+			var url = document.URL;
+			var idx = url.indexOf('/');
+			if (idx > -1) 
+				url = url.substring(0, idx);
+			$('#footer_desktop').attr('href', url + '/desktop/index.html');
+			$('#footer_mobile').attr('href', url + '/mobile/index.html');
 		},
 		
 		showModelsManager : function() {

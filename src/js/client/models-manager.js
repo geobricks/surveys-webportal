@@ -88,11 +88,11 @@ if (!window.ModelsManager) {
 					for (var i = 0 ; i < response.length ; i++) {
 						var row = {};
 						row["id"] = response[i]._id;
-						row["title"] = response[i].title;
-						row["defaultLanguage"] = response[i].defaultLanguage;
-						row["dateLastUpdate"] = response[i].dateLastUpdate.substring(0, 10) + " (" + response[i].dateLastUpdate.substring(11, 19) + ")";
-						row["creationDate"] = response[i].creationDate.substring(0, 10) + " (" + response[i].creationDate.substring(11, 19) + ")";
-						row["description"] = response[i].description;
+						row["title"] = response[i].en_name;
+						row["defaultLanguage"] = response[i].model_default_language;
+						row["dateLastUpdate"] = response[i].model_date_last_update.substring(0, 10) + " (" + response[i].model_date_last_update.substring(11, 19) + ")";
+						row["creationDate"] = response[i].model_creation_date.substring(0, 10) + " (" + response[i].model_creation_date.substring(11, 19) + ")";
+						row["description"] = response[i].en_abstract;
 						data[i] = row;
 					}
 					var source = {
