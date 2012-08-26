@@ -31,7 +31,7 @@ app.get("/insert/model", function(req, res, next) {
 // add question
 app.get("/addQuestion/model", function(req, res, next) {
 	var cleanPayload = cleanJSONP(req.query);
-	db.models.update({_id: db.ObjectId(req.query.model_id)}, {$addToSet: {questions: cleanPayload}}, function(err, model) {
+	db.models.update({_id: db.ObjectId(req.query.model_id)}, {$addToSet: {model_questions: cleanPayload}}, function(err, model) {
 		if (err || !model) {
 			res.send("Error Adding Question: " + err);
 		} else {

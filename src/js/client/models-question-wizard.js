@@ -106,10 +106,17 @@ if (!window.ModelsQuestionWizard) {
 				
 				var payload = {};
 				payload.model_id = id;
-				payload.questionText = questionText;
-				payload.questionLanguage = questionLanguage;
-				payload.answerType = answerType;
-				payload.questionNumber = ModelsQuestionWizard.questionNumber;
+				payload.answer_type = answerType;
+				payload.question_number = ModelsQuestionWizard.questionNumber;
+				
+				// multilanguage
+				switch (questionLanguage) {
+					case 'en': payload.en_text = questionText; break;
+					case 'es': payload.es_text = questionText; break;
+					case 'fr': payload.fr_text = questionText; break;
+					case 'it': payload.it_text = questionText; break;
+					case 'pt': payload.pt_text = questionText; break;
+				}
 				
 				console.log(payload);
 				console.log(JSON.stringify(payload));

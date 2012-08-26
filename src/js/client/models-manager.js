@@ -88,11 +88,21 @@ if (!window.ModelsManager) {
 					for (var i = 0 ; i < response.length ; i++) {
 						var row = {};
 						row["id"] = response[i]._id;
-						row["title"] = response[i].en_name;
 						row["defaultLanguage"] = response[i].model_default_language;
 						row["dateLastUpdate"] = response[i].model_date_last_update.substring(0, 10) + " (" + response[i].model_date_last_update.substring(11, 19) + ")";
 						row["creationDate"] = response[i].model_creation_date.substring(0, 10) + " (" + response[i].model_creation_date.substring(11, 19) + ")";
-						row["description"] = response[i].en_abstract;
+						switch (ModelsWebPortal.lang) {
+							case 'en' :
+								row["description"] = response[i].en_abstract;
+								row["title"] = response[i].en_name;
+							break;
+						};
+						if (row["description"] == null) {
+							row["description"] = response[i].en_abstract;
+						}
+						if (row["title"] == null) {
+							row["title"] = response[i].en_abstract;
+						}
 						data[i] = row;
 					}
 					var source = {

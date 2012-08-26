@@ -4,6 +4,8 @@ if (!window.ModelsWebPortal) {
 		
 		theme : "ui-start",
 		
+		language : "",
+		
 		init : function() {
 			
 			$("#window").dialog({
@@ -33,6 +35,14 @@ if (!window.ModelsWebPortal) {
 			// translate contents
 			BabelFish.init();
 			ModelsWebPortal.initI18N();
+			
+			// set default language
+			var lang = $.url().param('lang');
+			if (lang != null) {
+				ModelsWebPortal.lang = lang;
+			} else {
+				ModelsWebPortal.lang = 'en';
+			}
 						
 		},
 		

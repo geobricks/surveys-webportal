@@ -53,17 +53,29 @@ if (!window.QuestionsManager) {
 				
 				success : function(response) {
 					
-					var questions = response[0].questions;
+					var questions = response[0].model_questions;
 					var data = new Array();
 					
+					console.log('questions? ' + questions);
 					if (questions != null) {
+						console.log(questions.length);
 						for (var i = 0 ; i < questions.length ; i++) {
 							var row = {};
-							row["questionNumber"] = questions[i].questionNumber;
+							row["questionNumber"] = questions[i].question_number;
 							row["model_id"] = questions[i].model_id;
-							row["questionText"] = questions[i].questionText;
-							row["questionLanguage"] = questions[i].questionLanguage;
-							row["answerType"] = questions[i].answerType;
+							row["answerType"] = questions[i].answer_type;
+							switch (ModelsWebPortal.lang) {
+								case 'en' :
+									row["questionText"] = questions[i].en_text;
+									row["questionDescription"] = questions[i].en_description;
+								break;
+							};
+							if (row["questionText"] == null) {
+								row["questionText"] = questions[i].en_text;
+							}
+							if (row["questionDescription"] == null) {
+								row["questionDescription"] = questions[i].en_text;
+							}
 							data[i] = row;
 						}
 					}
@@ -84,7 +96,7 @@ if (!window.QuestionsManager) {
 		                columns: [
 		                   {text: '#', datafield: 'questionNumber'},
 		                   {text: 'Question', datafield: 'questionText'},
-		                   {text: 'Language', datafield: 'questionLanguage'},
+		                   {text: 'Description', datafield: 'questionDescription'},
 		                   {text: 'Answer Type', datafield: 'answerType'}
 		                ],
 		                theme: ModelsWebPortal.theme
