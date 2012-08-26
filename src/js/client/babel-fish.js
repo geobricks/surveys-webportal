@@ -41,7 +41,11 @@ if (!window.BabelFish) {
 		},
 		
 		translateHTMLWithLabel : function (id, label) {
-			document.getElementById(id).innerHTML = $.i18n.prop(label);
+			try {
+				document.getElementById(id).innerHTML = $.i18n.prop(label);
+			} catch (err) {
+				console.log(id + ", " + label + ", " + err);
+			}
 		},
 		
 		translateButton : function (id) {

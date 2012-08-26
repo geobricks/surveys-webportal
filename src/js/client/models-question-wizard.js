@@ -27,16 +27,46 @@ if (!window.ModelsQuestionWizard) {
 	    	
 	    },
 	    
-	    initI18N : function() {
+	    initI18N : function(count) {
 			
 	    	BabelFish.translateHTML('current_model');
 			BabelFish.translateHTML('model_description');
+			BabelFish.translateHTML('answer_type');
 			
-	    	BabelFish.translateButtonWithLabel('buttonDeleteTranslation_0', 'buttonDeleteTranslation');
-			BabelFish.translateButtonWithLabel('buttonAddTranslation_0', 'buttonAddTranslation');
-			BabelFish.translateHTMLWithLabel('question_label_0', 'question_label');
-			BabelFish.translateHTMLWithLabel('answer_type_0', 'answer_type');
-			BabelFish.translateHTMLWithLabel('question_description_0', 'question_description');
+	    	BabelFish.translateButtonWithLabel('buttonDeleteTranslation_' + count, 'buttonDeleteTranslation');
+			BabelFish.translateButtonWithLabel('buttonAddTranslation_' + count, 'buttonAddTranslation');
+			BabelFish.translateHTMLWithLabel('question_label_' + count, 'question_label');
+			BabelFish.translateHTMLWithLabel('question_description_' + count, 'question_description');
+			
+		},
+		
+		addTranslationListener : function(id) {
+			
+			// add new form
+			$('#questionTable').last().append(B.build(1));
+			
+			// create buttons
+			$(".model-manager-button-i18n").jqxButton({ 
+				width: '200', 
+				theme: ModelsWebPortal.theme 
+			});
+			
+			// languages drop-down
+			$("#listTranslateQuestion_" + id).jqxDropDownList({ 
+				source: ModelsQuestionWizard.languages, 
+				selectedIndex: 1, 
+				width: '150px', 
+				height: '60px', 
+				theme: ModelsWebPortal.theme
+			});
+			
+			// bind this function to the new 'Add Translation' button
+			$('#buttonAddTranslation_0').bind('click', function() {
+				ModelsQuestionWizard.addTranslationListener(1 + id);
+			});
+			
+			// translate labels
+			ModelsQuestionWizard.initI18N(id);
 			
 		},
 	    
@@ -98,6 +128,13 @@ if (!window.ModelsQuestionWizard) {
 			$(".model-manager-button-i18n").jqxButton({ 
 				width: '200', 
 				theme: ModelsWebPortal.theme 
+			});
+			
+			/**
+			 * Append a new form to translate the question
+			 */
+			$('#buttonAddTranslation_0').bind('click', function() {
+				ModelsQuestionWizard.addTranslationListener(1);
 			});
 			
 			$("#buttonSummaryQuestion").bind('click', function() {
@@ -181,6 +218,7 @@ if (!window.ModelsQuestionWizard) {
 			$("#buttonNextQuestion").bind('click', function() {
 				
 				var counter = 0;
+				var payload = {};
 				
 				// iterate to get all the (possible) translations of the questions
 				while ($('#question_' + counter).val() != null) {
@@ -197,7 +235,6 @@ if (!window.ModelsQuestionWizard) {
 						id = ModelsQuestionWizard.model._id;
 					}
 					
-					var payload = {};
 					payload.model_id = id;
 					payload.answer_type = answerType;
 					payload.question_number = ModelsQuestionWizard.questionNumber;
@@ -226,30 +263,32 @@ if (!window.ModelsQuestionWizard) {
 						break;
 					}
 					
-					$.ajax({
-	    				
-	    				type: 'GET',
-	    				url: 'http://localhost:5000/addQuestion/model?callback=?',
-	    				dataType: 'jsonp',
-	    				jsonp: 'callback',
-	    				data: payload,
-	    				
-	    				success : function(response) {
-	    					ModelsQuestionWizard.questionNumber = 1 + ModelsQuestionWizard.questionNumber;
-	    			    	$('#questionArea').load('single-question.html', function() {
-	    			    		ModelsQuestionWizard.initElements();
-	    			    	});
-	    				}
-	    				
-					});
-					
 					counter++;
 				
 				}
 				
+				console.log(payload);
+				
+				$.ajax({
+    				
+    				type: 'GET',
+    				url: 'http://localhost:5000/addQuestion/model?callback=?',
+    				dataType: 'jsonp',
+    				jsonp: 'callback',
+    				data: payload,
+    				
+    				success : function(response) {
+    					ModelsQuestionWizard.questionNumber = 1 + ModelsQuestionWizard.questionNumber;
+    			    	$('#questionArea').load('single-question.html', function() {
+    			    		ModelsQuestionWizard.initElements();
+    			    	});
+    				}
+    				
+				});
+				
 			});
 			
-			ModelsQuestionWizard.initI18N();
+			ModelsQuestionWizard.initI18N(0);
 		
 		}
 	
