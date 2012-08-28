@@ -52,6 +52,7 @@ if (!window.ModelsWebPortal) {
 			BabelFish.translateHTML('menu_android');
 			BabelFish.translateHTML('menu_models_manager');
 			BabelFish.translateHTML('menu_statistical_engine');
+			BabelFish.translateHTML('menu_products');
 			BabelFish.translateHTML('menu_contribute');
 			BabelFish.translateHTML('menu_login');
 			BabelFish.translateHTML('footer_desktop');
@@ -109,9 +110,15 @@ if (!window.ModelsWebPortal) {
 					case "#home":
 						document.getElementById('container').innerHTML = '';
 						$("#container").load("home.html", function() {
-							
+							ModelsWebPortal.init();
 						});
 					break;	
+					case "#products":
+						document.getElementById('container').innerHTML = '';
+						$("#container").load("products.html", function() {
+							Products.init();
+						});
+					break;
 					case "#android":
 						document.getElementById('container').innerHTML = '';
 					break;
