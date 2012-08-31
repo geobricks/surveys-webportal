@@ -6,12 +6,14 @@ if (!window.ModelsQuestionWizard) {
 		
 		questionNumber : 1,
 		
+		multiple_choice_rendered : false,
+		
 		languages : [
-	                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='/resources/images/gb.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>English</span></div>", title: 'English', value: 'en' },
-	                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='/resources/images/fr.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>François</span></div>", title: 'François', value: 'fr' },
-	                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='/resources/images/es.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>Español</span></div>", title: 'Español', value: 'es' },
-	                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='/resources/images/it.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>Italiano</span></div>", title: 'Italiano', value: 'it' },
-	                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='/resources/images/pt.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>Português</span></div>", title: 'Português', value: 'pt' }
+	                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/gb.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>English</span></div>", title: 'English', value: 'en' },
+	                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/fr.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>François</span></div>", title: 'François', value: 'fr' },
+	                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/es.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>Español</span></div>", title: 'Español', value: 'es' },
+	                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/it.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>Italiano</span></div>", title: 'Italiano', value: 'it' },
+	                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/pt.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>Português</span></div>", title: 'Português', value: 'pt' }
 	                ],
 	                
 	    questionHTML : '<tr><td colspan="3" style="font-family: sans-serif; font-size: 12px; color: #46A3CA; font-weight: bold; width: 60%;">Question</td></tr><tr id="questionRow"><td colspan="3"><textarea rows="5" cols="107" id="question"></textarea></td></tr>',
@@ -27,6 +29,68 @@ if (!window.ModelsQuestionWizard) {
 	    	
 	    },
 	    
+	    initMultipleChoice : function() {
+	    	
+	    	console.log('init multiple choice');
+	    	console.log($('#grid_multiple_choice'));
+	    	
+	    	var data = new Array();
+	    	
+	    	var row = {};
+	    	row.choice_label = 'start typing, or double-click to edit';
+	    	row.choice_code = 'start typing, or double-click to edit';
+	    	data[0] = row;
+	    	
+	    	var source = {
+				localdata: data,
+	            datatype: "array"
+	        };
+				
+	    	var dataAdapter = new $.jqx.dataAdapter(source);
+	    	
+	    	$('#grid_multiple_choice').jqxGrid({
+            	width: 768,
+                height: 150,
+                source: dataAdapter,
+                editable: true,
+                columnsresize: true,
+                showheader: true,
+                sortable: true,
+                enablehover: true,
+                columns: [
+                   {text: 'Choice Label', datafield: 'choice_label'},
+                   {text: 'Choice Code', datafield: 'choice_code'}
+                ],
+                theme: ModelsWebPortal.theme
+            });
+	    	
+	    	$(".model-manager-button").jqxButton({ 
+				width: '200', 
+				theme: ModelsWebPortal.theme 
+			});
+	    	
+	    	$('#buttonAddAnotherMultipleChoice').bind('click', function () {
+	    		var row = {};
+		    	row.choice_label = 'start typing, or double-click to edit';
+		    	row.choice_code = 'start typing, or double-click to edit';
+	    		$("#grid_multiple_choice").jqxGrid('addrow', null, row);
+	    	});
+	    	
+	    	$('#buttonDeleteSelectedChoice').bind('click', function () {
+	    		var selectedrowindex = $("#grid_multiple_choice").jqxGrid('getselectedrowindex');
+                var rowscount = $("#grid_multiple_choice").jqxGrid('getdatainformation').rowscount;
+                if (selectedrowindex >= 0 && selectedrowindex < rowscount) {
+                    var id = $("#grid_multiple_choice").jqxGrid('getrowid', selectedrowindex);
+                    $("#grid_multiple_choice").jqxGrid('deleterow', id);
+                }
+	    	});
+	    	
+	    	BabelFish.translateButton('buttonAddAnotherMultipleChoice');
+	    	BabelFish.translateButton('buttonDeleteSelectedChoice');
+	    	BabelFish.translateHTML('multiple_choice');
+	    	
+	    },
+	    
 	    initI18N : function(count) {
 			
 	    	BabelFish.translateHTML('current_model');
@@ -37,6 +101,7 @@ if (!window.ModelsQuestionWizard) {
 			BabelFish.translateButtonWithLabel('buttonAddTranslation_' + count, 'buttonAddTranslation');
 			BabelFish.translateHTMLWithLabel('question_label_' + count, 'question_label');
 			BabelFish.translateHTMLWithLabel('question_description_' + count, 'question_description');
+			BabelFish.translateHTMLWithLabel('question_indicator_' + count, 'question_indicator');
 			
 		},
 		
@@ -56,7 +121,7 @@ if (!window.ModelsQuestionWizard) {
 				source: ModelsQuestionWizard.languages, 
 				selectedIndex: 1, 
 				width: '150px', 
-				height: '60px', 
+				height: '99px', 
 				theme: ModelsWebPortal.theme
 			});
 			
@@ -134,13 +199,17 @@ if (!window.ModelsQuestionWizard) {
 			row['label'] = $.i18n.prop("type_date");
 			answer_type_data[2] = row;
 			row = {};
+			row['code'] = 'single_value_boolean';
+			row['label'] = $.i18n.prop("type_boolean");
+			answer_type_data[3] = row;
+			row = {};
 			row['code'] = 'single_value_number';
 			row['label'] = $.i18n.prop("type_numeric_value");
-			answer_type_data[3] = row;
+			answer_type_data[4] = row;
 			row = {};
 			row['code'] = 'multiple_choice';
 			row['label'] = $.i18n.prop("type_multiple_choice");
-			answer_type_data[4] = row;
+			answer_type_data[5] = row;
 			
 			var answer_type_source = {
 				localdata: answer_type_data,
@@ -161,11 +230,29 @@ if (!window.ModelsQuestionWizard) {
 				theme: ModelsWebPortal.theme
 			});
 			
+			$('#listAnswerTypes').bind('change', function (e) {
+				switch (e.args.item.value) {
+					case 'multiple_choice':
+						$('#questionTable').last().after(MCB.build());
+			    		ModelsQuestionWizard.initMultipleChoice();
+			    		ModelsQuestionWizard.multiple_choice_rendered = true;
+					break;
+					default:
+						if (ModelsQuestionWizard.multiple_choice_rendered) {
+							$('#multiple_choice_row_1').remove();
+							$('#multiple_choice_row_2').remove();
+							$('#multiple_choice_row_3').remove();
+							ModelsQuestionWizard.multiple_choice_rendered = false;
+						}
+					break;
+				}
+			});
+			
 			$(".listTranslateQuestion").jqxDropDownList({ 
 				source: ModelsQuestionWizard.languages, 
 				selectedIndex: 1, 
 				width: '150px', 
-				height: '60px', 
+				height: '99px', 
 				theme: ModelsWebPortal.theme
 			});
 			
@@ -194,6 +281,7 @@ if (!window.ModelsQuestionWizard) {
 					
 					var questionText = $('#question_' + counter).val();
 					var questionInfo = $('#info_' + counter).val();
+					var questionIndicator = $('#indicator_' + counter).val();
 					var questionLanguage = $("#listTranslateQuestion_" + counter).jqxDropDownList('getSelectedItem').value;
 					var answerType = $("#listAnswerTypes").jqxDropDownList('getSelectedItem').value;
 					var id = ModelsQuestionWizard.model._id; 
@@ -207,22 +295,27 @@ if (!window.ModelsQuestionWizard) {
 						default: 
 							payload.en_text = questionText; 
 							payload.en_info = questionInfo;
+							payload.en_indicator = questionIndicator;
 						break;
 						case 'es': 
 							payload.es_text = questionText;
 							payload.es_info = questionInfo;
+							payload.es_indicator = questionIndicator;
 						break;
 						case 'fr': 
 							payload.fr_text = questionText;
 							payload.fr_info = questionInfo;
+							payload.fr_indicator = questionIndicator;
 						break;
 						case 'it': 
 							payload.it_text = questionText;
 							payload.it_info = questionInfo;
+							payload.it_indicator = questionIndicator;
 						break;
 						case 'pt': 
 							payload.pt_text = questionText;
 							payload.pt_info = questionInfo;
+							payload.pt_indicator = questionIndicator;
 						break;
 					}
 					

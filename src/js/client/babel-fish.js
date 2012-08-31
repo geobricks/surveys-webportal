@@ -37,7 +37,11 @@ if (!window.BabelFish) {
 		},
 		
 		translateHTML : function (id) {
-			document.getElementById(id).innerHTML = $.i18n.prop(id);
+			try {
+				document.getElementById(id).innerHTML = $.i18n.prop(id);
+			} catch (err) {
+				console.log(id + ", " + err);
+			}
 		},
 		
 		translateHTMLWithLabel : function (id, label) {
