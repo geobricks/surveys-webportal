@@ -86,6 +86,18 @@ if (!window.QuestionsManager) {
 									row["questionText"] = questions[i].pt_text;
 									row["questionDescription"] = questions[i].pt_info;
 								break;
+								case 'ar' :
+									row["questionText"] = questions[i].ar_text;
+									row["questionDescription"] = questions[i].ar_info;
+								break;
+								case 'cn' :
+									row["questionText"] = questions[i].cn_text;
+									row["questionDescription"] = questions[i].cn_info;
+								break;
+								case 'de' :
+									row["questionText"] = questions[i].de_text;
+									row["questionDescription"] = questions[i].de_info;
+								break;
 							};
 							if (row["questionText"] == null) {
 								row["questionText"] = questions[i].en_text;

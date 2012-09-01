@@ -71,7 +71,7 @@ if (!window.ModelsWebPortal) {
 		linkLanguageIcons : function() {
 			var url = document.URL;
 			var idx = url.indexOf('?');
-			var languages = ['es', 'en', 'fr', 'it', 'pt'];
+			var languages = ['ar', 'de', 'es', 'en', 'fr', 'it', 'pt', 'cn'];
 			if (idx > -1) 
 				url = url.substring(0, idx);
 			for (var i = 0 ; i < languages.length ; i++) 

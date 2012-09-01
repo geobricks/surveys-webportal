@@ -9,6 +9,9 @@ if (!window.ModelsQuestionWizard) {
 		multiple_choice_rendered : false,
 		
 		languages : [
+		             	{ html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/ae.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>الْعَرَبيّة</span></div>", title: 'الْعَرَبيّة', value: 'ar' },
+		             	{ html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/cn.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>中文</span></div>", title: '中文', value: 'cn' },
+		             	{ html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/de.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>Deutsch</span></div>", title: 'Deutsch', value: 'de' },
 	                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/gb.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>English</span></div>", title: 'English', value: 'en' },
 	                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/fr.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>François</span></div>", title: 'François', value: 'fr' },
 	                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/es.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>Español</span></div>", title: 'Español', value: 'es' },
@@ -37,8 +40,15 @@ if (!window.ModelsQuestionWizard) {
 	    	var data = new Array();
 	    	
 	    	var row = {};
-	    	row.choice_label = 'start typing, or double-click to edit';
-	    	row.choice_code = 'start typing, or double-click to edit';
+	    	row.ar_choice_label = 'ملصق';
+	    	row.cn_choice_label = '标签';
+	    	row.de_choice_label = 'Etikett';
+	    	row.es_choice_label = 'Etiqueta';
+	    	row.en_choice_label = 'Label';
+	    	row.fr_choice_label = '&Eacute;tiquette';
+	    	row.it_choice_label = 'Etichetta';
+	    	row.pt_choice_label = 'Etiqueta';
+	    	row.choice_code = null;
 	    	data[0] = row;
 	    	
 	    	var source = {
@@ -58,7 +68,14 @@ if (!window.ModelsQuestionWizard) {
                 sortable: true,
                 enablehover: true,
                 columns: [
-                   {text: 'Choice Label', datafield: 'choice_label'},
+                   {text: 'ملصق', datafield: 'ar_choice_label', width: 70},
+                   {text: '标签', datafield: 'cn_choice_label', width: 70},
+                   {text: 'Etikett', datafield: 'de_choice_label', width: 70},
+                   {text: 'Etiqueta', datafield: 'es_choice_label', width: 70},
+                   {text: 'Label', datafield: 'en_choice_label', width: 70},
+                   {text: '&Eacute;tiquette', datafield: 'fr_choice_label', width: 70},
+                   {text: 'Etichetta', datafield: 'it_choice_label', width: 70},
+                   {text: 'Etiqueta', datafield: 'pt_choice_label', width: 70},
                    {text: 'Choice Code', datafield: 'choice_code'}
                 ],
                 theme: ModelsWebPortal.theme
@@ -71,8 +88,15 @@ if (!window.ModelsQuestionWizard) {
 	    	
 	    	$('#buttonAddAnotherMultipleChoice').bind('click', function () {
 	    		var row = {};
-		    	row.choice_label = 'start typing, or double-click to edit';
-		    	row.choice_code = 'start typing, or double-click to edit';
+	    		row.ar_choice_label = 'ملصق';
+		    	row.cn_choice_label = '标签';
+		    	row.de_choice_label = 'Etikett';
+		    	row.es_choice_label = 'Etiqueta';
+		    	row.en_choice_label = 'Label';
+		    	row.fr_choice_label = '&Eacute;tiquette';
+		    	row.it_choice_label = 'Etichetta';
+		    	row.pt_choice_label = 'Etiqueta';
+		    	row.choice_code = null;
 	    		$("#grid_multiple_choice").jqxGrid('addrow', null, row);
 	    	});
 	    	
@@ -141,6 +165,18 @@ if (!window.ModelsQuestionWizard) {
 					default :
 						document.getElementById('currentModelName').innerHTML = ModelsQuestionWizard.model.en_name;
 						document.getElementById('currentModelDescription').innerHTML = ModelsQuestionWizard.model.en_abstract;
+					break;
+					case 'ar' :
+						document.getElementById('currentModelName').innerHTML = ModelsQuestionWizard.model.ar_name;
+						document.getElementById('currentModelDescription').innerHTML = ModelsQuestionWizard.model.ar_abstract;
+					break;
+					case 'cn' :
+						document.getElementById('currentModelName').innerHTML = ModelsQuestionWizard.model.cn_name;
+						document.getElementById('currentModelDescription').innerHTML = ModelsQuestionWizard.model.cn_abstract;
+					break;
+					case 'de' :
+						document.getElementById('currentModelName').innerHTML = ModelsQuestionWizard.model.de_name;
+						document.getElementById('currentModelDescription').innerHTML = ModelsQuestionWizard.model.de_abstract;
 					break;
 					case 'es' :
 						document.getElementById('currentModelName').innerHTML = ModelsQuestionWizard.model.es_name;
@@ -264,11 +300,14 @@ if (!window.ModelsQuestionWizard) {
 			var defaultLanguage = '';
 			defaultLanguage = ModelsQuestionWizard.model.model_default_language;
 			switch(defaultLanguage) {
-				case 'en': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 0 ); break;
-				case 'fr': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 1 ); break;
-				case 'es': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 2 ); break;
-				case 'it': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 3 ); break;
-				case 'pt': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 4 ); break;
+				case 'ar': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 0 ); break;
+				case 'cn': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 1 ); break;
+				case 'de': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 2 ); break;
+				case 'en': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 3 ); break;
+				case 'fr': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 4 ); break;
+				case 'es': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 5 ); break;
+				case 'it': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 6 ); break;
+				case 'pt': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 7 ); break;
 			};
 			
 			$("#buttonNextQuestion").bind('click', function() {
@@ -296,6 +335,21 @@ if (!window.ModelsQuestionWizard) {
 							payload.en_text = questionText; 
 							payload.en_info = questionInfo;
 							payload.en_indicator = questionIndicator;
+						break;
+						case 'ar': 
+							payload.ar_text = questionText;
+							payload.ar_info = questionInfo;
+							payload.ar_indicator = questionIndicator;
+						break;
+						case 'cn': 
+							payload.cn_text = questionText;
+							payload.cn_info = questionInfo;
+							payload.cn_indicator = questionIndicator;
+						break;
+						case 'de': 
+							payload.de_text = questionText;
+							payload.de_info = questionInfo;
+							payload.de_indicator = questionIndicator;
 						break;
 						case 'es': 
 							payload.es_text = questionText;
