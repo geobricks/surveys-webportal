@@ -66,6 +66,9 @@ if (!window.ModelsWebPortal) {
 			BabelFish.translateHTML('home_body_login');
 			BabelFish.translateHTML('home_title');
 			BabelFish.translateHTML('home_body');
+			BabelFish.translateHTML('contribute_abstract');
+			BabelFish.translateHTML('contribute_github');
+			BabelFish.translateHTML('contribute_translate');
 		},
 		
 		linkLanguageIcons : function() {
@@ -113,6 +116,12 @@ if (!window.ModelsWebPortal) {
 							ModelsWebPortal.init();
 						});
 					break;	
+					case "#contribute":
+						document.getElementById('container').innerHTML = '';
+						$("#container").load("contribute.html", function() {
+							ModelsWebPortal.initI18N();
+						});
+					break;
 					case "#products":
 						document.getElementById('container').innerHTML = '';
 						$("#container").load("products.html", function() {
