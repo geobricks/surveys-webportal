@@ -31,8 +31,21 @@ if (!window.ModelsQuestionWizard) {
 	    	
 	    	$('#questionArea').load('single-question.html', function() {
 	    		ModelsQuestionWizard.initElements();
+	    		ModelsQuestionWizard.initSuggestions();
 	    	});
 	    	
+	    },
+	    
+	    initSuggestions : function() {
+	    	$('#info_question').click(function() {
+	    		ModelsWebPortal.openWindow($.i18n.prop('info'), $.i18n.prop('info_question'));
+			});
+	    	$('#info_description').click(function() {
+	    		ModelsWebPortal.openWindow($.i18n.prop('info'), $.i18n.prop('info_description'));
+			});
+	    	$('#info_indicator').click(function() {
+	    		ModelsWebPortal.openWindow($.i18n.prop('info'), $.i18n.prop('info_indicator'));
+			});
 	    },
 	    
 	    initMultipleChoice : function() {
@@ -304,8 +317,6 @@ if (!window.ModelsQuestionWizard) {
 					counter++;
 				
 				}
-				
-				console.log(payload);
 				
 				$.ajax({
     				
