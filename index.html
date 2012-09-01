@@ -13,7 +13,11 @@
 			function screen_resolution_switch() {	
 				var w = screen.width;
 				if (w > 800) {
-					window.location = 'desktop/index.html';
+					var lang = navigator.language;
+					var idx = lang.indexOf('-');
+					if (idx > -1)
+						lang = lang.substring(0, idx);
+					window.location = 'desktop/index.html?lang=' + lang;
 				} else {
 					window.location = 'mobile/index.html';
 				}
