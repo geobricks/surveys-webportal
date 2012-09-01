@@ -296,6 +296,7 @@ if (!window.ModelsQuestionWizard) {
 			// set language on the drop-down
 			var defaultLanguage = '';
 			defaultLanguage = ModelsQuestionWizard.model.model_default_language;
+			console.log('defaultLanguage? ' + defaultLanguage);
 			switch(defaultLanguage) {
 				case 'ar': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 0 ); break;
 				case 'cn': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 1 ); break;

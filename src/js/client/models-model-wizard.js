@@ -45,12 +45,9 @@ if (!window.ModelsModelWizard) {
 					var description = $("#modelDescription").val();
 					var defaultLanguage = ($("#listLanguages").jqxDropDownList('getSelectedItem')).value;
 					var payload = {};
-					var name_key = defaultLanguage + "_name";
-					var abstract_key = defaultLanguage + "_abstract";
-					var default_language_key = defaultLanguage + "_default_language";
 					payload[defaultLanguage + "_name"] = title;
 					payload[defaultLanguage + "_abstract"] = description;
-					payload[defaultLanguage + "_default_language"] = defaultLanguage;
+					payload["model_default_language"] = defaultLanguage;
 					
 					$.ajax({
 						
