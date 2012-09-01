@@ -61,6 +61,9 @@ if (!window.ModelsQuestionWizard) {
 	    	row.fr_choice_label = '&Eacute;tiquette';
 	    	row.it_choice_label = 'Etichetta';
 	    	row.pt_choice_label = 'Etiqueta';
+	    	row.in_choice_label = 'लेबल';
+	    	row.ru_choice_label = 'этикетка';
+	    	row.jp_choice_label = 'ラベル';
 	    	row.choice_code = null;
 	    	data[0] = row;
 	    	
@@ -81,15 +84,18 @@ if (!window.ModelsQuestionWizard) {
                 sortable: true,
                 enablehover: true,
                 columns: [
+                   {text: 'Choice Code', datafield: 'choice_code'},
                    {text: 'ملصق', datafield: 'ar_choice_label', width: 70},
                    {text: '标签', datafield: 'cn_choice_label', width: 70},
                    {text: 'Etikett', datafield: 'de_choice_label', width: 70},
                    {text: 'Etiqueta', datafield: 'es_choice_label', width: 70},
                    {text: 'Label', datafield: 'en_choice_label', width: 70},
                    {text: '&Eacute;tiquette', datafield: 'fr_choice_label', width: 70},
+                   {text: 'लेबल', datafield: 'in_choice_label', width: 70},
                    {text: 'Etichetta', datafield: 'it_choice_label', width: 70},
+                   {text: 'ラベル', datafield: 'jp_choice_label', width: 70},
                    {text: 'Etiqueta', datafield: 'pt_choice_label', width: 70},
-                   {text: 'Choice Code', datafield: 'choice_code'}
+                   {text: 'этикетка', datafield: 'ru_choice_label', width: 70}
                 ],
                 theme: ModelsWebPortal.theme
             });
@@ -109,6 +115,9 @@ if (!window.ModelsQuestionWizard) {
 		    	row.fr_choice_label = '&Eacute;tiquette';
 		    	row.it_choice_label = 'Etichetta';
 		    	row.pt_choice_label = 'Etiqueta';
+		    	row.in_choice_label = 'लेबल';
+		    	row.ru_choice_label = 'этикетка';
+		    	row.jp_choice_label = 'ラベル';
 		    	row.choice_code = null;
 	    		$("#grid_multiple_choice").jqxGrid('addrow', null, row);
 	    	});
@@ -195,10 +204,17 @@ if (!window.ModelsQuestionWizard) {
 			});
 			
 			$("#buttonSummaryQuestion").bind('click', function() {
+	    		
+				/**
+				 * se salvo ogni volta che torno al sommario salvo delle domanded vuote...
+				 */
+//				ModelsQuestionWizard.saveQuestion(true);
+	    		
 	    		var id = ModelsQuestionWizard.model._id;
 	    		$("#container").load("questions-manager.html", function() {
 					QuestionsManager.init(id);
 				});
+	    		
 	    	});
 			
 			// answer types
@@ -287,58 +303,96 @@ if (!window.ModelsQuestionWizard) {
 				case 'en': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 3 ); break;
 				case 'fr': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 4 ); break;
 				case 'es': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 5 ); break;
-				case 'it': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 6 ); break;
-				case 'pt': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 7 ); break;
+				case 'in': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 6 ); break;
+				case 'it': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 7 ); break;
+				case 'jp': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 8 ); break;
+				case 'pt': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 9 ); break;
+				case 'ru': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 10 ); break;
 			};
 			
 			$("#buttonNextQuestion").bind('click', function() {
-				
-				var counter = 0;
-				var payload = {};
-				
-				// iterate to get all the (possible) translations of the questions
-				while ($('#question_' + counter).val() != null) {
-					
-					var questionText = $('#question_' + counter).val();
-					var questionInfo = $('#info_' + counter).val();
-					var questionIndicator = $('#indicator_' + counter).val();
-					var questionLanguage = $("#listTranslateQuestion_" + counter).jqxDropDownList('getSelectedItem').value;
-					var answerType = $("#listAnswerTypes").jqxDropDownList('getSelectedItem').value;
-					var id = ModelsQuestionWizard.model._id; 
-					
-					payload.model_id = id;
-					payload.answer_type = answerType;
-					payload.question_number = ModelsQuestionWizard.questionNumber;
-					
-					payload[questionLanguage + "_text"] = questionText; 
-					payload[questionLanguage + "_info"] = questionInfo;
-					payload[questionLanguage + "_indicator"] = questionIndicator;
-					
-					counter++;
-				
-				}
-				
-				$.ajax({
-    				
-    				type: 'GET',
-    				url: 'http://localhost:5000/addQuestion/model?callback=?',
-    				dataType: 'jsonp',
-    				jsonp: 'callback',
-    				data: payload,
-    				
-    				success : function(response) {
-    					ModelsQuestionWizard.questionNumber = 1 + ModelsQuestionWizard.questionNumber;
-    			    	$('#questionArea').load('single-question.html', function() {
-    			    		ModelsQuestionWizard.initElements();
-    			    	});
-    				}
-    				
-				});
-				
+				ModelsQuestionWizard.saveQuestion();
 			});
 			
 			ModelsQuestionWizard.initI18N(0);
 		
+		},
+		
+		saveQuestion : function() {
+			
+			var counter = 0;
+			var payload = {};
+			
+			// iterate to get all the (possible) translations of the questions
+			while ($('#question_' + counter).val() != null) {
+				
+				var questionText = $('#question_' + counter).val();
+				var questionInfo = $('#info_' + counter).val();
+				var questionIndicator = $('#indicator_' + counter).val();
+				var questionLanguage = $("#listTranslateQuestion_" + counter).jqxDropDownList('getSelectedItem').value;
+				var answerType = $("#listAnswerTypes").jqxDropDownList('getSelectedItem').value;
+				var id = ModelsQuestionWizard.model._id; 
+				
+				payload.model_id = id;
+				payload.answer_type = answerType;
+				payload.question_number = ModelsQuestionWizard.questionNumber;
+				
+				payload[questionLanguage + "_text"] = questionText; 
+				payload[questionLanguage + "_info"] = questionInfo;
+				payload[questionLanguage + "_indicator"] = questionIndicator;
+				
+				// collect multiple choices, if any...
+				if (ModelsQuestionWizard.multiple_choice_rendered) {
+					console.log('collect multiple choices...');
+					var choices = new Array();
+					var rows = $('#grid_multiple_choice').jqxGrid('getrows');
+					for (var i = 0 ; i < rows.length ; i++) {
+						var choice = {};
+						choice.choice_number = (1 + i);
+						if (rows[i].choice_code != null && rows[i].choice_code.length > 0) {
+							choice.choice_code = rows[i].choice_code;
+						} else {
+							console.log(rows[i][ModelsWebPortal.lang + "_choice_label"]);
+							choice.choice_code = rows[i][ModelsWebPortal.lang + "_choice_label"];
+						}
+						choice.ar_choice_label = rows[i].ar_choice_label;
+						choice.cn_choice_label = rows[i].cn_choice_label;
+						choice.de_choice_label = rows[i].de_choice_label;
+						choice.es_choice_label = rows[i].es_choice_label;
+						choice.en_choice_label = rows[i].en_choice_label;
+						choice.fr_choice_label = rows[i].fr_choice_label;
+						choice.in_choice_label = rows[i].in_choice_label;
+						choice.it_choice_label = rows[i].it_choice_label;
+						choice.jp_choice_label = rows[i].jp_choice_label;
+						choice.pt_choice_label = rows[i].pt_choice_label;
+						choice.ru_choice_label = rows[i].ru_choice_label;
+						choices[i] = choice;
+					}
+					payload.choices = choices;
+					console.log(JSON.stringify(payload));
+				}
+				
+				counter++;
+			
+			}
+			
+			$.ajax({
+				
+				type: 'GET',
+				url: 'http://localhost:5000/addQuestion/model?callback=?',
+				dataType: 'jsonp',
+				jsonp: 'callback',
+				data: payload,
+				
+				success : function(response) {
+					ModelsQuestionWizard.questionNumber = 1 + ModelsQuestionWizard.questionNumber;
+				    $('#questionArea').load('single-question.html', function() {
+				    	ModelsQuestionWizard.initElements();
+				    });
+				}
+				
+			});
+			
 		}
 	
 	}
