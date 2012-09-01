@@ -5,11 +5,17 @@ if (!window.ModelsModelWizard) {
 		initUI : function() {
 			
 			var source = [
-		                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='/resources/images/gb.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>English</span></div>", title: 'English', value: 'en' },
-		                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='/resources/images/fr.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>François</span></div>", title: 'François', value: 'fr' },
-		                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='/resources/images/es.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>Español</span></div>", title: 'Español', value: 'es' },
-		                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='/resources/images/it.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>Italiano</span></div>", title: 'Italiano', value: 'it' },
-		                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='/resources/images/pt.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>Português</span></div>", title: 'Português', value: 'pt' }
+		                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/ae.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>الْعَرَبيّة</span></div>", title: 'الْعَرَبيّة', value: 'ar' },
+		                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/cn.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>中文</span></div>", title: '中文', value: 'cn' },
+		                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/de.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>Deutsch</span></div>", title: 'Deutsch', value: 'de' },
+		                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/gb.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>English</span></div>", title: 'English', value: 'en' },
+		                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/fr.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>François</span></div>", title: 'François', value: 'fr' },
+		                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/in.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>हिन्दी</span></div>", title: 'हिन्दी', value: 'in' },
+		                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/es.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>Español</span></div>", title: 'Español', value: 'es' },
+		                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/it.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>Italiano</span></div>", title: 'Italiano', value: 'it' },
+		                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/jp.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>日本語</span></div>", title: '日本語', value: 'jp' },
+		                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/pt.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>Português</span></div>", title: 'Português', value: 'pt' },
+		                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/ru.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>русский</span></div>", title: 'русский', value: 'ru' }
 		                ];
 			
 			$("#listLanguages").jqxDropDownList({ 
@@ -39,34 +45,12 @@ if (!window.ModelsModelWizard) {
 					var description = $("#modelDescription").val();
 					var defaultLanguage = ($("#listLanguages").jqxDropDownList('getSelectedItem')).value;
 					var payload = {};
-					
-					switch(defaultLanguage) {
-						default :
-							payload.en_name = title;
-							payload.en_abstract = description;
-							payload.model_default_language = defaultLanguage;
-						break;
-						case 'es' :
-							payload.es_name = title;
-							payload.es_abstract = description;
-							payload.model_default_language = defaultLanguage;
-						break;
-						case 'fr' :
-							payload.fr_name = title;
-							payload.fr_abstract = description;
-							payload.model_default_language = defaultLanguage;
-						break;
-						case 'it' :
-							payload.it_name = title;
-							payload.it_abstract = description;
-							payload.model_default_language = defaultLanguage;
-						break;
-						case 'pt' :
-							payload.pt_name = title;
-							payload.pt_abstract = description;
-							payload.model_default_language = defaultLanguage;
-						break;
-					}
+					var name_key = defaultLanguage + "_name";
+					var abstract_key = defaultLanguage + "_abstract";
+					var default_language_key = defaultLanguage + "_default_language";
+					payload[defaultLanguage + "_name"] = title;
+					payload[defaultLanguage + "_abstract"] = description;
+					payload[defaultLanguage + "_default_language"] = defaultLanguage;
 					
 					$.ajax({
 						

@@ -9,14 +9,17 @@ if (!window.ModelsQuestionWizard) {
 		multiple_choice_rendered : false,
 		
 		languages : [
-		             	{ html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/ae.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>الْعَرَبيّة</span></div>", title: 'الْعَرَبيّة', value: 'ar' },
-		             	{ html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/cn.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>中文</span></div>", title: '中文', value: 'cn' },
-		             	{ html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/de.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>Deutsch</span></div>", title: 'Deutsch', value: 'de' },
+	                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/ae.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>الْعَرَبيّة</span></div>", title: 'الْعَرَبيّة', value: 'ar' },
+	                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/cn.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>中文</span></div>", title: '中文', value: 'cn' },
+	                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/de.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>Deutsch</span></div>", title: 'Deutsch', value: 'de' },
 	                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/gb.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>English</span></div>", title: 'English', value: 'en' },
 	                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/fr.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>François</span></div>", title: 'François', value: 'fr' },
+	                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/in.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>हिन्दी</span></div>", title: 'हिन्दी', value: 'in' },
 	                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/es.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>Español</span></div>", title: 'Español', value: 'es' },
 	                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/it.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>Italiano</span></div>", title: 'Italiano', value: 'it' },
-	                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/pt.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>Português</span></div>", title: 'Português', value: 'pt' }
+	                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/jp.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>日本語</span></div>", title: '日本語', value: 'jp' },
+	                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/pt.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>Português</span></div>", title: 'Português', value: 'pt' },
+	                    { html: "<div style='height: 20px; float: left;'><img style='float: left; margin-top: 2px; margin-right: 5px;' src='../resources/images/ru.png'/><span style='float: left; font-size: 13px; font-family: Verdana Arial;'>русский</span></div>", title: 'русский', value: 'ru' }
 	                ],
 	                
 	    questionHTML : '<tr><td colspan="3" style="font-family: sans-serif; font-size: 12px; color: #46A3CA; font-weight: bold; width: 60%;">Question</td></tr><tr id="questionRow"><td colspan="3"><textarea rows="5" cols="107" id="question"></textarea></td></tr>',
@@ -33,9 +36,6 @@ if (!window.ModelsQuestionWizard) {
 	    },
 	    
 	    initMultipleChoice : function() {
-	    	
-	    	console.log('init multiple choice');
-	    	console.log($('#grid_multiple_choice'));
 	    	
 	    	var data = new Array();
 	    	
@@ -160,41 +160,9 @@ if (!window.ModelsQuestionWizard) {
 		},
 	    
 	    initElements : function(questionNumber) {
-			
-	    	switch (ModelsWebPortal.lang) {
-					default :
-						document.getElementById('currentModelName').innerHTML = ModelsQuestionWizard.model.en_name;
-						document.getElementById('currentModelDescription').innerHTML = ModelsQuestionWizard.model.en_abstract;
-					break;
-					case 'ar' :
-						document.getElementById('currentModelName').innerHTML = ModelsQuestionWizard.model.ar_name;
-						document.getElementById('currentModelDescription').innerHTML = ModelsQuestionWizard.model.ar_abstract;
-					break;
-					case 'cn' :
-						document.getElementById('currentModelName').innerHTML = ModelsQuestionWizard.model.cn_name;
-						document.getElementById('currentModelDescription').innerHTML = ModelsQuestionWizard.model.cn_abstract;
-					break;
-					case 'de' :
-						document.getElementById('currentModelName').innerHTML = ModelsQuestionWizard.model.de_name;
-						document.getElementById('currentModelDescription').innerHTML = ModelsQuestionWizard.model.de_abstract;
-					break;
-					case 'es' :
-						document.getElementById('currentModelName').innerHTML = ModelsQuestionWizard.model.es_name;
-						document.getElementById('currentModelDescription').innerHTML = ModelsQuestionWizard.model.es_abstract;
-					break;
-					case 'fr' :
-						document.getElementById('currentModelName').innerHTML = ModelsQuestionWizard.model.fr_name;
-						document.getElementById('currentModelDescription').innerHTML = ModelsQuestionWizard.model.fr_abstract;
-					break;
-					case 'pt' :
-						document.getElementById('currentModelName').innerHTML = ModelsQuestionWizard.model.pt_name;
-						document.getElementById('currentModelDescription').innerHTML = ModelsQuestionWizard.model.pt_abstract;
-					break;
-					case 'it' :
-						document.getElementById('currentModelName').innerHTML = ModelsQuestionWizard.model.it_name;
-						document.getElementById('currentModelDescription').innerHTML = ModelsQuestionWizard.model.it_abstract;
-					break;
-				};
+	    	
+	    	document.getElementById('currentModelName').innerHTML = ModelsQuestionWizard.model[ModelsWebPortal.lang + "_name"];
+	    	document.getElementById('currentModelDescription').innerHTML = ModelsQuestionWizard.model[ModelsWebPortal.lang + "_abstract"];
 			
 			$(".model-manager-button").jqxButton({ 
 				width: '150', 
@@ -329,49 +297,9 @@ if (!window.ModelsQuestionWizard) {
 					payload.answer_type = answerType;
 					payload.question_number = ModelsQuestionWizard.questionNumber;
 					
-					// multilanguage
-					switch (questionLanguage) {
-						default: 
-							payload.en_text = questionText; 
-							payload.en_info = questionInfo;
-							payload.en_indicator = questionIndicator;
-						break;
-						case 'ar': 
-							payload.ar_text = questionText;
-							payload.ar_info = questionInfo;
-							payload.ar_indicator = questionIndicator;
-						break;
-						case 'cn': 
-							payload.cn_text = questionText;
-							payload.cn_info = questionInfo;
-							payload.cn_indicator = questionIndicator;
-						break;
-						case 'de': 
-							payload.de_text = questionText;
-							payload.de_info = questionInfo;
-							payload.de_indicator = questionIndicator;
-						break;
-						case 'es': 
-							payload.es_text = questionText;
-							payload.es_info = questionInfo;
-							payload.es_indicator = questionIndicator;
-						break;
-						case 'fr': 
-							payload.fr_text = questionText;
-							payload.fr_info = questionInfo;
-							payload.fr_indicator = questionIndicator;
-						break;
-						case 'it': 
-							payload.it_text = questionText;
-							payload.it_info = questionInfo;
-							payload.it_indicator = questionIndicator;
-						break;
-						case 'pt': 
-							payload.pt_text = questionText;
-							payload.pt_info = questionInfo;
-							payload.pt_indicator = questionIndicator;
-						break;
-					}
+					payload[questionLanguage + "_text"] = questionText; 
+					payload[questionLanguage + "_info"] = questionInfo;
+					payload[questionLanguage + "_indicator"] = questionIndicator;
 					
 					counter++;
 				

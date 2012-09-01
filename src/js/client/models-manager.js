@@ -91,28 +91,10 @@ if (!window.ModelsManager) {
 						row["defaultLanguage"] = response[i].model_default_language;
 						row["dateLastUpdate"] = response[i].model_date_last_update.substring(0, 10) + " (" + response[i].model_date_last_update.substring(11, 19) + ")";
 						row["creationDate"] = response[i].model_creation_date.substring(0, 10) + " (" + response[i].model_creation_date.substring(11, 19) + ")";
-						switch (ModelsWebPortal.lang) {
-							default :
-								row["description"] = response[i].en_abstract;
-								row["title"] = response[i].en_name;
-							break;
-							case 'es' :
-								row["description"] = response[i].es_abstract;
-								row["title"] = response[i].es_name;
-							break;
-							case 'fr' :
-								row["description"] = response[i].fr_abstract;
-								row["title"] = response[i].fr_name;
-							break;
-							case 'it' :
-								row["description"] = response[i].it_abstract;
-								row["title"] = response[i].it_name;
-							break;
-							case 'pt' :
-								row["description"] = response[i].pt_abstract;
-								row["title"] = response[i].pt_name;
-							break;
-						};
+						var abstract_key = ModelsWebPortal.lang + "_abstract";
+						var name_key = ModelsWebPortal.lang + "_name";
+						row["description"] = response[i][abstract_key];
+						row["title"] = response[i][name_key];
 						if (row["description"] == null) {
 							row["description"] = response[i].en_abstract;
 						}

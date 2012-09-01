@@ -65,40 +65,8 @@ if (!window.QuestionsManager) {
 								case 'single_value_number': row["answerType"] = $.i18n.prop("type_numeric_value"); break;
 								case 'multiple_choice': row["answerType"] = $.i18n.prop("type_multiple_choice"); break;
 							};
-							switch (ModelsWebPortal.lang) {
-								default :
-									row["questionText"] = questions[i].en_text;
-									row["questionDescription"] = questions[i].en_info;
-								break;
-								case 'es' :
-									row["questionText"] = questions[i].es_text;
-									row["questionDescription"] = questions[i].es_info;
-								break;
-								case 'fr' :
-									row["questionText"] = questions[i].fr_text;
-									row["questionDescription"] = questions[i].fr_info;
-								break;
-								case 'it' :
-									row["questionText"] = questions[i].it_text;
-									row["questionDescription"] = questions[i].it_info;
-								break;
-								case 'pt' :
-									row["questionText"] = questions[i].pt_text;
-									row["questionDescription"] = questions[i].pt_info;
-								break;
-								case 'ar' :
-									row["questionText"] = questions[i].ar_text;
-									row["questionDescription"] = questions[i].ar_info;
-								break;
-								case 'cn' :
-									row["questionText"] = questions[i].cn_text;
-									row["questionDescription"] = questions[i].cn_info;
-								break;
-								case 'de' :
-									row["questionText"] = questions[i].de_text;
-									row["questionDescription"] = questions[i].de_info;
-								break;
-							};
+							row["questionText"] = questions[i][ModelsWebPortal.lang + "_text"];
+							row["questionDescription"] = questions[i][ModelsWebPortal.lang + "_info"];
 							if (row["questionText"] == null) {
 								row["questionText"] = questions[i].en_text;
 							}
