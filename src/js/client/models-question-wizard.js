@@ -355,17 +355,28 @@ if (!window.ModelsQuestionWizard) {
 							console.log(rows[i][ModelsWebPortal.lang + "_choice_label"]);
 							choice.choice_code = rows[i][ModelsWebPortal.lang + "_choice_label"];
 						}
-						choice.ar_choice_label = rows[i].ar_choice_label;
-						choice.cn_choice_label = rows[i].cn_choice_label;
-						choice.de_choice_label = rows[i].de_choice_label;
-						choice.es_choice_label = rows[i].es_choice_label;
-						choice.en_choice_label = rows[i].en_choice_label;
-						choice.fr_choice_label = rows[i].fr_choice_label;
-						choice.in_choice_label = rows[i].in_choice_label;
-						choice.it_choice_label = rows[i].it_choice_label;
-						choice.jp_choice_label = rows[i].jp_choice_label;
-						choice.pt_choice_label = rows[i].pt_choice_label;
-						choice.ru_choice_label = rows[i].ru_choice_label;
+						if (rows[i].ar_choice_label.length > 0)
+							choice.ar_choice_label = rows[i].ar_choice_label;
+						if (rows[i].cn_choice_label.length > 0)
+							choice.cn_choice_label = rows[i].cn_choice_label;
+						if (rows[i].de_choice_label.length > 0)
+							choice.de_choice_label = rows[i].de_choice_label;
+						if (rows[i].es_choice_label.length > 0)
+							choice.es_choice_label = rows[i].es_choice_label;
+						if (rows[i].en_choice_label.length > 0)
+							choice.en_choice_label = rows[i].en_choice_label;
+						if (rows[i].fr_choice_label.length > 0)
+							choice.fr_choice_label = rows[i].fr_choice_label;
+						if (rows[i].in_choice_label.length > 0)
+							choice.in_choice_label = rows[i].in_choice_label;
+						if (rows[i].it_choice_label.length > 0)
+							choice.it_choice_label = rows[i].it_choice_label;
+						if (rows[i].jp_choice_label.length > 0)
+							choice.jp_choice_label = rows[i].jp_choice_label;
+						if (rows[i].pt_choice_label.length > 0)
+							choice.pt_choice_label = rows[i].pt_choice_label;
+						if (rows[i].ru_choice_label.length > 0)
+							choice.ru_choice_label = rows[i].ru_choice_label;
 						choices[i] = choice;
 					}
 					payload.choices = choices;
