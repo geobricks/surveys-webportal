@@ -332,7 +332,7 @@ if (!window.ModelsQuestionWizard) {
 				var questionIndicator = $('#indicator_' + counter).val();
 				var questionLanguage = $("#listTranslateQuestion_" + counter).jqxDropDownList('getSelectedItem').value;
 				var answerType = $("#listAnswerTypes").jqxDropDownList('getSelectedItem').value;
-				var id = ModelsQuestionWizard.model._id; 
+				var id = ModelsQuestionWizard.model._id;
 				
 				payload.model_id = id;
 				payload.answer_type = answerType;

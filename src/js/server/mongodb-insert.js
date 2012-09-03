@@ -31,9 +31,28 @@ app.get("/insert/model", function(req, res, next) {
 // add question
 app.get("/addQuestion/model", function(req, res, next) {
 	var cleanPayload = cleanJSONP(req.query);
+	cleanPayload.model_id = req.query.model_id;
 	db.models.update({_id: db.ObjectId(req.query.model_id)}, {$addToSet: {model_questions: cleanPayload}}, function(err, model) {
 		if (err || !model) {
 			res.send("Error Adding Question: " + err);
+		} else {
+			if (req.query.callback == null || req.query.callback == "") {
+				res.send(JSON.stringify(req.query));
+			} else {
+				res.send(req.query.callback + "(" + JSON.stringify(req.query) + ");");
+			}
+		}
+	});
+});
+
+/**
+ * db.models.update({"_id" : ObjectId("504223e971d8b28f76000001")}, {$pull : {model_questions : {question_number: "1"}}})
+ * Remove a question from a given model * 
+ */
+app.get("/remove/question", function(req, res, next) {
+	db.models.update({_id: db.ObjectId(req.query.model_id)}, {$pull : { model_questions : {question_number : req.query.question_id}}}, function(err, model) {
+		if (err || !model) {
+			res.send("Error Deleting Question: " + err);
 		} else {
 			if (req.query.callback == null || req.query.callback == "") {
 				res.send(JSON.stringify(req.query));

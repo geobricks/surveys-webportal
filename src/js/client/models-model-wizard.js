@@ -20,7 +20,7 @@ if (!window.ModelsModelWizard) {
 			
 			$("#listLanguages").jqxDropDownList({ 
 				source: source, 
-				selectedIndex: 0, 
+				selectedIndex: 3, 
 				width: '768', 
 				height: '25px', 
 				theme: ModelsWebPortal.theme
