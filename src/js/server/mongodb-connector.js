@@ -1,4 +1,5 @@
 // ExpressJS
+var $ = require('jquery');
 var express = require('express');
 var app = express();
 app.enable("jsonp callback");
@@ -9,13 +10,12 @@ var databaseUrl = "geobricks";
 var collections = ["models"];
 var db = require("mongojs").connect(databaseUrl, collections);
 
-// Insert New Model
-app.get("/insert/model/:title/:description/:defaultLanguage", function(req, res, next) {
-	db.models.save({title : req.params.title, 
-					description : req.params.description, 
-					creationDate: new Date(), 
-					dateLastUpdate: new Date(),
-					defaultLanguage: req.params.defaultLanguage}, function(err, model) {
+//Insert New Model
+app.get("/insert/model", function(req, res, next) {
+	var cleanPayload = cleanJSONP(req.query);
+	cleanPayload.model_date_last_update = new Date();
+	cleanPayload.model_creation_date = new Date();
+	db.models.save(cleanPayload, function(err, model) {
 		if (err || !model) {
 			res.send("Error Saving new Model: " + err);
 		} else {
@@ -76,9 +76,6 @@ app.get("/delete/model/:id", function(req, res, next) {
 
 // add question
 app.post("/addQuestion/model", function(req, res, next) {
-	console.log(req.body);
-	console.log(req.body.model_id);
-	console.log(req.body.question);
 	db.models.update({_id: db.ObjectId(req.body.model_id)}, {$addToSet: {questions: req.body}}, function(err, model) {
 		if (err || !model) {
 			res.send("Error Adding Question: " + err);
@@ -92,16 +89,59 @@ app.post("/addQuestion/model", function(req, res, next) {
 	});
 });
 
+//add question
+app.get("/addQuestion/model", function(req, res, next) {
+	var cleanPayload = cleanJSONP(req.query);
+	cleanPayload.model_id = req.query.model_id;
+	db.models.update({_id: db.ObjectId(req.query.model_id)}, {$addToSet: {model_questions: cleanPayload}}, function(err, model) {
+		if (err || !model) {
+			res.send("Error Adding Question: " + err);
+		} else {
+			if (req.query.callback == null || req.query.callback == "") {
+				res.send(JSON.stringify(req.query));
+			} else {
+				res.send(req.query.callback + "(" + JSON.stringify(req.query) + ");");
+			}
+		}
+	});
+});
+
+/**
+ * db.models.update({"_id" : ObjectId("504223e971d8b28f76000001")}, {$pull : {model_questions : {question_number: "1"}}})
+ * Remove a question from a given model * 
+ */
+app.get("/remove/question", function(req, res, next) {
+	db.models.update({_id: db.ObjectId(req.query.model_id)}, {$pull : { model_questions : {question_number : req.query.question_id}}}, function(err, model) {
+		if (err || !model) {
+			res.send("Error Deleting Question: " + err);
+		} else {
+			if (req.query.callback == null || req.query.callback == "") {
+				res.send(JSON.stringify(req.query));
+			} else {
+				res.send(req.query.callback + "(" + JSON.stringify(req.query) + ");");
+			}
+		}
+	});
+});
+
+/**
+ * @param query payload from HTTP request
+ * @returns {JSON} clean payload
+ * 
+ * This function removes JSONP parameters 'callback' and '_' from the request not to save them in the DB
+ */
+function cleanJSONP(query) {
+	var payload = {};
+	$.each(query, function(k, v) {
+		if (k == 'callback' || k == '_' || k == 'model_id') {
+			
+		} else {
+			payload[k] = v;
+		}
+	});
+	return payload;
+}
+
 // Listen
 app.listen(3000);
 console.log('Listening on port 3000 for MongoDB');
-
-
-
-/**
- * query inner object: 
- * db.models.find({"questions.number": 1})
- * 
- * count all questions with number >= 1
- * db.models.find({"questions.number" : {$gte : 1}}).count()
- */

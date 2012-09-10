@@ -10,7 +10,7 @@ var databaseUrl = "geobricks";
 var collections = ["models"];
 var db = require("mongojs").connect(databaseUrl, collections);
 
-//Insert New Model
+// Insert New Model
 app.get("/insert/model", function(req, res, next) {
 	var cleanPayload = cleanJSONP(req.query);
 	cleanPayload.model_date_last_update = new Date();

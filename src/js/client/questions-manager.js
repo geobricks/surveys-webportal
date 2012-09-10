@@ -15,8 +15,6 @@ if (!window.QuestionsManager) {
 			
 			$("#buttonCreateNewQuestion").bind('click', function () {
 				
-				console.log('modelID? ' + modelID);
-				
 				$.ajax({
     				
     				type: 'GET',
@@ -155,12 +153,10 @@ if (!window.QuestionsManager) {
 			payload.model_id = modelID;
 			payload.question_id = questionID;
 			
-			console.log(payload);
-			
 			$.ajax({
 				
 				type: 'GET',
-				url: 'http://localhost:5000/remove/question?callback=?',
+				url: 'http://localhost:3000/remove/question?callback=?',
 				dataType: 'jsonp',
 				jsonp: 'callback',
 				data: payload,

@@ -52,7 +52,7 @@ if (!window.ModelsModelWizard) {
 					$.ajax({
 						
 						type: 'GET',
-						url: 'http://localhost:5000/insert/model?callback=?',
+						url: 'http://localhost:3000/insert/model?callback=?',
 						dataType: 'jsonp',
 						jsonp: 'callback',
 						data: payload,

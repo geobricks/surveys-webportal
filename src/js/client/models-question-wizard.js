@@ -296,7 +296,6 @@ if (!window.ModelsQuestionWizard) {
 			// set language on the drop-down
 			var defaultLanguage = '';
 			defaultLanguage = ModelsQuestionWizard.model.model_default_language;
-			console.log('defaultLanguage? ' + defaultLanguage);
 			switch(defaultLanguage) {
 				case 'ar': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 0 ); break;
 				case 'cn': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 1 ); break;
@@ -344,7 +343,6 @@ if (!window.ModelsQuestionWizard) {
 				
 				// collect multiple choices, if any...
 				if (ModelsQuestionWizard.multiple_choice_rendered) {
-					console.log('collect multiple choices...');
 					var choices = new Array();
 					var rows = $('#grid_multiple_choice').jqxGrid('getrows');
 					for (var i = 0 ; i < rows.length ; i++) {
@@ -353,7 +351,6 @@ if (!window.ModelsQuestionWizard) {
 						if (rows[i].choice_code != null && rows[i].choice_code.length > 0) {
 							choice.choice_code = rows[i].choice_code;
 						} else {
-							console.log(rows[i][ModelsWebPortal.lang + "_choice_label"]);
 							choice.choice_code = rows[i][ModelsWebPortal.lang + "_choice_label"];
 						}
 						if (rows[i].ar_choice_label.length > 0)
@@ -381,7 +378,6 @@ if (!window.ModelsQuestionWizard) {
 						choices[i] = choice;
 					}
 					payload.choices = choices;
-					console.log(JSON.stringify(payload));
 				}
 				
 				counter++;
@@ -391,7 +387,7 @@ if (!window.ModelsQuestionWizard) {
 			$.ajax({
 				
 				type: 'GET',
-				url: 'http://localhost:5000/addQuestion/model?callback=?',
+				url: 'http://localhost:3000/addQuestion/model?callback=?',
 				dataType: 'jsonp',
 				jsonp: 'callback',
 				data: payload,
