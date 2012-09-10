@@ -12,7 +12,58 @@ if (!window.Products) {
 				theme: ModelsWebPortal.theme 
 			});
 			
-			$(".model-manager-button").bind('click', function() {
+			/**
+			 * Show Table button
+			 */
+			$("#buttonShowTable").bind('click', function() {
+				Products.initTable();
+			});
+			
+			/**
+			 * Show Map button
+			 */
+			$("#buttonShowMap").bind('click', function() {
+				
+				/**
+				 * Get selected model's ID
+				 */
+				var rowindex = $('#models-grid').jqxGrid('getselectedrowindex');
+            	var rows = $('#models-grid').jqxGrid('getrows');
+            	var modelName = rows[rowindex].title;
+            	var modelID = rows[rowindex].id;
+            	
+            	/**
+            	 * Fetch answers by model ID
+            	 */
+            	$.ajax({
+    				
+    				type: 'GET',
+    				url: 'http://localhost:3000/select/answer/' + modelID + '?callback=?',
+    				dataType: 'jsonp',
+    				jsonp: 'callback',
+    				
+    				/**
+    				 * Show the answers on the map
+    				 */
+    				success : function(answers) {
+    					Products.initMap(answers);
+    				},
+    				
+    				/**
+    				 * Alert the user of the error
+    				 */
+    				error : function(err, b, c) {
+    					alert(err.status + ", " + b + ", " + c);
+    				}
+    				
+    			});
+            	
+			});
+			
+			/**
+			 * Show Chart button
+			 */
+			$("#buttonShowChart").bind('click', function() {
 				Products.initChart();
 			});
 			
@@ -162,7 +213,7 @@ if (!window.Products) {
 			
 		},
 		
-		initMap : function() {
+		initMap : function(answers) {
 			
 			var map = L.map('map').setView([23.75078240526587, 90.42640686035156], 12);
 			
@@ -181,61 +232,22 @@ if (!window.Products) {
 				a.layer.zoomToBounds();
 			});
 			
-			var m = new L.Marker(new L.LatLng(23.709707989997362, 90.40518522262573));
-			m.bindPopup('Low Income');
-			markers.addLayer(m);
-
-			m = new L.Marker(new L.LatLng(23.708593044879823, 90.40597915649414));
-			m.bindPopup('Low Income');
-			markers.addLayer(m);
-
-			m = new L.Marker(new L.LatLng(23.70920700262114, 90.4068374633789));
-			m.bindPopup('Medium Income');
-			markers.addLayer(m);
-
-			m = new L.Marker(new L.LatLng(23.71067066622209, 90.40499210357666));
-			m.bindPopup('Low Income');
-			markers.addLayer(m);
-			
-			m = new L.Marker(new L.LatLng(23.789252135848834, 90.4144549369812));
-			m.bindPopup('High Income');
-			markers.addLayer(m);
-
-			m = new L.Marker(new L.LatLng(23.79235435433391, 90.41381120681763));
-			m.bindPopup('High Income');
-			markers.addLayer(m);
-
-			m = new L.Marker(new L.LatLng(23.792275818070696, 90.42087078094482));
-			m.bindPopup('High Income');
-			markers.addLayer(m);
-			
-			m = new L.Marker(new L.LatLng(23.794278477956254, 90.36892175674438));
-			m.bindPopup('Medium Income');
-			markers.addLayer(m);
-
-			m = new L.Marker(new L.LatLng(23.794239210412012, 90.366690158844));
-			m.bindPopup('Medium Income');
-			markers.addLayer(m);
-
-			m = new L.Marker(new L.LatLng(23.793983971085208, 90.3644585609436));
-			m.bindPopup('High Income');
-			markers.addLayer(m);
-			
-			m = new L.Marker(new L.LatLng(23.792275818070696, 90.36666870117188));
-			m.bindPopup('Medium Income');
-			markers.addLayer(m);
-
-			m = new L.Marker(new L.LatLng(23.792432890549655, 90.37091732025146));
-			m.bindPopup('Medium Income');
-			markers.addLayer(m);
-			
-			m = new L.Marker(new L.LatLng(23.720532776686408, 90.36881446838379));
-			m.bindPopup('Low Income');
-			markers.addLayer(m);
-
-			m = new L.Marker(new L.LatLng(23.71884330472101, 90.37546634674072));
-			m.bindPopup('Medium Income');
-			markers.addLayer(m);
+			for (var i = 0 ; i < answers.length ; i++) {
+				var lat = answers[i].meta.location[0];
+				var lon = answers[i].meta.location[1];
+				var m = new L.Marker(new L.LatLng(lat, lon));
+				var s = '';
+				for (var j = 0 ; j < answers[i].data.length ; j++) {
+					s += '<b>Income:</b> ';
+					switch(answers[i].data[j]['answer']) {
+						case 0: s += 'Low'; break;
+						case 1: s += 'Medium'; break;
+						case 2: s += 'High'; break;
+					}
+				}
+				m.bindPopup(s);
+				markers.addLayer(m);
+			}
 			
 			map.addLayer(markers);
 			

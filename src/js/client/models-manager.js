@@ -89,8 +89,10 @@ if (!window.ModelsManager) {
 						var row = {};
 						row["id"] = response[i]._id;
 						row["defaultLanguage"] = response[i].model_default_language;
-						row["dateLastUpdate"] = response[i].model_date_last_update.substring(0, 10) + " (" + response[i].model_date_last_update.substring(11, 19) + ")";
-						row["creationDate"] = response[i].model_creation_date.substring(0, 10) + " (" + response[i].model_creation_date.substring(11, 19) + ")";
+						if (response[i].model_date_last_update != null)
+							row["dateLastUpdate"] = response[i].model_date_last_update.substring(0, 10) + " (" + response[i].model_date_last_update.substring(11, 19) + ")";
+						if (response[i].model_creation_date != null)
+							row["creationDate"] = response[i].model_creation_date.substring(0, 10) + " (" + response[i].model_creation_date.substring(11, 19) + ")";
 						var abstract_key = ModelsWebPortal.lang + "_abstract";
 						var name_key = ModelsWebPortal.lang + "_name";
 						row["description"] = response[i][abstract_key];
