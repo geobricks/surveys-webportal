@@ -4,18 +4,34 @@ if (!window.Products) {
 		
 		init : function() {
 			
-			// initiate table
-			Products.initTable();
+			/**
+			 * Initiate buttons
+			 */
+			$(".model-manager-button").jqxButton({ 
+				width: '200', 
+				theme: ModelsWebPortal.theme 
+			});
 			
-			// initiate chart
-			Products.initChart();
+			$(".model-manager-button").bind('click', function() {
+				Products.initChart();
+			});
 			
-			// initiate map
-			Products.initMap();
+			/**
+			 * Fill the grid with available models
+			 */
+			ModelsManager.findAllModels();
 			
-			// translate elements
+			/**
+			 * Translate elements
+			 */
 			Products.initI18N();
 			
+		},
+		
+		initI18N : function() {
+			BabelFish.translateButton('buttonShowTable');
+			BabelFish.translateButton('buttonShowMap');
+			BabelFish.translateButton('buttonShowChart');
 		},
 		
 		initTable : function() {
@@ -223,16 +239,6 @@ if (!window.Products) {
 			
 			map.addLayer(markers);
 			
-		},
-		
-		initI18N : function() {
-			BabelFish.translateHTML('products_description');
-			BabelFish.translateHTML('products_maps');
-			BabelFish.translateHTML('products_maps_description');
-			BabelFish.translateHTML('products_charts');
-			BabelFish.translateHTML('products_charts_description');
-			BabelFish.translateHTML('products_tables');
-			BabelFish.translateHTML('products_tables_description');
 		}
 		
 	}

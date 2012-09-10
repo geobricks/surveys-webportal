@@ -1,16 +1,22 @@
-// ExpressJS
+/**
+ * Express JS
+ */
 var $ = require('jquery');
 var express = require('express');
 var app = express();
 app.enable("jsonp callback");
 app.use(express.bodyParser());
 
-// init DB
+/**
+ * Initiate the DB
+ */
 var databaseUrl = "geobricks";
-var collections = ["models"];
+var collections = ["models", "answers"];
 var db = require("mongojs").connect(databaseUrl, collections);
 
-//Insert New Model
+/**
+ * Insert a new model
+ */
 app.get("/insert/model", function(req, res, next) {
 	var cleanPayload = cleanJSONP(req.query);
 	cleanPayload.model_date_last_update = new Date();
@@ -28,7 +34,9 @@ app.get("/insert/model", function(req, res, next) {
 	});
 });
 
-// Find all Model
+/**
+ * Find all models
+ */
 app.get("/select/model/:id", function(req, res, next) {
 	if (req.params.id == "*") {
 		query = {};
@@ -59,7 +67,42 @@ app.get("/select/model/:id", function(req, res, next) {
 	}
 });
 
-// Delete Model By Id
+/**
+ * Find all answers
+ */
+app.get("/select/answer/:id", function(req, res, next) {
+	if (req.params.id == "*") {
+		query = {};
+		db.answers.find(query, function(err, models) {
+			if (err || !models) {
+				res.send("Error Fetching the Answer: " + err);
+			} else {
+				if (req.query.callback == null || req.query.callback == "") {
+					res.send(JSON.stringify(models));
+				} else {
+					res.send(req.query.callback + "(" + JSON.stringify(models) + ");");
+				}
+			}
+		});
+	} else {
+		query = {"meta.model_id": req.params.id};
+		db.answers.find(query, function(err, models) {
+			if (err || !models) {
+				res.send("Error Fetching the Answer: " + err);
+			} else {
+				if (req.query.callback == null || req.query.callback == "") {
+					res.send(JSON.stringify(models));
+				} else {
+					res.send(req.query.callback + "(" + JSON.stringify(models) + ");");
+				}
+			}
+		});
+	}
+});
+
+/**
+ * Delete model by ID
+ */
 app.get("/delete/model/:id", function(req, res, next) {
 	db.models.remove({_id: db.ObjectId(req.params.id)}, function(err, model) {
 		if (err || !model) {
@@ -74,22 +117,9 @@ app.get("/delete/model/:id", function(req, res, next) {
 	});
 });
 
-// add question
-app.post("/addQuestion/model", function(req, res, next) {
-	db.models.update({_id: db.ObjectId(req.body.model_id)}, {$addToSet: {questions: req.body}}, function(err, model) {
-		if (err || !model) {
-			res.send("Error Adding Question: " + err);
-		} else {
-			if (req.query.callback == null || req.query.callback == "") {
-				res.send(JSON.stringify(req.params.id));
-			} else{
-				res.send(req.query.callback + "(" + JSON.stringify(req.params.id) + ");");
-			}
-		}
-	});
-});
-
-//add question
+/**
+ * Add question
+ */
 app.get("/addQuestion/model", function(req, res, next) {
 	var cleanPayload = cleanJSONP(req.query);
 	cleanPayload.model_id = req.query.model_id;
@@ -107,8 +137,7 @@ app.get("/addQuestion/model", function(req, res, next) {
 });
 
 /**
- * db.models.update({"_id" : ObjectId("504223e971d8b28f76000001")}, {$pull : {model_questions : {question_number: "1"}}})
- * Remove a question from a given model * 
+ * Remove a question from a given model  
  */
 app.get("/remove/question", function(req, res, next) {
 	db.models.update({_id: db.ObjectId(req.query.model_id)}, {$pull : { model_questions : {question_number : req.query.question_id}}}, function(err, model) {
