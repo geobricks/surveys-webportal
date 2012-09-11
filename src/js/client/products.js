@@ -31,6 +31,9 @@ if (!window.Products) {
             	var rows = $('#models-grid').jqxGrid('getrows');
             	var modelName = rows[rowindex].title;
             	var modelID = rows[rowindex].id;
+            	var model = rows[rowindex].model;
+            	
+            	console.log(model);
             	
             	/**
             	 * Fetch answers by model ID
@@ -46,7 +49,9 @@ if (!window.Products) {
     				 * Show the answers on the map
     				 */
     				success : function(answers) {
-    					Products.initMap(answers);
+    					$('#map_container').load('map.html', function() {
+    						Products.initMap(model, answers);
+    					});
     				},
     				
     				/**
@@ -213,9 +218,77 @@ if (!window.Products) {
 			
 		},
 		
-		initMap : function(answers) {
+		/**
+		 * This function calculate the center of the map
+		 * just doing an average on the latitude and
+		 * longitude of all the answers
+		 */
+		calculateMapCenter : function(answers) {
 			
-			var map = L.map('map').setView([23.75078240526587, 90.42640686035156], 12);
+			var center_lat = 0;
+			var center_lon = 0;
+			
+			for (var i = 0 ; i < answers.length ; i++) {
+				center_lat += answers[i].meta.location[0];
+				center_lon += answers[i].meta.location[1];
+			}
+			
+			center_lat = center_lat / answers.length;
+			center_lon = center_lon / answers.length;
+			
+			return new Array(center_lat, center_lon);
+			
+		},
+		
+		initMapUI : function(model, answers) {
+			
+			BabelFish.translateHTML('map_question_selector_label');
+			
+			var questions_data = new Array();
+			var row = {};
+			row['code'] = null;
+			row['label'] = $.i18n.prop("type_please_select");
+			questions_data[0] = row;
+			
+			for (var i = 0 ; i < model.model_questions.length ; i++) {
+				var row = {};
+				row['code'] = model.model_questions[i].question_number;
+				row['label'] = model.model_questions[i][ModelsWebPortal.lang + '_text'];
+				questions_data[1 + i] = row;
+			}
+			
+			var questions_source = {
+				localdata: questions_data,
+				datatype: "json",
+				datafields: [{name: 'code'}, {name: 'label'}],
+				id: 'code'
+			};
+				
+			var questions_data_adapter = new $.jqx.dataAdapter(questions_source);
+			
+			$("#map_question_selector").jqxDropDownList({ 
+				source: questions_data_adapter, 
+				displayMember: "label", 
+				valueMember: "code",
+				selectedIndex: 0, 
+				width: '688', 
+				height: '25px', 
+				theme: ModelsWebPortal.theme
+			});
+			
+		},
+		
+		initMap : function(model, answers) {
+			
+			/**
+			 * Initiate the interface to control the map
+			 */
+			Products.initMapUI(model, answers);
+			
+			/**
+			 * Initiate the map
+			 */
+			var map = L.map('map').setView(Products.calculateMapCenter(answers), 12);
 			
 			L.tileLayer('http://{s}.tile.cloudmade.com/17ad8466b1c24b86b173b2a1d5492115/997/256/{z}/{x}/{y}.png', {
 				attribution: 'GeoBricks.org',

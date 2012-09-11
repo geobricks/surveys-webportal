@@ -87,6 +87,7 @@ if (!window.ModelsManager) {
 					var data = new Array();
 					for (var i = 0 ; i < response.length ; i++) {
 						var row = {};
+						row["model"] = response[i];
 						row["id"] = response[i]._id;
 						row["defaultLanguage"] = response[i].model_default_language;
 						if (response[i].model_date_last_update != null)
