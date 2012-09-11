@@ -1,6 +1,8 @@
 if (!window.Products) {
 	
 	window.Products = {
+			
+		map : null,
 		
 		init : function() {
 			
@@ -276,6 +278,11 @@ if (!window.Products) {
 				theme: ModelsWebPortal.theme
 			});
 			
+			$("#map_question_selector").bind('change', function() {
+				var item = ($("#map_question_selector").jqxDropDownList('getSelectedItem')).originalItem;
+				Products.addMarkers(model, answers, item.code);
+			});
+			
 		},
 		
 		initMap : function(model, answers) {
@@ -288,13 +295,25 @@ if (!window.Products) {
 			/**
 			 * Initiate the map
 			 */
-			var map = L.map('map').setView(Products.calculateMapCenter(answers), 12);
+			if (Products.map == null) {
+				Products.map = L.map('map').setView(Products.calculateMapCenter(answers), 12);
+			}
 			
 			L.tileLayer('http://{s}.tile.cloudmade.com/17ad8466b1c24b86b173b2a1d5492115/997/256/{z}/{x}/{y}.png', {
 				attribution: 'GeoBricks.org',
 				maxZoom: 17
-			}).addTo(map);
-
+			}).addTo(Products.map);			
+			
+		},
+		
+		/**
+		 * Show markers on the map according to user's selection
+		 */
+		addMarkers : function(model, answers, answerID) {
+			
+			var questionLabel = Products.getQuestionLabel(model, answerID);
+			var answerType = Products.getAnswerType(model, answerID);
+			
 			var markers = new L.MarkerClusterGroup({
 				spiderfyOnMaxZoom: false, 
 				showCoverageOnHover: true, 
@@ -306,24 +325,48 @@ if (!window.Products) {
 			});
 			
 			for (var i = 0 ; i < answers.length ; i++) {
+				console.log(answers[i].data);
+				console.log(answers[i].data.question_id);
 				var lat = answers[i].meta.location[0];
 				var lon = answers[i].meta.location[1];
 				var m = new L.Marker(new L.LatLng(lat, lon));
 				var s = '';
 				for (var j = 0 ; j < answers[i].data.length ; j++) {
-					s += '<b>Income:</b> ';
-					switch(answers[i].data[j]['answer']) {
-						case 0: s += 'Low'; break;
-						case 1: s += 'Medium'; break;
-						case 2: s += 'High'; break;
+					if (answers[i].data[j].question_id == answerID) {
+						s += '<b>' + questionLabel + ':</b> ';
+						if (answerType == 'multiple_choice') {
+							switch(answers[i].data[j]['answer']) {
+								case 0: s += 'Low'; break;
+								case 1: s += 'Medium'; break;
+								case 2: s += 'High'; break;
+							}
+						} else {
+							s += answers[i].data[j]['answer'];
+						}
 					}
 				}
 				m.bindPopup(s);
 				markers.addLayer(m);
 			}
 			
-			map.addLayer(markers);
+			Products.map.addLayer(markers);
 			
+		},
+		
+		getQuestionLabel : function(model, answerID) {
+			for (var i = 0 ; i < model.model_questions.length ; i++) {
+				if (model.model_questions[i].question_number == answerID) {
+					return model.model_questions[i][ModelsWebPortal.lang + '_indicator'];
+				}
+			}
+		},
+		
+		getAnswerType : function(model, answerID) {
+			for (var i = 0 ; i < model.model_questions.length ; i++) {
+				if (model.model_questions[i].question_number == answerID) {
+					return model.model_questions[i].answer_type;
+				}
+			}
 		}
 		
 	}
