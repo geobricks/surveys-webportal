@@ -4,6 +4,8 @@ if (!window.Products) {
 			
 		map : null,
 		
+		icons : [],
+		
 		init : function() {
 			
 			/**
@@ -283,6 +285,45 @@ if (!window.Products) {
 				Products.addMarkers(model, answers, item.code);
 			});
 			
+			Products.initIcons();
+			
+		},
+		
+		initIcons : function() {
+			
+			var redIcon = L.icon({
+				iconUrl: '../resources/js/leaflet/0.4.4/images/red.png',
+			    shadowUrl: '../resources/js/leaflet/0.4.4/images/no-shadow.png',
+			    iconSize:     [32, 32], // size of the icon
+			    shadowSize:   [41, 41], // size of the shadow
+			    iconAnchor:   [-5, 53], // point of the icon which will correspond to marker's location
+			    shadowAnchor: [4, 62],  // the same for the shadow
+			    popupAnchor:  [15, -57] // point from which the popup should open relative to the iconAnchor
+			});
+			Products.icons[0] = redIcon;
+			
+			var yellowIcon = L.icon({
+				iconUrl: '../resources/js/leaflet/0.4.4/images/yellow.png',
+			    shadowUrl: '../resources/js/leaflet/0.4.4/images/no-shadow.png',
+			    iconSize:     [32, 32], // size of the icon
+			    shadowSize:   [41, 41], // size of the shadow
+			    iconAnchor:   [-5, 53], // point of the icon which will correspond to marker's location
+			    shadowAnchor: [4, 62],  // the same for the shadow
+			    popupAnchor:  [15, -57] // point from which the popup should open relative to the iconAnchor
+			});
+			Products.icons[1] = yellowIcon;
+			
+			var greenIcon = L.icon({
+				iconUrl: '../resources/js/leaflet/0.4.4/images/green.png',
+			    shadowUrl: '../resources/js/leaflet/0.4.4/images/no-shadow.png',
+			    iconSize:     [32, 32], // size of the icon
+			    shadowSize:   [41, 41], // size of the shadow
+			    iconAnchor:   [-5, 53], // point of the icon which will correspond to marker's location
+			    shadowAnchor: [4, 62],  // the same for the shadow
+			    popupAnchor:  [15, -57] // point from which the popup should open relative to the iconAnchor
+			});
+			Products.icons[2] = greenIcon;
+			
 		},
 		
 		initMap : function(model, answers) {
@@ -325,26 +366,65 @@ if (!window.Products) {
 			});
 			
 			for (var i = 0 ; i < answers.length ; i++) {
-				console.log(answers[i].data);
-				console.log(answers[i].data.question_id);
+				
+				/**
+				 * Get the answer location
+				 */
 				var lat = answers[i].meta.location[0];
 				var lon = answers[i].meta.location[1];
-				var m = new L.Marker(new L.LatLng(lat, lon));
+				
+				/**
+				 * Custom marker
+				 */
+				var m = null;
+				if (answerType == 'multiple_choice') {
+					
+				} else {
+					m = new L.Marker(new L.LatLng(lat, lon));
+				}
+				
+				/**
+				 * Popup text
+				 */
 				var s = '';
 				for (var j = 0 ; j < answers[i].data.length ; j++) {
+					
+					/**
+					 * If this is a multiple choices question we need to
+					 * add custom markers to the map, otherwise we'll use
+					 * the standard blue one
+					 */
 					if (answers[i].data[j].question_id == answerID) {
-						s += '<b>' + questionLabel + ':</b> ';
+						
+						/**
+						 * Add the question to the pop-up
+						 */
+						s += '<b>' + questionLabel + ':</b><br>';
+						
 						if (answerType == 'multiple_choice') {
-							switch(answers[i].data[j]['answer']) {
-								case 0: s += 'Low'; break;
-								case 1: s += 'Medium'; break;
-								case 2: s += 'High'; break;
-							}
+							
+							/**
+							 * Answer value is used to get the answer's label 
+							 * and the marker
+							 */
+							var idx = answers[i].data[j]['answer'];
+							s += model.model_questions[j].choices[idx][ModelsWebPortal.lang + '_choice_label'];
+							m = new L.Marker(new L.LatLng(lat, lon), {icon: Products.icons[idx]});
+							
 						} else {
+							
 							s += answers[i].data[j]['answer'];
+							
 						}
+						
 					}
+					
 				}
+				
+				/**
+				 * Bind the pop-up to the marker and
+				 * add the marker to the layer
+				 */
 				m.bindPopup(s);
 				markers.addLayer(m);
 			}
