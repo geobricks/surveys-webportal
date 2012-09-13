@@ -6,6 +6,8 @@ if (!window.Products) {
 		
 		icons : [],
 		
+		markers : null,
+		
 		init : function() {
 			
 			/**
@@ -296,9 +298,9 @@ if (!window.Products) {
 			    shadowUrl: '../resources/js/leaflet/0.4.4/images/no-shadow.png',
 			    iconSize:     [32, 32], // size of the icon
 			    shadowSize:   [41, 41], // size of the shadow
-			    iconAnchor:   [-5, 53], // point of the icon which will correspond to marker's location
+			    iconAnchor:   [5, 32], // point of the icon which will correspond to marker's location
 			    shadowAnchor: [4, 62],  // the same for the shadow
-			    popupAnchor:  [15, -57] // point from which the popup should open relative to the iconAnchor
+			    popupAnchor:  [0, -28] // point from which the popup should open relative to the iconAnchor
 			});
 			Products.icons[0] = redIcon;
 			
@@ -307,9 +309,9 @@ if (!window.Products) {
 			    shadowUrl: '../resources/js/leaflet/0.4.4/images/no-shadow.png',
 			    iconSize:     [32, 32], // size of the icon
 			    shadowSize:   [41, 41], // size of the shadow
-			    iconAnchor:   [-5, 53], // point of the icon which will correspond to marker's location
+			    iconAnchor:   [5, 32], // point of the icon which will correspond to marker's location
 			    shadowAnchor: [4, 62],  // the same for the shadow
-			    popupAnchor:  [15, -57] // point from which the popup should open relative to the iconAnchor
+			    popupAnchor:  [0, -28] // point from which the popup should open relative to the iconAnchor
 			});
 			Products.icons[1] = yellowIcon;
 			
@@ -318,9 +320,9 @@ if (!window.Products) {
 			    shadowUrl: '../resources/js/leaflet/0.4.4/images/no-shadow.png',
 			    iconSize:     [32, 32], // size of the icon
 			    shadowSize:   [41, 41], // size of the shadow
-			    iconAnchor:   [-5, 53], // point of the icon which will correspond to marker's location
+			    iconAnchor:   [5, 32], // point of the icon which will correspond to marker's location
 			    shadowAnchor: [4, 62],  // the same for the shadow
-			    popupAnchor:  [15, -57] // point from which the popup should open relative to the iconAnchor
+			    popupAnchor:  [0, -28] // point from which the popup should open relative to the iconAnchor
 			});
 			Products.icons[2] = greenIcon;
 			
@@ -352,16 +354,29 @@ if (!window.Products) {
 		 */
 		addMarkers : function(model, answers, answerID) {
 			
+			/**
+			 * Remove existing markers, if any
+			 */
+			if (Products.map.markers != null) {
+				Products.map.removeLayer(Products.map.markers);
+			}
+			
+			/**
+			 * Get the question label and type from the model
+			 */
 			var questionLabel = Products.getQuestionLabel(model, answerID);
 			var answerType = Products.getAnswerType(model, answerID);
 			
-			var markers = new L.MarkerClusterGroup({
+			/**
+			 * Initiate the cluster
+			 */
+			Products.map.markers = new L.MarkerClusterGroup({
 				spiderfyOnMaxZoom: false, 
 				showCoverageOnHover: true, 
 				zoomToBoundsOnClick: true
 			});
 
-			markers.on('clusterclick', function (a) {
+			Products.map.markers.on('clusterclick', function (a) {
 				a.layer.zoomToBounds();
 			});
 			
@@ -426,10 +441,10 @@ if (!window.Products) {
 				 * add the marker to the layer
 				 */
 				m.bindPopup(s);
-				markers.addLayer(m);
+				Products.map.markers.addLayer(m);
 			}
 			
-			Products.map.addLayer(markers);
+			Products.map.addLayer(Products.map.markers);
 			
 		},
 		
