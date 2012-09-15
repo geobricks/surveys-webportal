@@ -293,22 +293,29 @@ if (!window.ModelsQuestionWizard) {
 				$("#questionRow").after(ModelsQuestionWizard.questionHTML);
 			});
 			
-			// set language on the drop-down
-			var defaultLanguage = '';
-			defaultLanguage = ModelsQuestionWizard.model.model_default_language;
-			switch(defaultLanguage) {
-				case 'ar': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 0 ); break;
-				case 'cn': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 1 ); break;
-				case 'de': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 2 ); break;
-				case 'en': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 3 ); break;
-				case 'fr': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 4 ); break;
-				case 'es': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 5 ); break;
-				case 'in': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 6 ); break;
-				case 'it': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 7 ); break;
-				case 'jp': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 8 ); break;
-				case 'pt': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 9 ); break;
-				case 'ru': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 10 ); break;
-			};
+			/**
+			 * set language on the drop-down
+			 */
+//			var defaultLanguage = '';
+//			defaultLanguage = ModelsQuestionWizard.model.model_default_language;
+//			switch(defaultLanguage) {
+//				case 'ar': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 0 ); break;
+//				case 'cn': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 1 ); break;
+//				case 'de': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 2 ); break;
+//				case 'en': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 3 ); break;
+//				case 'fr': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 4 ); break;
+//				case 'es': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 5 ); break;
+//				case 'in': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 6 ); break;
+//				case 'it': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 7 ); break;
+//				case 'jp': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 8 ); break;
+//				case 'pt': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 9 ); break;
+//				case 'ru': $(".listTranslateQuestion").jqxDropDownList('selectIndex', 10 ); break;
+//			};
+			
+			/**
+			 * English as default language
+			 */
+			$(".listTranslateQuestion").jqxDropDownList('selectIndex', 3 );
 			
 			$("#buttonNextQuestion").bind('click', function() {
 				ModelsQuestionWizard.saveQuestion();

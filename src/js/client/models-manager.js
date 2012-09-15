@@ -122,9 +122,9 @@ if (!window.ModelsManager) {
 		                columns: [
 		                   {text: 'Model Name', datafield: 'title'},
 		                   {text: 'Description', datafield: 'description', width: 300},
-		                   {text: 'Language', datafield: 'defaultLanguage'},
-		                   {text: 'Date Last Update', datafield: 'dateLastUpdate', cellsformat: 'Y-m-d'},
-		                   {text: 'Creation Date', datafield: 'creationDate', cellsformat: 'Y-m-d'}
+//		                   {text: 'Language', datafield: 'defaultLanguage'},
+		                   {text: 'Date Last Update', datafield: 'dateLastUpdate', cellsformat: 'Y-m-d'}
+//		                   {text: 'Creation Date', datafield: 'creationDate', cellsformat: 'Y-m-d'}
 		                ],
 		                theme: ModelsWebPortal.theme
 		            });
