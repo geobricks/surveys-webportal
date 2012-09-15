@@ -172,7 +172,7 @@ if (!window.ModelsQuestionWizard) {
 			});
 			
 			// bind this function to the new 'Add Translation' button
-			$('#buttonAddTranslation_0').bind('click', function() {
+			$('#buttonAddTranslation_' + (1 + id)).bind('click', function() {
 				ModelsQuestionWizard.addTranslationListener(1 + id);
 			});
 			
@@ -258,7 +258,7 @@ if (!window.ModelsQuestionWizard) {
 				displayMember: "label", 
 				valueMember: "code",
 				selectedIndex: 0, 
-				width: '768', 
+				width: '765', 
 				height: '25px', 
 				theme: ModelsWebPortal.theme
 			});

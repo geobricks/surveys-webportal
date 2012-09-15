@@ -57,7 +57,11 @@ if (!window.BabelFish) {
 		},
 		
 		translateButtonWithLabel : function (id, label) {
-			$('#' + id).attr('value', $.i18n.prop(label));
+			try {
+				$('#' + id).attr('value', $.i18n.prop(label));
+			} catch (err) {
+				console.log(id + ", " + label + ", " + err);
+			}
 		}
 		
 	}
