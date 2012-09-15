@@ -39,8 +39,6 @@ if (!window.Products) {
             	var modelID = rows[rowindex].id;
             	var model = rows[rowindex].model;
             	
-            	console.log(model);
-            	
             	/**
             	 * Fetch answers by model ID
             	 */
@@ -72,10 +70,47 @@ if (!window.Products) {
 			});
 			
 			/**
-			 * Show Chart button
+			 * Show Map button
 			 */
 			$("#buttonShowChart").bind('click', function() {
-				Products.initChart();
+				
+				/**
+				 * Get selected model's ID
+				 */
+				var rowindex = $('#models-grid').jqxGrid('getselectedrowindex');
+            	var rows = $('#models-grid').jqxGrid('getrows');
+            	var modelName = rows[rowindex].title;
+            	var modelID = rows[rowindex].id;
+            	var model = rows[rowindex].model;
+            	
+            	/**
+            	 * Fetch answers by model ID
+            	 */
+            	$.ajax({
+    				
+    				type: 'GET',
+    				url: 'http://localhost:3000/select/answer/' + modelID + '?callback=?',
+    				dataType: 'jsonp',
+    				jsonp: 'callback',
+    				
+    				/**
+    				 * Show the answers on the map
+    				 */
+    				success : function(answers) {
+    					$('#chart_container').load('chart.html', function() {
+    						Products.initChart(model, answers);
+    					});
+    				},
+    				
+    				/**
+    				 * Alert the user of the error
+    				 */
+    				error : function(err, b, c) {
+    					alert(err.status + ", " + b + ", " + c);
+    				}
+    				
+    			});
+            	
 			});
 			
 			/**
@@ -173,55 +208,184 @@ if (!window.Products) {
 			
 		},
 		
-		initChart : function() {
+		initChart : function(model, answers) {
 			
-			var chart = new Highcharts.Chart({
-		    
-				chart: {
-					renderTo: 'chart',
-		            type: 'column',
-		            height: 320
-		        },
-		    
-		        title: {
-		        	text: 'Average Income, Grouped By Gender'
-		        },
-		    
-		        xAxis: {
-		        	categories: ['North', 'South', 'East', 'West']
-		        },
-		    
-		        yAxis: {
-		        	allowDecimals: false,
-		        	min: 0,
-		        	title: {
-		        		text: 'Average Income'
-		        	}
-		        },
-		    
-		        tooltip: {
-		        	formatter: function() {
-		        		return '<b>'+ this.x +'</b><br/>' + this.series.name +': '+ this.y +'<br/>' + 'Total: '+ this.point.stackTotal;
-		        	}
-		        },
-		    
-		        plotOptions: {
-		        	column: {
-		        		stacking: 'normal'
-		        	}
-		        },
-		    
-		        series: [{
-		        	name: 'Male',
-		            data: [750, 315, 590, 615],
-		            stack: 'male'
-		        }, {
-		        	name: 'Female',
-		        	data: [680, 150, 400, 485],
-		        	stack: 'female'
-		        }]
+			/**
+			 * Initiate the UI for charts
+			 */
+			Products.initChartUI(model, answers);
+			
+//			var chart = new Highcharts.Chart({
+//		    
+//				chart: {
+//					renderTo: 'chart',
+//		            type: 'column',
+//		            height: 320
+//		        },
+//		    
+//		        title: {
+//		        	text: 'Average Income, Grouped By Gender'
+//		        },
+//		    
+//		        xAxis: {
+//		        	categories: ['North', 'South', 'East', 'West']
+//		        },
+//		    
+//		        yAxis: {
+//		        	allowDecimals: false,
+//		        	min: 0,
+//		        	title: {
+//		        		text: 'Average Income'
+//		        	}
+//		        },
+//		    
+//		        tooltip: {
+//		        	formatter: function() {
+//		        		return '<b>'+ this.x +'</b><br/>' + this.series.name +': '+ this.y +'<br/>' + 'Total: '+ this.point.stackTotal;
+//		        	}
+//		        },
+//		    
+//		        plotOptions: {
+//		        	column: {
+//		        		stacking: 'normal'
+//		        	}
+//		        },
+//		    
+//		        series: [{
+//		        	name: 'Male',
+//		            data: [750, 315, 590, 615],
+//		            stack: 'male'
+//		        }, {
+//		        	name: 'Female',
+//		        	data: [680, 150, 400, 485],
+//		        	stack: 'female'
+//		        }]
+//			});
+			
+		},
+		
+		initChartUI : function(model, answers) {
+			
+			BabelFish.translateHTML('chart_question_selector_label');
+			
+			var questions_data = new Array();
+			var row = {};
+			row['code'] = null;
+			row['label'] = $.i18n.prop("type_please_select");
+			questions_data[0] = row;
+			
+			for (var i = 0 ; i < model.model_questions.length ; i++) {
+				var row = {};
+				row['code'] = model.model_questions[i].question_number;
+				row['label'] = model.model_questions[i][ModelsWebPortal.lang + '_text'];
+				questions_data[1 + i] = row;
+			}
+			
+			var questions_source = {
+				localdata: questions_data,
+				datatype: "json",
+				datafields: [{name: 'code'}, {name: 'label'}],
+				id: 'code'
+			};
+				
+			var questions_data_adapter = new $.jqx.dataAdapter(questions_source);
+			
+			$("#chart_question_selector").jqxDropDownList({ 
+				source: questions_data_adapter, 
+				displayMember: "label", 
+				valueMember: "code",
+				selectedIndex: 0, 
+				width: '688', 
+				height: '25px', 
+				theme: ModelsWebPortal.theme
 			});
 			
+			$("#chart_question_selector").bind('change', function() {
+				var item = ($("#chart_question_selector").jqxDropDownList('getSelectedItem')).originalItem;
+				Products.createChart(model, item.code);
+			});
+			
+		},
+		
+		createChart : function(model, questionID) {
+			
+			/**
+        	 * Get the frequency of the answers
+        	 */
+        	$.ajax({
+				
+				type: 'GET',
+				url: 'http://localhost:3000/aggregate/answers/' + model._id + '/' + questionID + '/?callback=?',
+				dataType: 'jsonp',
+				jsonp: 'callback',
+				
+				/**
+				 * Show the answers on the map
+				 */
+				success : function(freqs) {
+					
+					var categories = new Array();
+					var indicator = model.model_questions[parseInt(questionID) - 1][ModelsWebPortal.lang + '_indicator'];
+					var question = model.model_questions[parseInt(questionID) - 1][ModelsWebPortal.lang + '_text'];
+					var series = Products.createSeries(freqs);
+					
+					var chart = new Highcharts.Chart({
+						
+						chart: {
+							renderTo: 'chart',
+				            type: 'column',
+				            height: 350
+				        },
+				        
+				        title: {
+				        	text: question
+				        },
+				        
+				        subtitle: {
+				        	text: $.i18n.prop('frequencyOfTheAnswers')
+				        },
+				        
+				        xAxis: {
+				        	categories: [indicator]
+				        },
+				        
+				        yAxis: {
+				        	allowDecimals: false,
+				        	min: 0,
+				        	title: {
+				        		text: $.i18n.prop('frequency')
+				        	}
+				        },
+				        
+				        series: series
+				        
+					});
+					
+				},
+				
+				/**
+				 * Alert the user of the error
+				 */
+				error : function(err, b, c) {
+					alert(err.status + ", " + b + ", " + c);
+				}
+				
+			});
+        	
+		},
+		
+		createSeries : function(freqs) {
+			var series = new Array();
+			for (var i = 0 ; i < freqs.length ; i++) {
+				if (freqs[i] != null) {
+					var tmp = new Array();
+					tmp.name = i.toString();
+					tmp.data = new Array();
+					tmp.data[0] = freqs[i];
+					series.push(tmp);
+				}
+			}
+			return series;
 		},
 		
 		/**
