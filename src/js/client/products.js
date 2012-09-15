@@ -327,7 +327,7 @@ if (!window.Products) {
 					var categories = new Array();
 					var indicator = model.model_questions[parseInt(questionID) - 1][ModelsWebPortal.lang + '_indicator'];
 					var question = model.model_questions[parseInt(questionID) - 1][ModelsWebPortal.lang + '_text'];
-					var series = Products.createSeries(freqs);
+					var series = Products.createSeries(model, questionID, freqs);
 					
 					var chart = new Highcharts.Chart({
 						
@@ -374,12 +374,22 @@ if (!window.Products) {
         	
 		},
 		
-		createSeries : function(freqs) {
+		/**
+		 * Create the data for Highcharts. For 'multiple_choice' questions
+		 * the appropriate label is retrieved from the model
+		 */
+		createSeries : function(model, questionID, freqs) {
+			var answerType = Products.getAnswerType(model, questionID);
 			var series = new Array();
 			for (var i = 0 ; i < freqs.length ; i++) {
 				if (freqs[i] != null) {
 					var tmp = new Array();
-					tmp.name = i.toString();
+					if (answerType == 'multiple_choice') {
+						var lbl = model.model_questions[parseInt(questionID) - 1].choices[i][ModelsWebPortal.lang + '_choice_label'];
+						tmp.name = lbl;
+					} else {
+						tmp.name = i.toString();
+					}
 					tmp.data = new Array();
 					tmp.data[0] = freqs[i];
 					series.push(tmp);
