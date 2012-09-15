@@ -267,6 +267,7 @@ if (!window.Products) {
 		initChartUI : function(model, answers) {
 			
 			BabelFish.translateHTML('chart_question_selector_label');
+			BabelFish.translateHTML('chart_type_selector_label');
 			
 			var questions_data = new Array();
 			var row = {};
@@ -290,6 +291,25 @@ if (!window.Products) {
 				
 			var questions_data_adapter = new $.jqx.dataAdapter(questions_source);
 			
+			var chart_type = new Array();
+			var row = {};
+			row['code'] = 'bar';
+			row['label'] = $.i18n.prop("chart_bar");
+			chart_type[0] = row;
+			row = {};
+			row['code'] = 'pie';
+			row['label'] = $.i18n.prop("chart_pie");
+			chart_type[1] = row;
+			
+			var type_source = {
+				localdata: chart_type,
+				datatype: "json",
+				datafields: [{name: 'code'}, {name: 'label'}],
+				id: 'code'
+			};
+				
+			var chart_type_adapter = new $.jqx.dataAdapter(type_source);
+			
 			$("#chart_question_selector").jqxDropDownList({ 
 				source: questions_data_adapter, 
 				displayMember: "label", 
@@ -300,14 +320,38 @@ if (!window.Products) {
 				theme: ModelsWebPortal.theme
 			});
 			
+			$("#chart_type_selector").jqxDropDownList({ 
+				source: chart_type_adapter, 
+				displayMember: "label", 
+				valueMember: "code",
+				selectedIndex: 0, 
+				width: '688', 
+				height: '25px', 
+				theme: ModelsWebPortal.theme
+			});
+			
 			$("#chart_question_selector").bind('change', function() {
 				var item = ($("#chart_question_selector").jqxDropDownList('getSelectedItem')).originalItem;
-				Products.createChart(model, item.code);
+				var type = ($("#chart_type_selector").jqxDropDownList('getSelectedItem')).originalItem;
+				Products.createChart(model, item.code, type.code);
+			});
+			
+			$("#chart_type_selector").bind('change', function() {
+				var item = ($("#chart_question_selector").jqxDropDownList('getSelectedItem')).originalItem;
+				var type = ($("#chart_type_selector").jqxDropDownList('getSelectedItem')).originalItem;
+				Products.createChart(model, item.code, type.code);
 			});
 			
 		},
 		
-		createChart : function(model, questionID) {
+		createChart : function(model, questionID, type) {
+			switch(type) {
+				case 'bar' : Products.createBarChart(model, questionID); break;
+				case 'pie' : Products.createPieChart(model, questionID); break;
+			}
+		},
+		
+		createPieChart : function(model, questionID) {
 			
 			/**
         	 * Get the frequency of the answers
@@ -327,7 +371,111 @@ if (!window.Products) {
 					var categories = new Array();
 					var indicator = model.model_questions[parseInt(questionID) - 1][ModelsWebPortal.lang + '_indicator'];
 					var question = model.model_questions[parseInt(questionID) - 1][ModelsWebPortal.lang + '_text'];
-					var series = Products.createSeries(model, questionID, freqs);
+					var series = Products.createSeries_PIE(model, questionID, freqs);
+					console.log(series);
+					
+					var chart = new Highcharts.Chart({
+						
+						chart: {
+							renderTo: 'chart',
+							plotBackgroundColor: null,
+			                plotBorderWidth: null,
+			                plotShadow: false
+				        },
+				        
+				        credits: {
+				        	text: 'GeoBricks.org',
+				        	href: 'http://www.geobricks.org/'
+				        },
+				        
+				        title: {
+				        	text: question
+				        },
+				        
+				        subtitle: {
+				        	text: $.i18n.prop('frequencyOfTheAnswers')
+				        },
+				        
+				        plotOptions: {
+			                pie: {
+			                    allowPointSelect: true,
+			                    cursor: 'pointer',
+			                    dataLabels: {
+			                        enabled: true,
+			                        color: '#000000',
+			                        connectorColor: '#000000',
+			                        formatter: function() {
+			                            return '<b>'+ this.point.name +'</b>: '+ this.percentage.toFixed(4) +' %';
+			                        }
+			                    }
+			                }
+			            },
+			            
+			            series: series
+				        
+					});
+					
+					console.log(chart);
+					
+				},
+								
+				/**
+				 * Alert the user of the error
+				 */
+				error : function(err, b, c) {
+					alert(err.status + ", " + b + ", " + c);
+				}
+				
+			});
+        	
+		},
+		
+		/**
+		 * Create the data for Highcharts. For 'multiple_choice' questions
+		 * the appropriate label is retrieved from the model
+		 */
+		createSeries_PIE : function(model, questionID, freqs) {
+			var answerType = Products.getAnswerType(model, questionID);
+			var series = new Array();
+			var tmp = new Array();
+			tmp.type = 'pie';
+			tmp.data = new Array();
+			for (var i = 0 ; i < freqs.length ; i++) {
+				if (freqs[i] != null) {
+					if (answerType == 'multiple_choice') {
+						var lbl = model.model_questions[parseInt(questionID) - 1].choices[i][ModelsWebPortal.lang + '_choice_label'];
+						tmp.name = lbl;
+						tmp.data.push([lbl, freqs[i]]);
+					} else {
+						tmp.data.push([i.toString(), freqs[i]]);
+					}
+				}
+			}
+			series.push(tmp);
+			return series;
+		},
+		
+		createBarChart : function(model, questionID) {
+			
+			/**
+        	 * Get the frequency of the answers
+        	 */
+        	$.ajax({
+				
+				type: 'GET',
+				url: 'http://localhost:3000/aggregate/answers/' + model._id + '/' + questionID + '/?callback=?',
+				dataType: 'jsonp',
+				jsonp: 'callback',
+				
+				/**
+				 * Show the answers on the map
+				 */
+				success : function(freqs) {
+					
+					var categories = new Array();
+					var indicator = model.model_questions[parseInt(questionID) - 1][ModelsWebPortal.lang + '_indicator'];
+					var question = model.model_questions[parseInt(questionID) - 1][ModelsWebPortal.lang + '_text'];
+					var series = Products.createSeries_BAR(model, questionID, freqs);
 					
 					var chart = new Highcharts.Chart({
 						
@@ -335,6 +483,11 @@ if (!window.Products) {
 							renderTo: 'chart',
 				            type: 'column',
 				            height: 350
+				        },
+				        
+				        credits: {
+				        	text: 'GeoBricks.org',
+				        	href: 'http://www.geobricks.org/'
 				        },
 				        
 				        title: {
@@ -378,7 +531,7 @@ if (!window.Products) {
 		 * Create the data for Highcharts. For 'multiple_choice' questions
 		 * the appropriate label is retrieved from the model
 		 */
-		createSeries : function(model, questionID, freqs) {
+		createSeries_BAR : function(model, questionID, freqs) {
 			var answerType = Products.getAnswerType(model, questionID);
 			var series = new Array();
 			for (var i = 0 ; i < freqs.length ; i++) {
