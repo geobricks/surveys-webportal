@@ -215,53 +215,6 @@ if (!window.Products) {
 			 */
 			Products.initChartUI(model, answers);
 			
-//			var chart = new Highcharts.Chart({
-//		    
-//				chart: {
-//					renderTo: 'chart',
-//		            type: 'column',
-//		            height: 320
-//		        },
-//		    
-//		        title: {
-//		        	text: 'Average Income, Grouped By Gender'
-//		        },
-//		    
-//		        xAxis: {
-//		        	categories: ['North', 'South', 'East', 'West']
-//		        },
-//		    
-//		        yAxis: {
-//		        	allowDecimals: false,
-//		        	min: 0,
-//		        	title: {
-//		        		text: 'Average Income'
-//		        	}
-//		        },
-//		    
-//		        tooltip: {
-//		        	formatter: function() {
-//		        		return '<b>'+ this.x +'</b><br/>' + this.series.name +': '+ this.y +'<br/>' + 'Total: '+ this.point.stackTotal;
-//		        	}
-//		        },
-//		    
-//		        plotOptions: {
-//		        	column: {
-//		        		stacking: 'normal'
-//		        	}
-//		        },
-//		    
-//		        series: [{
-//		        	name: 'Male',
-//		            data: [750, 315, 590, 615],
-//		            stack: 'male'
-//		        }, {
-//		        	name: 'Female',
-//		        	data: [680, 150, 400, 485],
-//		        	stack: 'female'
-//		        }]
-//			});
-			
 		},
 		
 		initChartUI : function(model, answers) {
@@ -667,12 +620,29 @@ if (!window.Products) {
 			 */
 			if (Products.map == null) {
 				Products.map = L.map('map').setView(Products.calculateMapCenter(answers), 12);
-			}
+			}	
 			
-			L.tileLayer('http://{s}.tile.cloudmade.com/17ad8466b1c24b86b173b2a1d5492115/997/256/{z}/{x}/{y}.png', {
+			/**
+			 * Initiate Open Street Map
+			 */
+			var osm = L.tileLayer('http://{s}.tile.cloudmade.com/17ad8466b1c24b86b173b2a1d5492115/997/256/{z}/{x}/{y}.png', {
 				attribution: 'GeoBricks.org',
 				maxZoom: 17
-			}).addTo(Products.map);			
+			});
+			
+			/**
+			 * Initiate other providers
+			 */
+			var ggl = new L.Google();
+			var bing = new L.BingLayer("Anqm0F_JjIZvT0P3abS6KONpaBaKuTnITRrnYuiJCE0WOhH6ZbE4DzeT6brvKVR5");
+			Products.map.addLayer(ggl);
+			Products.map.addLayer(bing);
+			Products.map.addLayer(osm);
+			
+			/**
+			 * Add maps provider switch
+			 */
+			Products.map.addControl(new L.Control.Layers( {'Google':ggl, 'Bing':bing, 'Open Street Map ':osm}, {}));
 			
 		},
 		
