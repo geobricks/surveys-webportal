@@ -377,3 +377,20 @@
 .leaflet-popup-content {
 	font: 12px/1.4 "Helvetica Neue", Arial, Helvetica, sans-serif;
 	}
+.leaflet-control-fullscreen {
+  background-image: url(images/icon-fullscreen.png);
+  margin-bottom: 5px;
+}
+
+.leaflet-control-zoom-fullscreen last  {
+  background-image: url(images/icon-fullscreen.png);
+  margin-bottom: 5px;
+}
+
+	#map { width: 700px; height: 433px; }
+.leaflet-control-zoom-fullscreen { background-image: url(images/icon-fullscreen.png); }
+.leaflet-control-zoom-fullscreen.last { margin-top: 5px }
+/* on selector per rule as explained here : http://www.sitepoint.com/html5-full-screen-api/ */
+#map:-webkit-full-screen { width: 100% !important; height: 100% !important; }
+#map:-moz-full-screen { width: 100% !important; height: 100% !important; }
+#map:full-screen { width: 100% !important; height: 100% !important; }

@@ -623,6 +623,20 @@ if (!window.Products) {
 			}	
 			
 			/**
+			 * Add full screen features
+			 */
+			var fullScreen = new L.Control.FullScreen();
+			Products.map.addControl(fullScreen);
+			Products.map.on('enterFullscreen', function(){
+			if(window.console) window.console.log('enterFullscreen');
+			
+			});
+			Products.map.on('exitFullscreen', function(){
+			if(window.console) window.console.log('exitFullscreen');
+			
+			});
+			
+			/**
 			 * Initiate Open Street Map
 			 */
 			var osm = L.tileLayer('http://{s}.tile.cloudmade.com/17ad8466b1c24b86b173b2a1d5492115/997/256/{z}/{x}/{y}.png', {
