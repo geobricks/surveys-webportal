@@ -22,7 +22,44 @@ if (!window.Products) {
 			 * Show Table button
 			 */
 			$("#buttonShowTable").bind('click', function() {
-				Products.initTable();
+				
+				/**
+				 * Get selected model's ID
+				 */
+				var rowindex = $('#models-grid').jqxGrid('getselectedrowindex');
+            	var rows = $('#models-grid').jqxGrid('getrows');
+            	var modelName = rows[rowindex].title;
+            	var modelID = rows[rowindex].id;
+            	var model = rows[rowindex].model;
+            	
+            	/**
+            	 * Fetch answers by model ID
+            	 */
+            	$.ajax({
+    				
+    				type: 'GET',
+    				url: 'http://localhost:3000/select/answer/' + modelID + '?callback=?',
+    				dataType: 'jsonp',
+    				jsonp: 'callback',
+    				
+    				/**
+    				 * Show the answers on the map
+    				 */
+    				success : function(answers) {
+    					$('#table_container').load('table.html', function() {
+    						Products.initTable(model, answers);
+    					});
+    				},
+    				
+    				/**
+    				 * Alert the user of the error
+    				 */
+    				error : function(err, b, c) {
+    					alert(err.status + ", " + b + ", " + c);
+    				}
+    				
+    			});
+            	
 			});
 			
 			/**
@@ -131,79 +168,47 @@ if (!window.Products) {
 			BabelFish.translateButton('buttonShowChart');
 		},
 		
-		initTable : function() {
+		initTable : function(model, answers) {
 			
-			var data = new Array();
+			BabelFish.translateHTML('table_question_selector_label');
 			
+			var questions_data = new Array();
 			var row = {};
-			row["gender"] = 'Male';
-			row["city_area"] = 'North';
-			row["average_income"] = 750;
-			data[0] = row;
+			row['code'] = null;
+			row['label'] = $.i18n.prop("type_please_select");
+			questions_data[0] = row;
 			
-			row = {};
-			row["gender"] = 'Male';
-			row["city_area"] = 'South';
-			row["average_income"] = 315;
-			data[1] = row;
+			for (var i = 0 ; i < model.model_questions.length ; i++) {
+				var row = {};
+				row['code'] = model.model_questions[i].question_number;
+				row['label'] = model.model_questions[i][ModelsWebPortal.lang + '_text'];
+				questions_data[1 + i] = row;
+			}
 			
-			row = {};
-			row["gender"] = 'Male';
-			row["city_area"] = 'East';
-			row["average_income"] = 590;
-			data[2] = row;
-			
-			row = {};
-			row["gender"] = 'Male';
-			row["city_area"] = 'West';
-			row["average_income"] = 615;
-			data[3] = row;
-			
-			row = {};
-			row["gender"] = 'Female';
-			row["city_area"] = 'North';
-			row["average_income"] = 680;
-			data[4] = row;
-			
-			row = {};
-			row["gender"] = 'Female';
-			row["city_area"] = 'South';
-			row["average_income"] = 150;
-			data[5] = row;
-			
-			row = {};
-			row["gender"] = 'Female';
-			row["city_area"] = 'East';
-			row["average_income"] = 400;
-			data[6] = row;
-			
-			row = {};
-			row["gender"] = 'Female';
-			row["city_area"] = 'West';
-			row["average_income"] = 485;
-			data[7] = row;
-			
-			var source = {
-				localdata: data,
-	            datatype: "array"
+			var questions_source = {
+				localdata: questions_data,
+				datatype: "json",
+				datafields: [{name: 'code'}, {name: 'label'}],
+				id: 'code'
 			};
 				
-			var dataAdapter = new $.jqx.dataAdapter(source);
-
-			$("#table").jqxGrid({
-				width: 768,
-				height: 320,
-				source: dataAdapter,
-				columnsresize: true,
-				showheader: true,
-				sortable: true,
-				enablehover: true,
-				columns: [
-				          {text: 'Gender', datafield: 'gender'},
-				          {text: 'City Area', datafield: 'city_area'},
-				          {text: 'Average Income', datafield: 'average_income'}
-	                ],
-	            theme: "ui-start"
+			var questions_data_adapter = new $.jqx.dataAdapter(questions_source);
+			
+			$("#table_question_selector").jqxDropDownList({ 
+				source: questions_data_adapter, 
+				displayMember: "label", 
+				valueMember: "code",
+				selectedIndex: 0, 
+				width: '688', 
+				height: '25px', 
+				theme: ModelsWebPortal.theme
+			});
+			
+			$("#table_question_selector").bind('change', function() {
+				var item = ($("#table_question_selector").jqxDropDownList('getSelectedItem')).originalItem;
+				console.log(model);
+				console.log(item.code);
+				Products.createTable(model, item.code);
 			});
 			
 		},
@@ -294,6 +299,80 @@ if (!window.Products) {
 				var type = ($("#chart_type_selector").jqxDropDownList('getSelectedItem')).originalItem;
 				Products.createChart(model, item.code, type.code);
 			});
+			
+		},
+		
+		createTable : function(model, questionID) {
+			
+			/**
+        	 * Get the frequency of the answers
+        	 */
+        	$.ajax({
+				
+				type: 'GET',
+				url: 'http://localhost:3000/aggregate/answers/' + model._id + '/' + questionID + '/?callback=?',
+				dataType: 'jsonp',
+				jsonp: 'callback',
+				
+				/**
+				 * Show the answers on the map
+				 */
+				success : function(freqs) {
+					
+					var indicator = model.model_questions[parseInt(questionID) - 1][ModelsWebPortal.lang + '_indicator'];
+					var question = model.model_questions[parseInt(questionID) - 1][ModelsWebPortal.lang + '_text'];
+					
+					var data = new Array();
+					var answerType = Products.getAnswerType(model, questionID);
+					
+					for (var i = 0 ; i < freqs.length ; i++) {
+						if (freqs[i] != null) {
+							var tmp = new Array();
+							tmp.question = question;
+							if (answerType == 'multiple_choice') {
+								var lbl = model.model_questions[parseInt(questionID) - 1].choices[i][ModelsWebPortal.lang + '_choice_label'];
+								tmp.answer = lbl;
+							} else {
+								tmp.answer = i.toString();
+							}
+							tmp.frequency = freqs[i];
+							data.push(tmp);
+						}
+					}
+					
+					var source = {
+						localdata: data,
+			            datatype: "array"
+					};
+						
+					var dataAdapter = new $.jqx.dataAdapter(source);
+
+					$("#table").jqxGrid({
+						width: 765,
+						height: 320,
+						source: dataAdapter,
+						columnsresize: true,
+						showheader: true,
+						sortable: true,
+						enablehover: true,
+						columns: [
+						          {text: 'Question', datafield: 'question'},
+						          {text: 'Answer', datafield: 'answer'},
+						          {text: 'Frequency', datafield: 'frequency'}
+			                ],
+			            theme: "ui-start"
+					});
+					
+				},
+				
+				/**
+				 * Alert the user of the error
+				 */
+				error : function(err, b, c) {
+					alert(err.status + ", " + b + ", " + c);
+				}
+				
+			});			
 			
 		},
 		
@@ -773,6 +852,12 @@ if (!window.Products) {
 					return model.model_questions[i].answer_type;
 				}
 			}
+		},
+		
+		clear : function() {
+			document.getElementById('map_container').innerHTML = '';
+			document.getElementById('chart_container').innerHTML = '';
+			document.getElementById('table_container').innerHTML = '';
 		}
 		
 	}
