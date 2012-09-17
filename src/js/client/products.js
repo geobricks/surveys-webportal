@@ -335,7 +335,7 @@ if (!window.Products) {
 							} else {
 								tmp.answer = i.toString();
 							}
-							tmp.frequency = freqs[i];
+							tmp.frequency = parseInt(freqs[i]);
 							data.push(tmp);
 						}
 					}
@@ -356,9 +356,9 @@ if (!window.Products) {
 						sortable: true,
 						enablehover: true,
 						columns: [
-						          {text: 'Question', datafield: 'question'},
-						          {text: 'Answer', datafield: 'answer'},
-						          {text: 'Frequency', datafield: 'frequency'}
+						          {text: $.i18n.prop('question'), datafield: 'question'},
+						          {text: $.i18n.prop('answer'), datafield: 'answer'},
+						          {text: $.i18n.prop('frequency'), datafield: 'frequency', cellsformat: 'd'}
 			                ],
 			            theme: "ui-start"
 					});
