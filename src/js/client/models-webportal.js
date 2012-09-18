@@ -43,7 +43,60 @@ if (!window.ModelsWebPortal) {
 			} else {
 				ModelsWebPortal.lang = 'en';
 			}
+			
+			// init header
+			ModelsWebPortal.initHeader();
 						
+		},
+		
+		initHeader : function() {
+			
+			/**
+			 * Fetch settings from DB
+			 */
+			$.ajax({
+				
+				type: 'GET',
+				url: 'http://localhost:3000/select/settings/?callback=?',
+				dataType: 'jsonp',
+				jsonp: 'callback',
+				
+				success : function(response) {
+					
+					var appurl = document.URL;
+					
+					/**
+					 * Iterate over the result
+					 */
+					$.each(response.languages, function(k, v) {
+						
+						/**
+						 * Add languages
+						 */
+						var checked;
+						v == 'true' ? checked = true : checked = false;
+						if (checked) {
+							var icon = '../resources/images/' + k + '.png';
+							if (k == 'ar')
+								icon = '../resources/images/ae.png';
+							if (k == 'en')
+								icon = '../resources/images/gb.png';
+							if (k == 'ind')
+								icon = '../resources/images/in.png';
+							var tr = "<td><a href='" + appurl + "?lang=" + k + "' id='icon_" + k + "'><img src='" + icon + "' title='" + $.i18n.prop(k) + "'/></a></td>";
+							$('#header tr').last().append(tr);
+						}
+						
+					});
+					
+				},
+				
+				error : function(err, b, c) {
+					alert(err.status + ", " + b + ", " + c);
+				}
+			
+        	});
+			
 		},
 		
 		initI18N : function() {

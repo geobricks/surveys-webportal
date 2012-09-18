@@ -85,13 +85,15 @@ if (!window.Admin) {
 				
 				success : function(model) {
 					
-					/**
-					 * Reload the UI with new settings
-					 */
-					document.getElementById('container').innerHTML = '';
-					$("#container").load("administration.html", function() {
-						Admin.init();
-					});
+//					/**
+//					 * Reload the UI with new settings
+//					 */
+//					document.getElementById('container').innerHTML = '';
+//					$("#container").load("administration.html", function() {
+//						Admin.init();
+//					});
+					
+					window.location = 'index.html'
 					
 				},
 				
