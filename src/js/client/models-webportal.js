@@ -54,6 +54,7 @@ if (!window.ModelsWebPortal) {
 			BabelFish.translateHTML('menu_statistical_engine');
 			BabelFish.translateHTML('menu_products');
 			BabelFish.translateHTML('menu_contribute');
+			BabelFish.translateHTML('menu_administration');
 			BabelFish.translateHTML('menu_login');
 			BabelFish.translateHTML('footer_desktop');
 			BabelFish.translateHTML('footer_mobile');

@@ -1,0 +1,15 @@
+{
+	"languages" : {
+		"ar" : false,
+		"cn" : false,
+		"de" : false,
+		"es" : false,
+		"en" : true,
+		"fr" : false,
+		"in" : false,
+		"it" : true,
+		"jp" : false,
+		"pt" : false,
+		"ru" : false
+	}
+}

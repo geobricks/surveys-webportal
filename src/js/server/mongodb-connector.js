@@ -11,7 +11,7 @@ app.use(express.bodyParser());
  * Initiate the DB
  */
 var databaseUrl = "geobricks";
-var collections = ["models", "answers"];
+var collections = ["models", "answers", "settings"];
 var db = require("mongojs").connect(databaseUrl, collections);
 
 /**
@@ -211,6 +211,23 @@ app.get("/aggregate/answers/:modelID/:questionID", function(req, res, next) {
 		
 	});
 	
+});
+
+/**
+ * Get settings
+ */
+app.get("/select/settings", function(req, res, next) {
+	db.settings.findOne({}, function(err, models) {
+		if (err || !models) {
+			res.send("Error Fetching the Model: " + err);
+		} else {
+			if (req.query.callback == null || req.query.callback == "") {
+				res.send(JSON.stringify(models));
+			} else {
+				res.send(req.query.callback + "(" + JSON.stringify(models) + ");");
+			}
+		}
+	});
 });
 
 /**
