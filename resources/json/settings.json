@@ -6,10 +6,16 @@
 		"es" : false,
 		"en" : true,
 		"fr" : false,
-		"in" : false,
+		"ind" : false,
 		"it" : true,
 		"jp" : false,
 		"pt" : false,
 		"ru" : false
 	}
 }
+
+
+
+
+
+{"languages":{"ar" : false,"cn" : false,"de" : false,"es" : false,"en" : true,"fr" : false,"ind" : false,"it" : true,"jp" : false,"pt" : false,"ru" : false}}

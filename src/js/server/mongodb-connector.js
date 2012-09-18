@@ -231,6 +231,27 @@ app.get("/select/settings", function(req, res, next) {
 });
 
 /**
+ * Save settings
+ */
+app.get("/insert/settings", function(req, res, next) {
+	var cleanPayload = cleanJSONP(req.query);
+	db.settings.remove({}, function(e, m) {
+		console.log('Old settings removed');
+		db.settings.save(cleanPayload, function(err, model) {
+			if (err || !model) {
+				res.send("Error Saving new Model: " + err);
+			} else {
+				if (req.query.callback == null || req.query.callback == "") {
+					res.send(JSON.stringify(model));
+				} else {
+					res.send(req.query.callback + "(" + JSON.stringify(model) + ");");
+				}
+			}
+		});
+	});
+});
+
+/**
  * @param query payload from HTTP request
  * @returns {JSON} clean payload
  * 

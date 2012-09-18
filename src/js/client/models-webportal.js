@@ -138,6 +138,12 @@ if (!window.ModelsWebPortal) {
 					case "#statisticalEngine":
 						document.getElementById('container').innerHTML = '';
 					break;
+					case "#administration":
+						document.getElementById('container').innerHTML = '';
+						$("#container").load("administration.html", function() {
+							Admin.init();
+						});
+					break;
 					case "#login":
 						document.getElementById('container').innerHTML = '';
 					break;
