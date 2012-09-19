@@ -101,7 +101,7 @@ if (!window.ModelsQuestionWizard) {
             });
 	    	
 	    	$(".model-manager-button").jqxButton({ 
-				width: '200', 
+				width: '100%', 
 				theme: ModelsWebPortal.theme 
 			});
 	    	
@@ -187,7 +187,7 @@ if (!window.ModelsQuestionWizard) {
 	    	document.getElementById('currentModelDescription').innerHTML = ModelsQuestionWizard.model[ModelsWebPortal.lang + "_abstract"];
 			
 			$(".model-manager-button").jqxButton({ 
-				width: '150', 
+				width: '100%', 
 				theme: ModelsWebPortal.theme 
 			});
 			
@@ -258,7 +258,7 @@ if (!window.ModelsQuestionWizard) {
 				displayMember: "label", 
 				valueMember: "code",
 				selectedIndex: 0, 
-				width: '765', 
+				width: '100%', 
 				height: '25px', 
 				theme: ModelsWebPortal.theme
 			});
