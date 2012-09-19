@@ -9,7 +9,7 @@ if (!window.QuestionsManager) {
 			QuestionsManager.modelID = modelID;
 			
 			$(".model-manager-button").jqxButton({ 
-				width: '200', 
+				width: '100%', 
 				theme: ModelsWebPortal.theme 
 			});
 			
@@ -82,8 +82,8 @@ if (!window.QuestionsManager) {
 		            };
 					var dataAdapter = new $.jqx.dataAdapter(source);
 					$("#questions-grid").jqxGrid({
-		            	width: 768,
-		                height: 250,
+		            	width: '100%',
+		                height: '200',
 		                source: dataAdapter,
 		                columnsresize: true,
 		                showheader: true,

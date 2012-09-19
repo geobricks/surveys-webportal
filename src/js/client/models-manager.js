@@ -5,7 +5,7 @@ if (!window.ModelsManager) {
 		initUI : function() {
 			
 			$(".model-manager-button").jqxButton({ 
-				width: '200', 
+				width: '100%', 
 				theme: ModelsWebPortal.theme 
 			});
 			
@@ -112,8 +112,8 @@ if (!window.ModelsManager) {
 		            };
 					var dataAdapter = new $.jqx.dataAdapter(source);
 					$("#models-grid").jqxGrid({
-		            	width: 768,
-		                height: 250,
+		            	width: '100%',
+		                height: '200',
 		                source: dataAdapter,
 		                columnsresize: true,
 		                showheader: true,

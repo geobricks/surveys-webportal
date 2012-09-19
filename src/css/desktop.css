@@ -1,5 +1,11 @@
 @CHARSET "UTF-8";
 
+.main {
+	background-color: #FFFFFF; 
+	width: 960px; 
+	margin:0px auto;
+}
+
 .home {
 	font-family: sans-serif;
 	color: #46A3CA;	
@@ -14,4 +20,41 @@
 
 .home.body {
 	font-size: 14px;
+}
+
+.home.container {
+	margin: 16px 0px 0px 8px;
+}
+
+.header {
+	font-family: arial; 
+	font-size: 24px; 
+	font-weight: bold; 
+	color: #46A3CA; 
+	padding: 8px 0 8px 0px;
+	width: 928px;
+}
+
+.menu {
+	width: 928px;
+}
+
+.container {
+	width: 960px;
+}
+
+.footer {
+	width: 928px;
+	background-color: #46A3CA; 
+	font-family: arial; 
+	font-size: 12px; 
+	color: #FFFFFF;
+}
+
+.footer.link {
+	cursor: pointer;
+}
+
+.footer.link.bold {
+	font-weight: bold;
 }

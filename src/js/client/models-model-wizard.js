@@ -21,18 +21,18 @@ if (!window.ModelsModelWizard) {
 			$(".listLanguages").jqxDropDownList({ 
 				source: ModelsModelWizard.source, 
 				selectedIndex: 3, 
-				width: '770px', 
+				width: '100%', 
 				height: '25px', 
 				theme: ModelsWebPortal.theme
 			});
 			
 			$(".model-manager-button").jqxButton({ 
-				width: '150', 
+				width: '100%', 
 				theme: ModelsWebPortal.theme 
 			});
 			
 			$(".addTranslationButton").jqxButton({ 
-				width: '150', 
+				width: '100%', 
 				theme: ModelsWebPortal.theme 
 			});
 			
@@ -110,7 +110,7 @@ if (!window.ModelsModelWizard) {
 			
 			// create buttons
 			$(".addTranslationButton").jqxButton({ 
-				width: '150', 
+				width: '100%', 
 				theme: ModelsWebPortal.theme 
 			});
 			
@@ -118,7 +118,7 @@ if (!window.ModelsModelWizard) {
 			$("#listLanguages_" + (1 + id)).jqxDropDownList({ 
 				source: ModelsModelWizard.source, 
 				selectedIndex: 3, 
-				width: '770px', 
+				width: '100%', 
 				height: '25px', 
 				theme: ModelsWebPortal.theme
 			});

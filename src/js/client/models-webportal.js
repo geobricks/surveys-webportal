@@ -151,7 +151,7 @@ if (!window.ModelsWebPortal) {
 			});
 			
 			$("#menu").jqxMenu({
-				width: '768', 
+				width: '100%', 
 				showTopLevelArrows: true,
 				autoOpen: true,
 				enableHover: true,

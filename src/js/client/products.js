@@ -14,7 +14,7 @@ if (!window.Products) {
 			 * Initiate buttons
 			 */
 			$(".model-manager-button").jqxButton({ 
-				width: '200', 
+				width: '100%', 
 				theme: ModelsWebPortal.theme 
 			});
 			
@@ -199,7 +199,7 @@ if (!window.Products) {
 				displayMember: "label", 
 				valueMember: "code",
 				selectedIndex: 0, 
-				width: '688', 
+				width: '100%', 
 				height: '25px', 
 				theme: ModelsWebPortal.theme
 			});
@@ -273,7 +273,7 @@ if (!window.Products) {
 				displayMember: "label", 
 				valueMember: "code",
 				selectedIndex: 0, 
-				width: '688', 
+				width: '100%', 
 				height: '25px', 
 				theme: ModelsWebPortal.theme
 			});
@@ -283,7 +283,7 @@ if (!window.Products) {
 				displayMember: "label", 
 				valueMember: "code",
 				selectedIndex: 0, 
-				width: '688', 
+				width: '100%', 
 				height: '25px', 
 				theme: ModelsWebPortal.theme
 			});
@@ -348,8 +348,8 @@ if (!window.Products) {
 					var dataAdapter = new $.jqx.dataAdapter(source);
 
 					$("#table").jqxGrid({
-						width: 765,
-						height: 320,
+						width: '100%',
+						height: '200',
 						source: dataAdapter,
 						columnsresize: true,
 						showheader: true,
@@ -362,6 +362,13 @@ if (!window.Products) {
 			                ],
 			            theme: "ui-start"
 					});
+					
+					/**
+					 * Focus on the product
+					 */
+					$('html,body').animate({
+						scrollTop: $("#table").offset().top
+					},'slow');
 					
 				},
 				
@@ -447,7 +454,12 @@ if (!window.Products) {
 				        
 					});
 					
-					console.log(chart);
+					/**
+					 * Focus on the product
+					 */
+					$('html,body').animate({
+						scrollTop: $("#chart").offset().top
+					},'slow');
 					
 				},
 								
@@ -546,6 +558,13 @@ if (!window.Products) {
 				        
 					});
 					
+					/**
+					 * Focus on the product
+					 */
+					$('html,body').animate({
+						scrollTop: $("#chart").offset().top
+					},'slow');
+					
 				},
 				
 				/**
@@ -636,7 +655,7 @@ if (!window.Products) {
 				displayMember: "label", 
 				valueMember: "code",
 				selectedIndex: 0, 
-				width: '688', 
+				width: '100%', 
 				height: '25px', 
 				theme: ModelsWebPortal.theme
 			});
@@ -700,6 +719,13 @@ if (!window.Products) {
 			if (Products.map == null) {
 				Products.map = L.map('map').setView(Products.calculateMapCenter(answers), 12);
 			}	
+			
+			/**
+			 * Focus on the product
+			 */
+			$('html,body').animate({
+				scrollTop: $("#map").offset().top
+			},'slow');
 			
 			/**
 			 * Add full screen features
