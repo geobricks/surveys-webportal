@@ -252,6 +252,25 @@ app.get("/insert/settings", function(req, res, next) {
 });
 
 /**
+ * Save answer
+ */
+app.post("/insert/answer", function(req, res, next) {
+	var json = req.param('json');
+	var payload = JSON.parse(json);
+	db.answers.save(payload, function(err, model) {
+		if (err || !model) {
+			res.send("Error Saving Answer: " + err);
+		} else {
+			if (req.query.callback == null || req.query.callback == "") {
+				res.send(JSON.stringify(model));
+			} else {
+				res.send(req.query.callback + "(" + JSON.stringify(model) + ");");
+			}
+		}
+	});
+});
+
+/**
  * @param query payload from HTTP request
  * @returns {JSON} clean payload
  * 

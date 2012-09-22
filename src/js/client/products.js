@@ -35,6 +35,7 @@ if (!window.Products) {
             	/**
             	 * Fetch answers by model ID
             	 */
+            	console.log('model? ' + modelID);
             	$.ajax({
     				
     				type: 'GET',
@@ -46,6 +47,7 @@ if (!window.Products) {
     				 * Show the answers on the map
     				 */
     				success : function(answers) {
+    					console.log(model);
     					$('#table_container').load('table.html', function() {
     						Products.initTable(model, answers);
     					});
@@ -183,6 +185,7 @@ if (!window.Products) {
 				row['code'] = model.model_questions[i].question_number;
 				row['label'] = model.model_questions[i][ModelsWebPortal.lang + '_text'];
 				questions_data[1 + i] = row;
+				console.log(row);
 			}
 			
 			var questions_source = {
@@ -206,8 +209,6 @@ if (!window.Products) {
 			
 			$("#table_question_selector").bind('change', function() {
 				var item = ($("#table_question_selector").jqxDropDownList('getSelectedItem')).originalItem;
-				console.log(model);
-				console.log(item.code);
 				Products.createTable(model, item.code);
 			});
 			

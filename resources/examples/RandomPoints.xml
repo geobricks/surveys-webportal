@@ -1,0 +1,33 @@
+for (var i = 0 ; i < 250 ; i++) {
+	var lat = Math.random() * (6.35 - 6.33 + 1) + 6.33;
+	var lon = Math.random() * (-10.72 + 10.75 + 1) - 10.75;
+	var income = Math.floor(Math.random() * (2 - 0 + 1)) + 0;
+	var children = Math.floor(Math.random() * (8 - 2 + 1)) + 2;
+	var education = Math.floor(Math.random() * (2 - 0 + 1)) + 0;
+	var obj = {
+		"meta":{
+		   "model_id": "505b77b12d2904f50d000001",
+		   "date":"2012-09-10",
+		   "user":"Kalimaha",
+		   "location":[
+		      lat,
+		      lon
+		   ]
+		},
+		"data":[
+		   {
+		      "question_id":1,
+		      "answer":income
+		   },
+		   {
+		      "question_id":2,
+		      "answer":children
+		   },
+		   {
+		      "question_id":3,
+		      "answer":education
+		   }
+		]
+	}
+	db.answers.save(obj);
+}
