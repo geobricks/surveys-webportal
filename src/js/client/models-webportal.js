@@ -2,7 +2,7 @@ if (!window.ModelsWebPortal) {
 	
 	window.ModelsWebPortal = {
 		
-		theme : "ui-start",
+		theme : "ui-lightness",
 		
 		language : "",
 		
@@ -162,43 +162,41 @@ if (!window.ModelsWebPortal) {
 			});
 			
 			$('#menu').bind('itemclick', function (event) {
-				var item = event.target.hash
+				var item = event.target.hash;
+				Maps.map = null;
+				document.getElementById('container').innerHTML = '';
 				switch (item) {
 					case "#home":
-						document.getElementById('container').innerHTML = '';
 						$("#container").load("home.html", function() {
 							ModelsWebPortal.init();
 						});
 					break;	
 					case "#contribute":
-						document.getElementById('container').innerHTML = '';
 						$("#container").load("contribute.html", function() {
 							ModelsWebPortal.initI18N();
 						});
 					break;
 					case "#products":
-						document.getElementById('container').innerHTML = '';
 						$("#container").load("products.html", function() {
 							Products.init();
 						});
 					break;
 					case "#android":
-						document.getElementById('container').innerHTML = '';
+						
 					break;
 					case "#modelsManager":
 						ModelsWebPortal.showModelModelsGrid();
 					break;
 					case "#statisticalEngine":
-						document.getElementById('container').innerHTML = '';
+						
 					break;
 					case "#administration":
-						document.getElementById('container').innerHTML = '';
 						$("#container").load("administration.html", function() {
 							Admin.init();
 						});
 					break;
 					case "#login":
-						document.getElementById('container').innerHTML = '';
+						
 					break;
 				};
 			}); 

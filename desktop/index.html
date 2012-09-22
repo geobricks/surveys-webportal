@@ -20,26 +20,31 @@
 		<script type='text/javascript' src='../src/js/client/models-model-wizard.js'></script>
 		<script type='text/javascript' src='../src/js/client/model-body-builder.js'></script>
 		
+		<script type='text/javascript' src='../src/js/client/mgr_charts.js'></script>
+		<script type='text/javascript' src='../src/js/client/mgr_maps.js'></script>
+		<script type='text/javascript' src='../src/js/client/mgr_tables.js'></script>
+		
 		<!-- 3rd Party -->
 		<script type='text/javascript' src='../resources/js/jquery-1.7.2.min.js'></script>
 		<script type='text/javascript' src='../resources/js/jquery-ui-1.8.22.custom.min.js'></script>
 		<script type='text/javascript' src='../resources/js/jquery.i18n.properties-min-1.0.9.js'></script>
 		<script type='text/javascript' src='../resources/js/jquery.url.js'></script>
-		<script type='text/javascript' src='../resources/js/jqxcore.js'></script>
-		<script type='text/javascript' src='../resources/js/jqxbuttons.js'></script>
-		<script type='text/javascript' src='../resources/js/jqxscrollbar.js'></script>
-		<script type='text/javascript' src='../resources/js/jqxdata.js'></script>
-		<script type='text/javascript' src='../resources/js/jqxgrid.js'></script>
-		<script type='text/javascript' src='../resources/js/jqxgrid.sort.js'></script>
-		<script type='text/javascript' src='../resources/js/jqxgrid.selection.js'></script>
-		<script type='text/javascript' src='../resources/js/jqxgrid.columnsresize.js'></script>
-		<script type='text/javascript' src='../resources/js/jqxgrid.edit.js'></script>
-		<script type='text/javascript' src='../resources/js/jqxdropdownlist.js'></script>
-		<script type='text/javascript' src='../resources/js/jqxmenu.js'></script>
-		<script type='text/javascript' src='../resources/js/jqxcheckbox.js'></script>
-		<script type='text/javascript' src='../resources/js/jqxlistbox.js'></script>
-		<script type='text/javascript' src='../resources/js/jqxwindow.js'></script>
-		<script type='text/javascript' src='../resources/js/jqxswitchbutton.js'></script>
+		<script type='text/javascript' src='../resources/js/jqwidgets/jqxcore.js'></script>
+		<script type='text/javascript' src='../resources/js/jqwidgets/jqxbuttons.js'></script>
+		<script type='text/javascript' src='../resources/js/jqwidgets/jqxscrollbar.js'></script>
+		<script type='text/javascript' src='../resources/js/jqwidgets/jqxdata.js'></script>
+		<script type='text/javascript' src='../resources/js/jqwidgets/jqxgrid.js'></script>
+		<script type='text/javascript' src='../resources/js/jqwidgets/jqxgrid.sort.js'></script>
+		<script type='text/javascript' src='../resources/js/jqwidgets/jqxgrid.selection.js'></script>
+		<script type='text/javascript' src='../resources/js/jqwidgets/jqxgrid.columnsresize.js'></script>
+		<script type='text/javascript' src='../resources/js/jqwidgets/jqxgrid.edit.js'></script>
+		<script type='text/javascript' src='../resources/js/jqwidgets/jqxdropdownlist.js'></script>
+		<script type='text/javascript' src='../resources/js/jqwidgets/jqxmenu.js'></script>
+		<script type='text/javascript' src='../resources/js/jqwidgets/jqxcheckbox.js'></script>
+		<script type='text/javascript' src='../resources/js/jqwidgets/jqxlistbox.js'></script>
+		<script type='text/javascript' src='../resources/js/jqwidgets/jqxwindow.js'></script>
+		<script type='text/javascript' src='../resources/js/jqwidgets/jqxswitchbutton.js'></script>
+		<script type='text/javascript' src='../resources/js/jqwidgets/jqxtabs.js'></script>
 		<script type='text/javascript' src='../resources/js/leaflet/0.4.4/leaflet-src.js'></script>
 		<script type='text/javascript' src='../resources/js/leaflet/plugins/markercluster/leaflet.markercluster-src.js'></script>
 		<script type='text/javascript' src='../resources/js/leaflet/plugins/tile/Bing.js'></script>
@@ -53,14 +58,13 @@
 		<script type='text/javascript' src='../resources/js/leaflet/plugins/leaflet.zoomfs.js'></script>
 		<script type='text/javascript' src='../resources/js/highcharts.js'></script>
 		
-		<script type='text/javascript' src='../src/js/client/map.js'></script>
-		
 		<!-- GeoBricks -->
 		<link type='text/css' href='../src/css/desktop.css' rel='Stylesheet' />
 		
 		<!-- 3rd Party -->
-		<link type='text/css' href='../resources/css/jqx.base.css' rel='Stylesheet' />
-		<link type='text/css' href='../resources/css/jqx.ui-start.css' rel='Stylesheet' />
+		<link type='text/css' href='../resources/js/jqwidgets/styles/jqx.base.css' rel='Stylesheet' />
+		<link type='text/css' href='../resources/js/jqwidgets/styles/jqx.ui-start.css' rel='Stylesheet' />
+		<link type='text/css' href='../resources/js/jqwidgets/styles/jqx.ui-lightness.css' rel='Stylesheet' />
 		<link type='text/css' href='../resources/css/jquery-ui-1.8.23.custom.css' rel='Stylesheet' />
 		<link type='text/css' href='../resources/js/leaflet/0.4.4/leaflet.css' rel='Stylesheet' />
 		<link type='text/css' href='../resources/js/leaflet/0.4.4/leaflet-ie.css' rel='Stylesheet'></link>
@@ -70,70 +74,82 @@
 		
 	</head>
 	
-	<body onload='ModelsWebPortal.init()'  bgcolor='#46A3CA'>
+	<body onload='ModelsWebPortal.init()' bgcolor='#46A3CA'>
 	
-		<div class='main'>
+		<div align='center'>
 		
-			<div id='window' style='height: 16px;'></div>
-			
-			<div align='center'>
-				<div class='menu'>
-					<table id='header' class='header'>
-						<tr>
-							<td width='100%' id='main_title'></td>
-						</tr>
-					</table>
-				</div>
-			</div>
-			
-			<div align='center'>
-				<div class='menu'>
-					<div id='menu' class='menu'>
-						<ul style='font-family: sans-serif;'>
-							<li><a href='#home' id='menu_home'></a></li>
-							<li><a href='#android' id='menu_android'></a></li>
-							<li><a href='#modelsManager' id='menu_models_manager'></a></li>
-							<li><a href='#statisticalEngine' id='menu_statistical_engine'></a></li>
-							<li><a href='#products' id='menu_products'></a></li>
-							<li><a href='#contribute' id='menu_contribute'></a></li>
-							<li><a href='#administration' id='menu_administration'></a></li>
-							<li><a href='#login' id='menu_login'></a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
+			<div class='outerbox'>
+	
+				<div class='main'>
 				
-			<div id='container' class='container'></div>
+					<div id='window' style='height: 16px;'></div>
+					
+					<div align='center'>
+						<div class='menu'>
+							<table id='header' class='header'>
+								<tr>
+									<td width='100%' id='main_title'></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+					
+					<div align='center'>
+						<div class='menu'>
+							<div id='menu' class='menu'>
+								<ul style='font-family: sans-serif;'>
+									<li><a href='#home' id='menu_home'></a></li>
+									<li><a href='#android' id='menu_android'></a></li>
+									<li><a href='#modelsManager' id='menu_models_manager'></a></li>
+									<li><a href='#statisticalEngine' id='menu_statistical_engine'></a></li>
+									<li><a href='#products' id='menu_products'></a></li>
+									<li><a href='#contribute' id='menu_contribute'></a></li>
+									<li><a href='#administration' id='menu_administration'></a></li>
+									<li><a href='#login' id='menu_login'></a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+						
+					<div id='container' class='container'></div>
+					
+				</div>
 			
+			</div>
+		
 		</div>
 		
 		<div align='center'>
-			<div class='menu'>
-				<table class='footer'>
-					<tr>
-						<td>
-							<table>
-								<tr>
-									<td><a class='footer link bold' id='footer_desktop'></a></td>
-									<td><a class='footer link'      id='footer_mobile'></a></td>
-								</tr>
-							</table>
-						</td>
-						<td>
-							<table>
-								<tr>
-									<td align='right' width='95%' valign='middle' id='footer_follow_us'></td>
-									<td align='right'><a id='icon_blogger' href='http://geobricks.blogspot.com/' target='_blank'><img src='../resources/images/blogger.png' title='Blogger'/></a></td>
-									<td align='right'><a href='http://www.facebook.com/GeoBricks' target='_blank'><img src='../resources/images/facebook.png' title='Facebook'/></a></td>
-									<td align='right'><a href='https://github.com/geobricks' target='_blank'><img src='../resources/images/github.png' title='GitHub'/></a></td>
-									<td align='right'><a href='https://plus.google.com/115313969704832578670' target='_blank'><img src='../resources/images/google+.png' title='Google+'/></a></td>
-									<td align='right'><a href='https://twitter.com/GeoBricks' target='_blank'><img src='../resources/images/twitter.png' title='Twitter'/></a></td>
-									<td align='right'><a href='http://www.youtube.com/user/geobricks' target='_blank'><img src='../resources/images/youtube.png' title='YouTube'/></a></td>
-								</tr>
-							</table>
-						</td>
-					</tr>
-				</table>
+			<div class='outerbox footer'>
+				<div align='center'>
+					<div class='menu'>
+						<table class='footer'>
+							<tr>
+								<td>
+									<table>
+										<tr>
+											<td><a class='footer link bold' id='footer_desktop'></a></td>
+											<td><a class='footer link'      id='footer_mobile'></a></td>
+										</tr>
+									</table>
+								</td>
+								<td>
+									<table>
+										<tr>
+											<td align='right' width='95%' valign='middle' id='footer_follow_us'></td>
+											<td align='right'><a id='icon_blogger' href='http://geobricks.blogspot.com/' target='_blank'><img src='../resources/images/blogger.png' title='Blogger'/></a></td>
+											<td align='right'><a href='http://www.facebook.com/GeoBricks' target='_blank'><img src='../resources/images/facebook.png' title='Facebook'/></a></td>
+											<td align='right'><a href='https://github.com/geobricks' target='_blank'><img src='../resources/images/github.png' title='GitHub'/></a></td>
+											<td align='right'><a href='https://plus.google.com/115313969704832578670' target='_blank'><img src='../resources/images/google+.png' title='Google+'/></a></td>
+											<td align='right'><a href='https://twitter.com/GeoBricks' target='_blank'><img src='../resources/images/twitter.png' title='Twitter'/></a></td>
+											<td align='right'><a href='http://www.youtube.com/user/geobricks' target='_blank'><img src='../resources/images/youtube.png' title='YouTube'/></a></td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
 			</div>
 		</div>
 		

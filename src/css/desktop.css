@@ -1,5 +1,14 @@
 @CHARSET "UTF-8";
 
+.outerbox {
+	width: 1000px;
+	background-color: #FFFFFF; 
+}
+
+.outerbox.footer {
+	background-color: #46A3CA;
+}
+
 .main {
 	background-color: #FFFFFF; 
 	width: 960px; 
@@ -10,6 +19,13 @@
 	font-family: sans-serif;
 	color: #46A3CA;	
 	margin: 10px;
+	text-align: left;
+}
+
+.label {
+	margin-top: 8px;
+	font-family: sans-serif;
+	color: #46A3CA;	
 	text-align: left;
 }
 
@@ -32,11 +48,12 @@
 	font-weight: bold; 
 	color: #46A3CA; 
 	padding: 8px 0 8px 0px;
-	width: 928px;
+	width: 960px;
 }
 
 .menu {
-	width: 928px;
+	width: 960px;
+	background-color: #FFFFFF; 
 }
 
 .container {
@@ -44,7 +61,7 @@
 }
 
 .footer {
-	width: 928px;
+	width: 960px;
 	background-color: #46A3CA; 
 	font-family: arial; 
 	font-size: 12px; 

@@ -1,12 +1,17 @@
 for (var i = 0 ; i < 250 ; i++) {
-	var lat = Math.random() * (6.35 - 6.33 + 1) + 6.33;
-	var lon = Math.random() * (-10.72 + 10.75 + 1) - 10.75;
+	var minLat = 23.7081951987208;
+	var maxLat = 23.714796341007222;
+	var minLon = 90.40310382843018;
+	var maxLon = 90.41996955871582;
+	var lat = Math.random() * (maxLat - minLat) + minLat;
+	var lon = Math.random() * (maxLon - minLon) + minLon;
+	printjson('lat: ' + lat + ', lon: ' + lon);
 	var income = Math.floor(Math.random() * (2 - 0 + 1)) + 0;
 	var children = Math.floor(Math.random() * (8 - 2 + 1)) + 2;
 	var education = Math.floor(Math.random() * (2 - 0 + 1)) + 0;
 	var obj = {
 		"meta":{
-		   "model_id": "505b77b12d2904f50d000001",
+		   "model_id": "504e1efed6f33bb421000001",
 		   "date":"2012-09-10",
 		   "user":"Kalimaha",
 		   "location":[

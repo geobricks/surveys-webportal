@@ -1,34 +1,62 @@
 <div align='center'>
 			
 	<div class='menu'>
-		
-		<br/>
-		
-		<div id="models-grid"></div>
-		
-		<br/>
-		
-		<table style='align: left; width: 100%;'>
+	
+		<table style='width: 100%;'>
 			<tr>
-				<td style='width: 33%;'>
-					<input class="model-manager-button" type="button" id='buttonShowTable' />
+				<td>
+					<div id="available_models" class='label'>
+						<script type="text/javascript">
+							document.getElementById('available_models').innerHTML = $.i18n.prop('_available_models');
+						</script>
+					</div>
 				</td>
-				<td style='width: 33%;'>
-					<input class="model-manager-button" type="button" id='buttonShowMap' />
+			</tr>
+			<tr>
+				<td>
+					<div id="models-grid"></div>
 				</td>
-				<td style='width: 33%;'>
-					<input class="model-manager-button" type="button" id='buttonShowChart' />
+			</tr>
+			<tr>
+				<td>
+					<div id="products" class='label'>
+						<script type="text/javascript">
+							document.getElementById('products').innerHTML = $.i18n.prop('_products');
+						</script>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div id='products_tab'>
+						<ul>
+							<li>Charts</li>
+							<li>Maps</li>
+							<li>Tables</li>
+						</ul>
+						<div id="chart_container"></div>
+						<div id="map_container"></div>
+						<div id="table_container"></div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div id="questions" class='label'>
+						<script type="text/javascript">
+							document.getElementById('questions').innerHTML = $.i18n.prop('_questions');
+						</script>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div id="questions-list"></div>
 				</td>
 			</tr>
 		</table>
 		
 		<br>
-		
-		<div id="table_container"></div>
-		
-		<div id="map_container"></div>
-		
-		<div id="chart_container"></div>
 		
 	</div>
 
