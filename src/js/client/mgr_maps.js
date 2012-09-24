@@ -124,7 +124,7 @@ if (!window.Maps) {
 			 */
 			if (Maps.map == null) {
 				// Maps.map = L.map('map').setView(Maps.calculateMapCenter(answers), 12);
-				Maps.map = L.map('map_container').setView([51.505, -0.09], 8);
+				Maps.map = L.map('map_container').setView([0, 0], 5);
 			}
 			
 			/**

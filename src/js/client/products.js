@@ -2,12 +2,11 @@ if (!window.Products) {
 	
 	window.Products = {
 			
-		map : null,
+		answers : null,
 		
-		icons : [],
-		
-		markers : null,
-		
+		/**
+		 * Initiate UI
+		 */
 		init : function() {
 			
 			/**
@@ -31,147 +30,58 @@ if (!window.Products) {
 			});
 			
 			/**
-			 * Test maps
-			 */
-			Maps.initMap();
-			
-			/**
-			 * Show Table button
-			 */
-			$("#buttonShowTable").bind('click', function() {
-				
-				/**
-				 * Get selected model's ID
-				 */
-				var rowindex = $('#models-grid').jqxGrid('getselectedrowindex');
-            	var rows = $('#models-grid').jqxGrid('getrows');
-            	var modelName = rows[rowindex].title;
-            	var modelID = rows[rowindex].id;
-            	var model = rows[rowindex].model;
-            	
-            	/**
-            	 * Fetch answers by model ID
-            	 */
-            	console.log('model? ' + modelID);
-            	$.ajax({
-    				
-    				type: 'GET',
-    				url: 'http://localhost:3000/select/answer/' + modelID + '?callback=?',
-    				dataType: 'jsonp',
-    				jsonp: 'callback',
-    				
-    				/**
-    				 * Show the answers on the map
-    				 */
-    				success : function(answers) {
-    					console.log(model);
-    					$('#table_container').load('table.html', function() {
-    						Products.initTable(model, answers);
-    					});
-    				},
-    				
-    				/**
-    				 * Alert the user of the error
-    				 */
-    				error : function(err, b, c) {
-    					alert(err.status + ", " + b + ", " + c);
-    				}
-    				
-    			});
-            	
-			});
-			
-			/**
-			 * Show Map button
-			 */
-			$("#buttonShowMap").bind('click', function() {
-				
-				/**
-				 * Get selected model's ID
-				 */
-				var rowindex = $('#models-grid').jqxGrid('getselectedrowindex');
-            	var rows = $('#models-grid').jqxGrid('getrows');
-            	var modelName = rows[rowindex].title;
-            	var modelID = rows[rowindex].id;
-            	var model = rows[rowindex].model;
-            	
-            	/**
-            	 * Fetch answers by model ID
-            	 */
-            	$.ajax({
-    				
-    				type: 'GET',
-    				url: 'http://localhost:3000/select/answer/' + modelID + '?callback=?',
-    				dataType: 'jsonp',
-    				jsonp: 'callback',
-    				
-    				/**
-    				 * Show the answers on the map
-    				 */
-    				success : function(answers) {
-    					$('#map_container').load('map.html', function() {
-    						Maps.initMap(model, answers);
-    					});
-    				},
-    				
-    				/**
-    				 * Alert the user of the error
-    				 */
-    				error : function(err, b, c) {
-    					alert(err.status + ", " + b + ", " + c);
-    				}
-    				
-    			});
-            	
-			});
-			
-			/**
-			 * Show Map button
-			 */
-			$("#buttonShowChart").bind('click', function() {
-				
-				/**
-				 * Get selected model's ID
-				 */
-				var rowindex = $('#models-grid').jqxGrid('getselectedrowindex');
-            	var rows = $('#models-grid').jqxGrid('getrows');
-            	var modelName = rows[rowindex].title;
-            	var modelID = rows[rowindex].id;
-            	var model = rows[rowindex].model;
-            	
-            	/**
-            	 * Fetch answers by model ID
-            	 */
-            	$.ajax({
-    				
-    				type: 'GET',
-    				url: 'http://localhost:3000/select/answer/' + modelID + '?callback=?',
-    				dataType: 'jsonp',
-    				jsonp: 'callback',
-    				
-    				/**
-    				 * Show the answers on the map
-    				 */
-    				success : function(answers) {
-    					$('#chart_container').load('chart.html', function() {
-    						Products.initChart(model, answers);
-    					});
-    				},
-    				
-    				/**
-    				 * Alert the user of the error
-    				 */
-    				error : function(err, b, c) {
-    					alert(err.status + ", " + b + ", " + c);
-    				}
-    				
-    			});
-            	
-			});
-			
-			/**
 			 * Fill the drop-down with available models
 			 */
+			Products.fillModelsGrid();
+									
+			
+			/**
+			 * Translate elements
+			 */
+			Products.initI18N();
+			
+		},
+		
+		/**
+		 * Fetch answers for given model and set 'em as global variable
+		 */
+		fetchAnswers : function(model) {
+			
+			$.ajax({
+				
+				type: 'GET',
+				url: 'http://localhost:3000/select/answer/' + model._id + '?callback=?',
+				dataType: 'jsonp',
+				jsonp: 'callback',
+				
+				success : function(answers) {
+					Products.answers = answers;
+					
+					/**
+					 * Show answers for the first question on the map
+					 */
+					Maps.initIcons();
+					Maps.initMap(model, Products.answers);
+					Maps.addMarkers(model, answers, 1);
+					var center = Maps.calculateMapCenter(answers);
+					console.log(center);
+					Maps.map.panTo([center[0], center[1], 10]);
+//					Maps.map.panTo(center[0], 10);
+				},
+				
+				error : function(err, b, c) {
+					alert(err.status + ", " + b + ", " + c);
+				}
+				
+			});
+			
+		},
+		
+		/**
+		 * Fetch models from DB and create a grid to display them
+		 */
+		fillModelsGrid : function() {
+			
 			$.ajax({
 				
 				type: 'GET',
@@ -182,7 +92,7 @@ if (!window.Products) {
 				success : function(response) {
 					
 					var data = []
-//					
+
 					var row = {};
 					row.id = null;
 					row.value = $.i18n.prop('_type_please_select');
@@ -220,30 +130,19 @@ if (!window.Products) {
 				}
 				
 			});
-			
-			
-			/**
-			 * Translate elements
-			 */
-			Products.initI18N();
-			
+
 		},
 		
 		fillAnswersList : function(model, code) {
 			
 			var data = []
 
-			var row = {};
-			row.value = $.i18n.prop('_type_please_select');
-			row.id = null;
-			data[0] = row;
-			
 			for (var i = 0 ; i < model.model_questions.length ; i++) {
 				var row = {};
 				var name_key = ModelsWebPortal.lang + "_text";
 				row.value = model.model_questions[i][name_key];
 				row.id = model.model_questions[i].question_number;
-				data[1 + i] = row;
+				data[i] = row;
 			}
 			
 			$("#questions-list").jqxDropDownList({ 
@@ -261,6 +160,18 @@ if (!window.Products) {
 				Products.showMarkers(model, item.id);
 			});
 			
+			
+			Products.displayFirstQuestion(model);
+			
+		},
+		
+		/**
+		 * Display the results for the first question of the model
+		 */
+		displayFirstQuestion : function(model) {
+			Products.createChart(model, 1, 'bar');
+			Products.createTable(model, 1);
+			Products.fetchAnswers(model);
 		},
 		
 		showMarkers : function(model, answerID) {
@@ -441,6 +352,8 @@ if (!window.Products) {
 				 */
 				success : function(freqs) {
 					
+					console.log(freqs);
+					
 					var indicator = model.model_questions[parseInt(questionID) - 1][ModelsWebPortal.lang + '_indicator'];
 					var question = model.model_questions[parseInt(questionID) - 1][ModelsWebPortal.lang + '_text'];
 					
@@ -457,6 +370,8 @@ if (!window.Products) {
 							} else {
 								tmp.answer = i.toString();
 							}
+							console.log(freqs[i]);
+							console.log(parseInt(freqs[i]));
 							tmp.frequency = parseInt(freqs[i]);
 							data.push(tmp);
 						}
@@ -469,9 +384,9 @@ if (!window.Products) {
 						
 					var dataAdapter = new $.jqx.dataAdapter(source);
 
-					$("#table").jqxGrid({
-						width: '100%',
-						height: '200',
+					$("#table_container").jqxGrid({
+						width: '960',
+						height: '100%',
 						source: dataAdapter,
 						columnsresize: true,
 						showheader: true,
@@ -484,13 +399,6 @@ if (!window.Products) {
 			                ],
 			            theme: ModelsWebPortal.theme
 					});
-					
-					/**
-					 * Focus on the product
-					 */
-					$('html,body').animate({
-						scrollTop: $("#table").offset().top
-					},'slow');
 					
 				},
 				
@@ -638,6 +546,8 @@ if (!window.Products) {
 				 */
 				success : function(freqs) {
 					
+					console.log(questionID);
+					
 					var categories = new Array();
 					var indicator = model.model_questions[parseInt(questionID) - 1][ModelsWebPortal.lang + '_indicator'];
 					var question = model.model_questions[parseInt(questionID) - 1][ModelsWebPortal.lang + '_text'];
@@ -646,9 +556,8 @@ if (!window.Products) {
 					var chart = new Highcharts.Chart({
 						
 						chart: {
-							renderTo: 'chart',
-				            type: 'column',
-				            height: 350
+							renderTo: 'chart_container',
+				            type: 'column'
 				        },
 				        
 				        credits: {
@@ -679,13 +588,6 @@ if (!window.Products) {
 				        series: series
 				        
 					});
-					
-					/**
-					 * Focus on the product
-					 */
-					$('html,body').animate({
-						scrollTop: $("#chart").offset().top
-					},'slow');
 					
 				},
 				

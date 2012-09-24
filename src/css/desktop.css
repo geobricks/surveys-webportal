@@ -75,3 +75,9 @@
 .footer.link.bold {
 	font-weight: bold;
 }
+
+.products_message {
+	font-size: 24px;
+	color: #46A3CA; 
+	margin-top: 175px;
+}
